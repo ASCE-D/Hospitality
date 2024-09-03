@@ -1,0 +1,28 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.externals.push({
+        bufferutil: "bufferutil",
+        "utf-8-validate": "utf-8-validate",
+      })
+    }
+    return config
+  },
+  async headers() {
+    return [
+      {
+        source: '/firebase-messaging-sw.js',
+        headers: [
+          {
+            key: 'Service-Worker-Allowed',
+            value: '/',
+          },
+        ],
+      },
+    ]
+  },
+}
+
+module.exports = nextConfig
