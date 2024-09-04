@@ -5,6 +5,7 @@ import { getToken, onMessage } from "firebase/messaging";
 import { doc, setDoc } from "firebase/firestore";
 import { db, getMessagingInstance } from "../../../../firebase";
 import { useSession } from "next-auth/react"
+import { savetoken } from "@/actions/user";
 
 export default function App() {
 
@@ -23,13 +24,11 @@ export default function App() {
   }, [session]);
 
   async function saveTokenToFirestore(token) {
-
+console.log(session.user)
     const userEmail = session.user?.email
 
     try {
-      await setDoc(doc(db, "users", userEmail), {
-        token: token
-      }, { merge: true });
+      await savetoken(token)
       console.log("Token saved to Firestore");
     } catch (error) {
       console.error("Error saving token to Firestore:", error);

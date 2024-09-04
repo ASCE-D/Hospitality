@@ -45,6 +45,7 @@ export default function ReservationFormContent({
 
       const newReservation = await response.json();
       console.log("Created reservation:", newReservation.reservation);
+   
       const dateTime2: any = new Date(newReservation.reservation.dateTime);
 
       const formattedDate = new Intl.DateTimeFormat("en-GB", {
@@ -55,14 +56,14 @@ export default function ReservationFormContent({
         minute: "numeric",
         hour12: false, // Change to true if you prefer 12-hour format
       }).format(dateTime2);
-      const response2 = await fetch("/api/notify", {
+      const response2 = await fetch("/api/restaurantnoti", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
 
         body: JSON.stringify({
-          token: token,
+          restaurantId: newReservation.reservation.restaurantId,
           title: "newReservation request",
           message: `Party size ${newReservation.reservation.partySize} on ${formattedDate}`,
           link: "/dashboard/restaurant",

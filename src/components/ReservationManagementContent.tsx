@@ -69,10 +69,23 @@ export const ReservationManagementContent = ({
       console.log("Reservation updated:", updatedReservation);
 
       updateReservations(updatedReservation);
-      addNotification(
-        "success",
-        `Reservation ${newStatus.toLowerCase()} successfully.`,
-      );
+      const response2 = await fetch("/api/usernoti", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          reservationId: reservationId,
+          title: "newReservation request",
+          message: newStatus,
+          link: "/dashboard/user",
+        }),
+      });
+      console.log(response2);
+
+      const data = await response2.json();
+      console.log(data);
     } catch (error) {
       console.error("Error updating reservation:", error);
       addNotification(
