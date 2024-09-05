@@ -5,6 +5,7 @@ import { Reservation } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/context/NotificationContext";
 import toast from "react-hot-toast";
+import { sendresendemail } from "@/actions/sendemail";
 
 type ReservationWithUser = Reservation & {
   user: { name: string | null; email: string };
@@ -86,6 +87,7 @@ export const ReservationManagementContent = ({
 
       const data = await response2.json();
       console.log(data);
+      await sendresendemail()
     } catch (error) {
       console.error("Error updating reservation:", error);
       addNotification(
