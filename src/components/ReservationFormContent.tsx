@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useNotification } from "@/context/NotificationContext";
 import useFcmToken from "@/hooks/useFcmtoken";
 import { sendresendemail } from "@/actions/sendemail";
+import { sendMessage } from "@/actions/sendwhatsapp";
 
 export default function ReservationFormContent({
   restaurantId,
@@ -74,6 +75,7 @@ export default function ReservationFormContent({
 
       const data = await response2.json();
       await sendresendemail()
+      await sendMessage()
       console.log(data);
     } catch (error) {
       console.error("Error creating reservation:", error);
