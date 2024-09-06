@@ -25,7 +25,7 @@ export default function Home() {
     <main>
       <ScrollUp />
       <Hero />
-      <Features />
+      {/* <Features />
       <About />
       <CallToAction />
       <Pricing />
@@ -34,7 +34,7 @@ export default function Home() {
       <Team />
       <HomeBlogSection posts={posts} />
       <Contact />
-      <Clients />
+      <Clients /> */}
     </main>
   );
 }
