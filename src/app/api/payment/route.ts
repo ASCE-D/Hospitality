@@ -11,14 +11,25 @@ export async function POST(request: NextRequest) {
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
-        price: priceId,
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'T-shirt',
+          },
+          unit_amount: 2000,
+        },
         quantity: 1,
       },
     ],
-    mode: "subscription",
-    success_url: process.env.SITE_URL!,
-    cancel_url: process.env.SITE_URL!,
+    mode: "payment",
+    success_url: process.env.NEXTAUTH_URL,
+    cancel_url: process.env.NEXTAUTH_URL,
   });
 
   return NextResponse.json(session.url);
 }
+
+
+
+
+
