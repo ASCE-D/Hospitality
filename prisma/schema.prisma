@@ -39,19 +39,20 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String        @unique
-  emailVerified DateTime?
-  password      String
-  image         String?
-  role          Role          @default(USER)
-  restaurant    Restaurant?
-  reservations  Reservation[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  Account       Account[]
-  Session       Session[]
+  id              String            @id @default(cuid())
+  name            String?
+  email           String            @unique
+  emailVerified   DateTime?
+  password        String
+  image           String?
+  role            Role              @default(USER)
+  restaurant      Restaurant?
+  reservations    Reservation[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Account         Account[]
+  Session         Session[]
+  foodReservation foodReservation[]
 }
 
 model VerificationToken {
@@ -63,15 +64,16 @@ model VerificationToken {
 }
 
 model Restaurant {
-  id           String        @id @default(cuid())
-  name         String
-  description  String?
-  address      String
-  ownerId      String        @unique
-  owner        User          @relation(fields: [ownerId], references: [id])
-  reservations Reservation[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id              String            @id @default(cuid())
+  name            String
+  description     String?
+  address         String
+  ownerId         String            @unique
+  owner           User              @relation(fields: [ownerId], references: [id])
+  reservations    Reservation[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  foodReservation foodReservation[]
 }
 
 model Reservation {
@@ -82,6 +84,25 @@ model Reservation {
   userId       String
   user         User              @relation(fields: [userId], references: [id])
   restaurantId String
+  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model foodReservation {
+  id           String            @id @default(cuid())
+  firstName    String
+  lastName     String
+  seats        Int
+  email        String
+  mealType     String
+  phoneNumber  String
+  countryCode  String
+  restaurantId String
+  dateTime     DateTime
+  status       ReservationStatus @default(PENDING)
+  userId       String?
+  user         User?             @relation(fields: [userId], references: [id])
   restaurant   Restaurant        @relation(fields: [restaurantId], references: [id])
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt

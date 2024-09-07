@@ -23,10 +23,12 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Clock, Briefcase, Calendar, PlusCircle } from "lucide-react";
+import { stripe } from "@/actions/stripe";
+import { Description } from "@radix-ui/react-toast";
+import { useRouter } from "next/navigation";
 
 const ImproveYourStay = () => {
-  const [roomId, setRoomId] = useState("");
-
+ 
   const features = [
     {
       title: "Early Check-in",
@@ -61,8 +63,29 @@ const ImproveYourStay = () => {
   const FeatureDrawer = ({ feature }: any) => {
     const [quantity, setQuantity] = useState(1);
     const [dateTime, setDateTime] = useState("");
-
+    const [roomId, setRoomId] = useState("");
+    const router = useRouter()
     const total = feature.price * quantity;
+    const data = {
+      roomid : 303,
+      Description : "4 hrs stay more",
+      price : 50000,
+    }
+
+    const handleSubmit = async (data:any) => {
+    
+     
+        const url = await stripe(JSON.stringify(data))
+       if (url) {
+          router.push(url); // Redirect to Stripe checkout page
+        }
+      } 
+    ;
+  
+  
+
+
+  
 
     const renderFeatureSpecificFields = () => {
       switch (feature.title) {
@@ -109,11 +132,14 @@ const ImproveYourStay = () => {
                 }
               />
             </div>
-          );
+
+          )
+          ;
         default:
           return null;
       }
     };
+   
 
     return (
       <Drawer>
@@ -148,7 +174,7 @@ const ImproveYourStay = () => {
           </div>
           <DrawerFooter>
             <DrawerClose asChild>
-              <Button>Confirm</Button>
+              <Button onClick = {() =>handleSubmit(data)}>Confirm</Button>
             </DrawerClose>
           </DrawerFooter>
         </DrawerContent>

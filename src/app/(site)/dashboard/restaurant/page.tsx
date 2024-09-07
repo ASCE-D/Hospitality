@@ -17,13 +17,17 @@ async function getRestaurantReservations(ownerId: string) {
   const restaurant = await prisma.restaurant.findUnique({
     where: { ownerId },
     include: {
-      reservations: {
+      // reservations: {
+      //   include: { user: true },
+      //   orderBy: { dateTime: "asc" },
+      // },
+      foodReservation:{
         include: { user: true },
-        orderBy: { dateTime: "asc" },
-      },
+        orderBy: {dateTime:"asc"}
+      }
     },
   });
-  return restaurant?.reservations || [];
+  return restaurant?.foodReservation || [];
 }
 
 export default async function RestaurantDashboard() {

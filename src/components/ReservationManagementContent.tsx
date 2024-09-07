@@ -1,15 +1,13 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Reservation } from "@prisma/client";
+import { foodReservation, Reservation } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/context/NotificationContext";
 import toast from "react-hot-toast";
 import { sendresendemail } from "@/actions/sendemail";
 
-type ReservationWithUser = Reservation & {
-  user: { name: string | null; email: string };
-};
+type ReservationWithUser = foodReservation 
 
 export const ReservationManagementContent = ({
   initialReservations,
@@ -56,7 +54,7 @@ export const ReservationManagementContent = ({
     newStatus: "CONFIRMED" | "REJECTED",
   ) => {
     try {
-      const response = await fetch(`/api/reservations/${reservationId}`, {
+      const response = await fetch(`/api/foodreservations/${reservationId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -107,10 +105,10 @@ export const ReservationManagementContent = ({
           .filter((res) => res.status === "PENDING")
           .map((reservation) => (
             <li key={reservation.id} className="rounded border p-4 shadow">
-              <p>Customer: {reservation.user.name}</p>
-              <p>Email: {reservation.user.email}</p>
+              <p>Customer: {reservation.firstName} {reservation.lastName}</p>
+              <p>Email: {reservation.email}</p>
               <p>Date: {new Date(reservation.dateTime).toLocaleString()}</p>
-              <p>Party Size: {reservation.partySize}</p>
+              <p>Party Size: {reservation.seats}</p>
               <div className="mt-2 space-x-2">
                 <Button
                   onClick={() =>

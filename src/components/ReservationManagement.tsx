@@ -1,11 +1,9 @@
 import { NotificationProvider } from "@/context/NotificationContext";
 
-import { Reservation } from "@prisma/client";
+import { foodReservation, Reservation } from "@prisma/client";
 import { ReservationManagementContent } from "./ReservationManagementContent";
 
-type ReservationWithUser = Reservation & {
-  user: { name: string|null; email: string };
-};
+type ReservationWithUser = foodReservation 
 
 export default function ReservationManagement({
   reservations,

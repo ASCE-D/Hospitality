@@ -31,6 +31,11 @@ import {
   SelectValue,
 } from "../ui/select";
 import { DatePicker } from "@/components/Common/Datepicker";
+import { sendresendemail } from "@/actions/sendemail";
+import { sendMessage } from "@/actions/sendwhatsapp";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { createFoodReservation } from "@/actions/foodreservation";
 
 const MealType = {
   BREAKFAST: "Breakfast",
@@ -41,7 +46,7 @@ const MealType = {
 
 const restaurants = [
   {
-    id: 1,
+    id: "cm0ner3ks0003htvdm9zzhwy3",
     name: "Pasta Paradise",
     image: "/placeholder/400/300",
     description: "Authentic Italian pasta dishes in a cozy atmosphere.",
@@ -174,6 +179,8 @@ const RestaurantList = () => {
 const RestaurantDetails = ({ params }: { params: { id: string } }) => {
   const [selectedMealType, setSelectedMealType] = useState<any>(null);
   const [selectedMeal, setSelectedMeal] = useState<any>(null);
+  const { data: session } = useSession();
+  const router = useRouter();
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [reservationDetails, setReservationDetails] = useState({
     firstName: "",
@@ -181,15 +188,16 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
     email: "",
     phoneNumber: "",
     countryCode: "+1",
-    mealTime: "",
+    mealType: "",
     seats: "1",
-    date: new Date(),
+    dateTime: new Date(),
+    restaurantId: params.id,
   });
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const menuRef = useRef<any>(null);
 
   // Assuming you have a way to fetch the restaurant data based on the ID
-  const restaurant = restaurants.find((r) => r.id === parseInt(params.id));
+  const restaurant = restaurants.find((r) => r.id === (params.id));
 
   if (!restaurant) {
     return <div>Restaurant not found</div>;
@@ -198,7 +206,10 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
   const handleMealTypeSelect = (mealType: any) => {
     setSelectedMealType(mealType);
     setSelectedMeal(null);
-
+    setReservationDetails(prev => ({
+      ...prev,
+      mealType: mealType
+    }));
     // Scroll to the menu items after a short delay to ensure rendering is complete
     setTimeout(() => {
       menuRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -207,6 +218,10 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
 
   const handleMealSelect = (meal: any) => {
     setSelectedMeal(meal);
+    setReservationDetails(prev => ({
+      ...prev,
+      mealType: `${selectedMealType} - ${meal.name}`
+    }));
     setIsReservationOpen(true);
   };
 
@@ -214,10 +229,73 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
     setReservationDetails((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleMakeReservation = () => {
+  const handleMakeReservation = async (e: React.FormEvent) => {
+    e.preventDefault();
     console.log("Reservation made:", reservationDetails);
+    await createFoodReservation(reservationDetails)
     setIsReservationOpen(false);
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/reservations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          // restaurantId,
+          // dateTime,
+          // partySize: parseInt(partySize),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create reservation");
+      }
+
+      const newReservation = await response.json();
+      console.log("Created reservation:", newReservation.reservation);
+   
+      const dateTime2: any = new Date(newReservation.reservation.dateTime);
+
+      const formattedDate = new Intl.DateTimeFormat("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false, // Change to true if you prefer 12-hour format
+      }).format(dateTime2);
+      const response2 = await fetch("/api/restaurantnoti", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          restaurantId: newReservation.reservation.restaurantId,
+          title: "newReservation request",
+          message: `Party size ${newReservation.reservation.partySize} on ${formattedDate}`,
+          link: "/dashboard/restaurant",
+        }),
+      });
+      console.log(response2);
+
+      const data = await response2.json();
+      await sendresendemail()
+      await sendMessage()
+      console.log(data);
+    } catch (error) {
+      console.error("Error creating reservation:", error);
+      // addNotification("error", "Failed to make reservation. Please try again.");
+    }
+  };
+
   return (
     <div className="container mx-auto p-4 pt-[80px] md:pt-[130px] lg:pt-[160px]">
       <Card>
@@ -373,9 +451,9 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
                 </div>
               </div>
               <div className="mb-4">
-                <Label htmlFor="mealTime">Meal Time</Label>
+                <Label htmlFor="mealType">Meal Type</Label>
                 <Input
-                  id="mealTime"
+                  id="mealType"
                   value={
                     selectedMeal
                       ? `${selectedMealType} - ${selectedMeal.name}`
@@ -387,11 +465,12 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
               <div className="mb-4">
                 <Label htmlFor="seats">Number of Seats</Label>
                 <Select
-                  value={reservationDetails.seats}
-                  onValueChange={(value) =>
-                    handleReservationChange("seats", value)
-                  }
-                >
+  value={reservationDetails.seats}
+  onValueChange={(value) =>
+    handleReservationChange("seats", parseInt(value, 10))
+  }
+>
+
                   <SelectTrigger id="seats">
                     <SelectValue placeholder="Select seats" />
                   </SelectTrigger>
@@ -407,7 +486,7 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
               <div className="mb-4">
                 <Label>Select Date</Label>
                 <DatePicker
-                  selected={reservationDetails.date}
+                  selected={reservationDetails.dateTime}
                   onSelect={(date) => handleReservationChange("date", date)}
                 />
               </div>
