@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/utils/auth";
+import { prisma } from "@/utils/prismaDB";
 
-const prisma = new PrismaClient();
 
 export async function PATCH(
   request: Request,

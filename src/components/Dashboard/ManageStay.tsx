@@ -58,7 +58,7 @@ const ImproveYourStay = () => {
     },
   ];
 
-  const FeatureDrawer = ({ feature }) => {
+  const FeatureDrawer = ({ feature }: any) => {
     const [quantity, setQuantity] = useState(1);
     const [dateTime, setDateTime] = useState("");
 

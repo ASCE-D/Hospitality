@@ -1,10 +1,9 @@
 import { getServerSession } from "next-auth/next";
-import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
 import ReservationManagement from "@/components/ReservationManagement";
 import { authOptions } from "@/utils/auth";
+import { prisma } from "@/utils/prismaDB";
 
-const prisma = new PrismaClient();
 
 async function getRestaurant(email: string) {
   const restaurant = await prisma.restaurant.findFirst({

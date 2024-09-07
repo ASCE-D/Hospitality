@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { PrismaClient, Reservation } from "@prisma/client";
+import { Reservation } from "@prisma/client";
 import { useNotification } from "@/context/NotificationContext";
-
-const prisma = new PrismaClient();
 
 type ReservationWithRestaurant = Reservation & { restaurant: { name: string } };
 
