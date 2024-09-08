@@ -68,8 +68,11 @@ const ImproveYourStay = () => {
     const total = feature.price * quantity;
     const data = {
       roomid : 303,
-      Description : "4 hrs stay more",
+      description : "4 hrs stay more",
       price : 50000,
+      restaurantId : "cm0ner3ks0003htvdm9zzhwy3",
+      extendedNights : "4",
+
     }
 
     const handleSubmit = async (data:any) => {

@@ -74,6 +74,7 @@ model Restaurant {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   foodReservation foodReservation[]
+  PaymentDetails  PaymentDetails[]
 }
 
 model Reservation {
@@ -106,6 +107,20 @@ model foodReservation {
   restaurant   Restaurant        @relation(fields: [restaurantId], references: [id])
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
+}
+
+model PaymentDetails {
+  id              String     @id @default(cuid())
+  stripeSessionId String     @unique
+  amount          Int
+  currency        String
+  status          String
+  restaurantId    String
+  restaurant      Restaurant @relation(fields: [restaurantId], references: [id])
+  customerEmail   String
+  paymentType     String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 }
 
 enum Role {

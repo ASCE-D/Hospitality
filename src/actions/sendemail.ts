@@ -13,7 +13,8 @@ export async function sendresendemail(){
         from: 'Acme <onboarding@resend.dev>',
         to: ['ashispandey138c@gmail.com'],
         subject: 'Hello world',
-        react: EmailTemplate({ firstName: 'John' }),
+        // react: EmailTemplate({ firstName: 'John' }),
+        text:"hello"
       });
     console.log("mailsend")
       if (error) {

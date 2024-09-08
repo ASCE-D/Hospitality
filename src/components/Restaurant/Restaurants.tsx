@@ -36,6 +36,7 @@ import { sendMessage } from "@/actions/sendwhatsapp";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createFoodReservation } from "@/actions/foodreservation";
+import { sendrestaurantemail } from "@/actions/sendrestaurantemail";
 
 const MealType = {
   BREAKFAST: "Breakfast",
@@ -233,6 +234,7 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
     e.preventDefault();
     console.log("Reservation made:", reservationDetails);
     await createFoodReservation(reservationDetails)
+    await sendrestaurantemail(reservationDetails.restaurantId,reservationDetails)
     setIsReservationOpen(false);
   };
 

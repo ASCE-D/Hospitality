@@ -1,5 +1,6 @@
 "use server"
 
+import { sendEmail } from '@/utils/email';
 import { prisma } from '@/utils/prismaDB';
 import { revalidatePath } from 'next/cache';
 
@@ -31,6 +32,7 @@ const {firstName ,lastName, seats ,email  ,mealType  ,phoneNumber , countryCode 
 
     // Revalidate the path to update the UI
     revalidatePath('/reservations')
+  
 
     return { success: true, reservation: newReservation };
   } catch (error) {
