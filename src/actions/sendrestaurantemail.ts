@@ -6,7 +6,8 @@ import { Resend } from 'resend';
 const key = process.env.RESEND_API_KEY;
 const resend = new Resend(key);
 
-export async function sendrestaurantemail(restaurantId: string, reservationdetails:any) {
+export async function sendrestaurantemail(restaurantId: string, reservationdetails:any,reservationId : any) {
+  console.log(reservationdetails)
   try {
     // Find the restaurant and its owner's email
     const restaurant = await prisma.restaurant.findUnique({
@@ -20,9 +21,10 @@ export async function sendrestaurantemail(restaurantId: string, reservationdetai
 
     const { data, error } = await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>',
-      to: [restaurant.owner.email],
+      // to: [restaurant.owner.email],
+      to: "ashispandey138c@gmail.com",
       subject: 'Restaurant Notification',
-      react: EmailTemplate({ firstName: restaurant.owner.name || 'Restaurant Owner' , reservationdetails}),
+      react: EmailTemplate({ firstName: restaurant.owner.name || 'Restaurant Owner' , reservationdetails,reservationId}),
     });
 
     console.log("Email sent");

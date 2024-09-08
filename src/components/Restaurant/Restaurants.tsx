@@ -233,8 +233,14 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
   const handleMakeReservation = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Reservation made:", reservationDetails);
-    await createFoodReservation(reservationDetails)
-    await sendrestaurantemail(reservationDetails.restaurantId,reservationDetails)
+   const result= await createFoodReservation(reservationDetails)
+   console.log(result)
+   let reservationid
+   if(result.success){
+    reservationid= result?.reservation?.id
+   }
+   
+    await sendrestaurantemail(reservationDetails.restaurantId,reservationDetails,reservationid)
     setIsReservationOpen(false);
   };
 
