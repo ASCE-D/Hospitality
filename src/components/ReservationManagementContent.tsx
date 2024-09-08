@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useNotification } from "@/context/NotificationContext";
 import toast from "react-hot-toast";
 import { sendresendemail } from "@/actions/sendemail";
+import {  sendUserNotification } from "@/actions/sendusernoti";
 
 type ReservationWithUser = foodReservation 
 
@@ -68,24 +69,8 @@ export const ReservationManagementContent = ({
       console.log("Reservation updated:", updatedReservation);
 
       updateReservations(updatedReservation);
-      const response2 = await fetch("/api/usernoti", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          reservationId: reservationId,
-          title: "newReservation request",
-          message: newStatus,
-          link: "/dashboard/user",
-        }),
-      });
-      console.log(response2);
-
-      const data = await response2.json();
-      console.log(data);
-      await sendresendemail()
+       await sendUserNotification(reservationId)
+  
     } catch (error) {
       console.error("Error updating reservation:", error);
       addNotification(
