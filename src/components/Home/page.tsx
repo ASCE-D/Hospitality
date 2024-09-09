@@ -26,7 +26,7 @@ const HomePage = () => {
     {
       title: "Food",
       image: "/images/restaurants/service-1.jpg",
-      url: "/homestay",
+      url: "/restaurants",
     },
     {
       title: "Transports",

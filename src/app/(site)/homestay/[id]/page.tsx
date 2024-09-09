@@ -4,12 +4,13 @@ import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, Star, Wifi, Clock } from "lucide-react";
+import Image from "next/image";
 
 const hotels = [
   {
     id: 0,
     name: "Luxury Resort & Spa",
-    image: "/placeholder/400/300",
+    image: "api/placeholder/400/300",
     description:
       "Experience ultimate relaxation in our 5-star resort with breathtaking ocean views.",
     price: "$299",
@@ -17,9 +18,7 @@ const hotels = [
     location:
       "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
     contact: { email: "Tmhbc.bom@tajhotels.com", phone: "022 6665 3366" },
-    images: [
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/ae/c8/45/caption.jpg?w=1400&h=500&s=1",
-    ],
+    images: ["/images/restaurants/service-1.jpg"],
     amenities: [
       "Swimming pool",
       "Fitness center",
@@ -55,7 +54,7 @@ const hotels = [
   {
     id: 1,
     name: "City Center Hotel",
-    image: "/placeholder/400/300",
+    image: "/api/placeholder/400/300",
     description:
       "Stay in the heart of the city, walking distance from major attractions and business centers.",
     price: "$189",
@@ -63,9 +62,7 @@ const hotels = [
     location:
       "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
     contact: { email: "", phone: "" },
-    images: [
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/ae/c8/45/caption.jpg?w=1400&h=500&s=1",
-    ],
+    images: ["/images/restaurants/service-1.jpg"],
     amenities: [
       "Swimming pool",
       "Fitness center",
@@ -101,7 +98,7 @@ const hotels = [
   {
     id: 2,
     name: "Mountain Lodge",
-    image: "/placeholder/400/300",
+    image: "/api/placeholder/400/300",
     description:
       "Escape to nature in our cozy lodge surrounded by stunning mountain landscapes.",
     price: "$159",
@@ -109,9 +106,7 @@ const hotels = [
     location:
       "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
     contact: { email: "", phone: "" },
-    images: [
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/ae/c8/45/caption.jpg?w=1400&h=500&s=1",
-    ],
+    images: ["/images/restaurants/service-1.jpg"],
     amenities: [
       "Swimming pool",
       "Fitness center",
@@ -155,9 +150,7 @@ const hotels = [
     location:
       "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
     contact: { email: "", phone: "" },
-    images: [
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/ae/c8/45/caption.jpg?w=1400&h=500&s=1",
-    ],
+    images: ["/images/restaurants/service-1.jpg"],
     amenities: [
       "Swimming pool",
       "Fitness center",
@@ -214,11 +207,11 @@ const HotelDetails = ({ params }: { params: { id: string } }) => {
           </div>
         </CardHeader>
         <CardContent>
-          <img
+          {/* <Image
             src={hotel.images[0]}
             alt={hotel.name}
             className="mb-4 h-64 w-full rounded-lg object-cover"
-          />
+          /> */}
 
           <p className="mb-4 text-gray-700">{hotel.description}</p>
 
@@ -328,7 +321,7 @@ const HotelDetails = ({ params }: { params: { id: string } }) => {
               <Star size={16} className="mr-2 text-yellow-500" />
               If you enjoyed your time with us at {hotel.name}
             </p>
-            <p>Please leave a review we'd love to hear from you</p>
+            <p>Please leave a review we&apos;d love to hear from you</p>
           </div>
 
           <div className="mt-6 text-center">
@@ -342,7 +335,7 @@ const HotelDetails = ({ params }: { params: { id: string } }) => {
             <span className="text-gray-500">per night</span>
           </div>
 
-          <Button className="mt-4 w-full">Book Now</Button>
+          {/* <Button className="mt-4 w-full">Book Now</Button> */}
         </CardContent>
       </Card>
     </div>
