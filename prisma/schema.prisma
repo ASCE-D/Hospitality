@@ -95,8 +95,6 @@ model foodReservation {
   firstName    String
   lastName     String
   seats        Int
-  email        String
-  mealType     String
   phoneNumber  String
   countryCode  String
   restaurantId String

@@ -224,7 +224,9 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     dateTime: new Date(),
     restaurantId: restaurant.id,
   });
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = React.useState<Date>(new Date);
+  const [time, setTime] = useState("");
+  const [amPm, setAmPm] = useState("AM");
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const handleReservationChange = (field: any, value: any) => {
@@ -321,17 +323,6 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                       />
                     </div>
                   </div>
-                  <div className="mb-4">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={reservationDetails.email}
-                      onChange={(e) =>
-                        handleReservationChange("email", e.target.value)
-                      }
-                    />
-                  </div>
                   <div className="mb-4 grid grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="countryCode">Country Code</Label>
@@ -362,14 +353,6 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                     </div>
                   </div>
                   <div className="mb-4">
-                    <Label htmlFor="mealType">Meal Type</Label>
-                    <Input
-                      id="mealType"
-                      value={selectedMeal ? `${selectedMeal.name}` : ""}
-                      readOnly
-                    />
-                  </div>
-                  <div className="mb-4">
                     <Label htmlFor="seats">Number of Seats</Label>
                     <Select
                       value={reservationDetails.seats}
@@ -392,7 +375,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                   <div className="mb-4">
                     <div className="flex pt-2">
                       {" "}
-                      <Popover>
+                      {/* <Popover>
                         <PopoverTrigger asChild>
                           <Button
                             variant={"outline"}
@@ -416,15 +399,16 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                             onSelect={setDate}
                           />
                         </PopoverContent>
-                      </Popover>
+                      </Popover> */}
                       <Input
                         id="time"
                         name="time"
-                        type="time"
-                        // value={formData.time}
-                        // onChange={handleInputChange}
-                        required
-                        className="mx-2 w-32"
+                        type="datetime-local"
+                        value={date
+                          .toISOString()
+                          .slice(0, 16)}
+                        onChange={(e) => setDate(new Date(e.target.value))}
+                        className="mt-1 hover:cursor-default"
                       />
                     </div>
                   </div>
