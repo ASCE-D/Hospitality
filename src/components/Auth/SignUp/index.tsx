@@ -115,6 +115,17 @@ const SignUp = () => {
                       className="w-full rounded-md border border-stroke bg-transparent px-5 py-3 text-base text-dark outline-none transition placeholder:text-dark-6 focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:text-white dark:focus:border-primary"
                     />
                   </div>
+                  <select
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value as Role)}
+                    className="w-full rounded-md border border-stroke bg-transparent px-5 py-3 text-base text-dark outline-none transition focus:border-primary focus-visible:shadow-none dark:border-dark-3 dark:text-white dark:focus:border-primary"
+                  >
+                    <option value={Role.USER}>User</option>
+                    <option value={Role.RESTAURANT_OWNER}>
+                      Restaurant Owner
+                    </option>
+                  </select>
                   <div className="mb-9">
                     <button
                       type="submit"

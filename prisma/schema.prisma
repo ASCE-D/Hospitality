@@ -71,10 +71,13 @@ model Restaurant {
   ownerId         String            @unique
   owner           User              @relation(fields: [ownerId], references: [id])
   reservations    Reservation[]
+  mail            Boolean           @default(false)
+  whatsapp        Boolean           @default(false)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   foodReservation foodReservation[]
   PaymentDetails  PaymentDetails[]
+   devices         Device[]
 }
 
 model Reservation {
@@ -119,6 +122,17 @@ model PaymentDetails {
   paymentType     String
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
+}
+model Device {
+  id           String     @id @default(cuid())
+  countryCode  String
+  phoneNumber  String
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([countryCode, phoneNumber])
 }
 
 enum Role {
