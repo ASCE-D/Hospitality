@@ -1,0 +1,36 @@
+{
+  "homepage": {
+    "welcome_message": "Welcome to Sangiorgio Apartments❤️🌹",
+    "activities": {
+      "home_informations": "Home Informations",
+      "food": "Food",
+      "transports": "Transports",
+      "city_tours": "City tours"
+    },
+    "manage_your_stay": "Manage your stay"
+  },
+  "LocaleSwitcher": {
+    "en": "🇬🇧 English",
+    "it": "🇮🇹 Italian"
+  },
+  "hotelReviewMobile": {
+    "amenities": "Amenities",
+    "services": "Services",
+    "facilities": "Facilities",
+    "contact_information": "Contact Information",
+    "phone": "Phone",
+    "email": "Email",
+    "location": "Location",
+    "wifi": "Wi-Fi",
+    "wifi_network": "Network Name",
+    "wifi_password": "Password",
+    "house_rules": "House Rules",
+    "check_out": "Check-out",
+    "check_out_time": "Check-out is at {time}",
+    "check_out_instructions": "Instructions",
+    "reviews": "Reviews",
+    "reviews_message": "If you enjoyed your time with us at {hotelName}, please leave a review, we’d love to hear from you!",
+    "thank_you": "Thank You",
+    "thank_you_message": "We hope you enjoyed your visit and made yourself at home. Thank you for choosing to stay with us."
+  }
+}

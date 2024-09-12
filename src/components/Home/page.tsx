@@ -15,25 +15,31 @@ import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import { ArrowBigRight, ArrowBigRightIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import { useTranslations } from "next-intl";
 
 const HomePage = () => {
+  const t = useTranslations();
   const activities = [
     {
-      title: "Home Informations",
+      title: t("homepage.activities.home_informations"),
       image: "/images/hotels/home-stay.jpg",
       url: "/homestay",
     },
     {
-      title: "Food",
+      title: t("homepage.activities.food"),
       image: "/images/restaurants/service-1.jpg",
       url: "/restaurants",
     },
     {
-      title: "Transports",
+      title: t("homepage.activities.transports"),
       image: "/images/transport/cover.jpg",
       url: "/homestay",
     },
-    { title: "City tours", image: "/images/tours/cover.jpg", url: "/homestay" },
+    {
+      title: t("homepage.activities.city_tours"),
+      image: "/images/tours/cover.jpg",
+      url: "/homestay",
+    },
   ];
 
   const plugin = React.useRef(
@@ -46,11 +52,11 @@ const HomePage = () => {
         <div className="mx-auto w-full max-w-screen-xl">
           <div className="mb-6 rounded-lg bg-yellow-400 p-4 text-black">
             <h1 className="text-md font-bold">
-              Welcome to Sangiorgio Apartments❤️🌹
+              {t("homepage.welcome_message")}
             </h1>
           </div>
           <div className="mx-auto grid h-[580px] grid-cols-2 gap-4 md:mx-16 md:grid-cols-4">
-            {activities.slice(0, 4).map((activity, index) => (
+            {activities.map((activity, index) => (
               <Card
                 key={index}
                 className={`
@@ -83,10 +89,12 @@ const HomePage = () => {
           </div>
           <Button className="mt-6 flex w-full items-center justify-center bg-yellow-400 p-4 text-black hover:bg-yellow-400">
             <Link
-              href={"/guest/services"}
+              href="/guest/services"
               className="flex items-center justify-center"
             >
-              <p className="mr-1 text-center">manage your stay</p>
+              <p className="mr-1 text-center">
+                {t("homepage.manage_your_stay")}
+              </p>
               <ArrowBigRightIcon className="" />
             </Link>
           </Button>

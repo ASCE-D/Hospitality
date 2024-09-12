@@ -16,11 +16,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 const hotels = [
   {
     id: 0,
-    name: "Luxury Resort & Spa",
+    name: "Josna Ristorante Indiano",
     image: "api/placeholder/400/300",
     description:
       "Experience ultimate relaxation in our 5-star resort with breathtaking ocean views.",
@@ -50,7 +51,7 @@ const hotels = [
       "Noise and the neighbourhood please be considerate",
     ],
     checkOut: {
-      time: "11am",
+      time: "10 Am",
       instructions: [
         "Please leave unit as found.",
         "Dishes places in dishwasher",
@@ -64,7 +65,7 @@ const hotels = [
   },
   {
     id: 1,
-    name: "City Center Hotel",
+    name: "E. Prie Rosse",
     image: "/api/placeholder/400/300",
     description:
       "Stay in the heart of the city, walking distance from major attractions and business centers.",
@@ -108,7 +109,7 @@ const hotels = [
   },
   {
     id: 2,
-    name: "Mountain Lodge",
+    name: "Osteria Le Colonne",
     image: "/api/placeholder/400/300",
     description:
       "Escape to nature in our cozy lodge surrounded by stunning mountain landscapes.",
@@ -152,7 +153,7 @@ const hotels = [
   },
   {
     id: 3,
-    name: "Beachfront Bungalows",
+    name: "Broadside Sushi Genova",
     image: "/placeholder/400/300",
     description:
       "Wake up to the sound of waves in our private beachfront bungalows.",
@@ -197,7 +198,10 @@ const hotels = [
 ];
 
 const HotelReviewMobile = () => {
+  const t = useTranslations("hotelReviewMobile");
+
   const hotel = hotels[0];
+
   return (
     <div className="container mx-auto p-4 pt-[80px] md:pt-[130px] lg:grid-cols-4 lg:pt-[160px]">
       <Card>
@@ -213,17 +217,11 @@ const HotelReviewMobile = () => {
           </div>
         </CardHeader>
         <CardContent>
-          {/* <Image
-            src={hotel.images[0]}
-            alt={hotel.name}
-            className="mb-4 h-64 w-full rounded-lg object-cover"
-          /> */}
-
           <p className="mb-4 text-gray-700">{hotel.description}</p>
 
           <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <h2 className="mb-2 text-xl font-semibold">Amenities</h2>
+              <h2 className="mb-2 text-xl font-semibold">{t("amenities")}</h2>
               <ul className="list-inside list-disc">
                 {hotel.amenities.map((amenity, index) => (
                   <li key={index}>{amenity}</li>
@@ -231,7 +229,7 @@ const HotelReviewMobile = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-2 text-xl font-semibold">Services</h2>
+              <h2 className="mb-2 text-xl font-semibold">{t("services")}</h2>
               <ul className="list-inside list-disc">
                 {hotel.services.map((service, index) => (
                   <li key={index}>{service}</li>
@@ -241,7 +239,7 @@ const HotelReviewMobile = () => {
           </div>
 
           <div className="mb-4">
-            <h2 className="mb-2 text-xl font-semibold">Facilities</h2>
+            <h2 className="mb-2 text-xl font-semibold">{t("facilities")}</h2>
             <ul className="list-inside list-disc">
               {hotel.facilities.map((facility, index) => (
                 <li key={index}>{facility}</li>
@@ -250,57 +248,36 @@ const HotelReviewMobile = () => {
           </div>
 
           <div className="mb-4 rounded-lg bg-gray-100 p-4">
-            <h2 className="mb-2 text-xl font-semibold">Contact Information</h2>
+            <h2 className="mb-2 text-xl font-semibold">
+              {t("contact_information")}
+            </h2>
             <div className="mb-2 flex items-center">
               <Phone size={16} className="mr-2" />
               <span>{hotel.contact.phone || "N/A"}</span>
             </div>
             <div className="flex items-center">
               <Mail size={16} className="mr-2" />
-              <span>{hotel.contact.email || "N'A"}</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div>
-              <h2 className="mb-2 text-xl font-semibold">Contact details</h2>
-              {/* <p>
-                <strong>Host:</strong> {hotel.contact.host}
-              </p> */}
-              <p>
-                <strong>Phone:</strong> {hotel.contact.phone}
-              </p>
-              <p>
-                <strong>Email:</strong> {hotel.contact.email}
-              </p>
-            </div>
-            <div>
-              <h2 className="mb-2 text-xl font-semibold">Location</h2>
-              <p className="flex items-center">
-                <MapPin size={32} className="mr-2" />
-                {hotel.location}
-              </p>
+              <span>{hotel.contact.email || "N/A"}</span>
             </div>
           </div>
 
           <div className="mt-6">
-            <h2 className="mb-2 text-xl font-semibold">Wi-Fi</h2>
+            <h2 className="mb-2 text-xl font-semibold">{t("wifi")}</h2>
             <div className="flex items-center">
-              {" "}
               <Wifi size={16} className="mr-2" />
               <div>
-                {" "}
                 <p className="flex items-center">
-                  <strong>Network Name:</strong> {hotel.wifi.networkName}
+                  <strong>{t("wifi_network")}:</strong> {hotel.wifi.networkName}
                 </p>
                 <p className="">
-                  <strong>Password:</strong> {hotel.wifi.password}
+                  <strong>{t("wifi_password")}:</strong> {hotel.wifi.password}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="mt-6">
-            <h2 className="mb-2 text-xl font-semibold">House Rules</h2>
+            <h2 className="mb-2 text-xl font-semibold">{t("house_rules")}</h2>
             <ul className="list-inside list-disc">
               {hotel.houseRules.map((rule, index) => (
                 <li key={index}>{rule}</li>
@@ -311,9 +288,11 @@ const HotelReviewMobile = () => {
           <div className="mt-6">
             <h2 className="mb-2 flex items-center text-xl font-semibold">
               <Clock size={18} className="mr-2" />
-              Check-out
+              {t("check_out")}
             </h2>
-            <p className="mb-2 ">Check out is {hotel.checkOut.time}</p>
+            <p className="mb-2 ">
+              {t("check_out_time", { time: hotel.checkOut.time })}
+            </p>
             <ul className="list-inside list-disc">
               {hotel.checkOut.instructions.map((instruction, index) => (
                 <li key={index}>{instruction}</li>
@@ -322,20 +301,17 @@ const HotelReviewMobile = () => {
           </div>
 
           <div className="mt-6">
-            <h2 className="mb-2 text-xl font-semibold">Reviews</h2>
+            <h2 className="mb-2 text-xl font-semibold">{t("reviews")}</h2>
             <p className="flex items-center">
               <Star size={16} className="mr-2 text-yellow-500" />
-              If you enjoyed your time with us at {hotel.name}
+              {t("reviews_message", { hotelName: hotel.name })}
             </p>
-            <p>Please leave a review we&apos;d love to hear from you</p>
           </div>
 
           <div className="mt-6 text-center">
-            <h2 className="mb-2 text-2xl font-bold">Thank you</h2>
-            <p>We hope you enjoy your visit and made yourself at home.</p>
-            <p>Thank you for choosing to stay with us.</p>
+            <h2 className="mb-2 text-2xl font-bold">{t("thank_you")}</h2>
+            <p>{t("thank_you_message")}</p>
           </div>
-          {/* <Button className="mt-4 w-full">Book Now</Button> */}
         </CardContent>
       </Card>
     </div>

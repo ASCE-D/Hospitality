@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import menuData from "./menuData";
+import LocaleSwitcher from "../Common/LocaleSwitch";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -104,6 +105,9 @@ const Header = () => {
             </div>
             <div className="flex w-full items-center justify-between px-4">
               <div>
+                <div className="absolute right-20 top-1/2 -translate-y-1/2 ">
+                  <LocaleSwitcher />
+                </div>
                 <button
                   onClick={navbarToggleHandler}
                   id="navbarToggler"

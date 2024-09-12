@@ -54,140 +54,161 @@ const MealType = {
 const restaurants = [
   {
     id: "cm0ner3ks0003htvdm9zzhwy3",
-    name: "Pasta Paradise",
-    image: "/placeholder/400/300",
+    name: "Josna Ristorante Indiano",
+    image: [
+      "/images/restaurants/josna/1.jpg",
+      "/images/restaurants/josna/2.jpg",
+      "/images/restaurants/josna/3.jpg",
+      "/images/restaurants/josna/4.jpg",
+    ],
     description: "Authentic Italian pasta dishes in a cozy atmosphere.",
     rating: 4.5,
-    address: "123 Main St, Cityville",
-    phone: "+1 234-567-8900",
-    hours: "11:00 AM - 10:00 PM",
+    address:
+      "Via di Porta Soprana 31R From Piazza de Ferrari the backdrop is between the Palazzo del Regione Liguria and the headquarters of Banca Unicredit., 16123, Genoa Italy",
+    location:
+      "https://maps.google.com/maps?saddr=&daddr=Via%20di%20Porta%20Soprana%2031R%20From%20Piazza%20de%20Ferrari%20the%20backdrop%20is%20between%20the%20Palazzo%20del%20Regione%20Liguria%20and%20the%20headquarters%20of%20Banca%20Unicredit.,%2016123,%20Genoa%20Italy@44.406246,8.93323",
+    phone: "+39 328 868 5641",
+    hours: "12:30 pm - 2:30 pm--7:00 pm - 11:00 pm",
     menu: [
       {
         name: "Penne Arrabbiata",
         price: "Medium",
         image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.LUNCH,
+        type: "LUNCH",
         rating: 4.8,
       },
       {
         name: "Gnocchi al Pesto",
         price: "Economy",
         image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.LUNCH,
+        type: "LUNCH",
         rating: 4.5,
       },
       {
         name: "Four-Cheese Lasagna",
         price: "Luxury",
         image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.LUNCH,
+        type: "LUNCH",
         rating: 4.7,
       },
       {
         name: "Grilled Chicken Panini",
         price: "Economy",
         image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.LUNCH,
+        type: "LUNCH",
         rating: 4.1,
       },
     ],
   },
   {
     id: "cm0ner3ks0003htvdm9zzhwy4",
-    name: "Burger Bliss",
-    image: "/placeholder/400/300",
-    description: "Juicy burgers with a variety of toppings and sides.",
-    rating: 4.3,
-    address: "456 Oak Ave, Townsburg",
-    phone: "+1 234-567-8901",
-    hours: "11:00 AM - 11:00 PM",
+    name: "E. Prie Rosse",
+    image: [
+      "/images/restaurants/rosse/1.jpg",
+      "/images/restaurants/rosse/2.jpg",
+      "/images/restaurants/rosse/3.jpg",
+      "/images/restaurants/rosse/4.jpg",
+    ],
+    description:
+      "Traditional Italian cuisine with an emphasis on fresh, local ingredients.",
+    rating: 4.6,
+    address: "56 R Via di Ravecca 54, 16128, Genoa Italy",
+    location:
+      "https://maps.google.com/maps?saddr=&daddr=56%20R%20Via%20di%20Ravecca%2054,%2016128,%20Genoa%20Italy@44.40485,8.933568",
+    phone: "+39 3457164046 / +39 3482991686 / +39 347 4295460",
+    hours: "12:30 pm - 2:30 pm -- 7:30 pm - 11:00 pm",
     menu: [
       {
-        name: "Smoky BBQ Burger",
-        price: "Economy",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.LUNCH,
-        rating: 4.2,
-      },
-      {
-        name: "Truffle Mushroom Burger",
-        price: "Medium",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.LUNCH,
-        rating: 4.6,
-      },
-      {
-        name: "Spicy Black Bean Burger",
+        name: "Ravioli al Pesto",
         price: "Luxury",
         image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.LUNCH,
+        type: "LUNCH",
+        rating: 4.7,
+      },
+      {
+        name: "Tagliatelle al Ragu",
+        price: "Medium",
+        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        type: "LUNCH",
         rating: 4.5,
+      },
+      {
+        name: "Seafood Risotto",
+        price: "Luxury",
+        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        type: "DINNER",
+        rating: 4.8,
       },
     ],
   },
   {
     id: "cm0ner3ks0003htvdm9zzhwy5",
-    name: "Burger Bliss",
-    image: "/placeholder/400/300",
-    description: "Juicy burgers with a variety of toppings and sides.",
-    rating: 4.3,
-    address: "456 Oak Ave, Townsburg",
-    phone: "+1 234-567-8901",
-    hours: "11:00 AM - 11:00 PM",
+    name: "Osteria Le Colonne",
+    image: [
+      "/images/restaurants/colonne/1.jpg",
+      "/images/restaurants/colonne/2.jpg",
+    ],
+    description:
+      "Modern Italian dining experience with a creative twist on classic dishes.",
+    rating: 4.7,
+    address: "Piazza Invrea 3R, 16129, Genova Italia",
+    location:
+      "https://maps.google.com/maps?saddr=&daddr=Piazza%20Invrea%203R,%2016129,%20Genova%20Italia@44.408283,8.930823",
+    phone: "+39 010 292 7649",
+    hours: "12:15-02:30 PM -- 07:15-10:30 PM",
     menu: [
       {
-        name: "Chipotle Chicken Burger",
-        price: "Economy",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.DINNER,
-        rating: 4.3,
-      },
-      {
-        name: "Bacon Swiss Burger",
-        price: "Medium",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.DINNER,
-        rating: 4.7,
-      },
-      {
-        name: "Vegan Quinoa Burger",
+        name: "Carbonara Moderna",
         price: "Luxury",
         image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.DINNER,
-        rating: 4.6,
+        type: "DINNER",
+        rating: 4.9,
+      },
+      {
+        name: "Tiramisu Tradizionale",
+        price: "Economy",
+        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        type: "DESSERT",
+        rating: 4.8,
       },
     ],
   },
   {
     id: "cm0ner3ks0003htvdm9zzhwy6",
-    name: "Burger Bliss",
-    image: "/placeholder/400/300",
-    description: "Juicy burgers with a variety of toppings and sides.",
-    rating: 4.3,
-    address: "456 Oak Ave, Townsburg",
-    phone: "+1 234-567-8901",
-    hours: "11:00 AM - 11:00 PM",
+    name: "Broadside Sushi Genova",
+    images: [
+      "/images/restaurants/sushi/1.jpg",
+      "/images/restaurants/sushi/2.jpg",
+    ],
+    description:
+      "Fusion sushi with a unique blend of Italian and Japanese flavors.",
+    rating: 4.8,
+    address: "Via 12 Ottobre, 27, 16121, Genova Italia",
+    location:
+      "https://maps.google.com/maps?saddr=&daddr=Via%2012%20Ottobre,%2027,%2016121,%20Genova%20Italia@44.408344,8.937496",
+    phone: "+39 340 6201419",
+    hours: "12:00-15:00 -- 19:00-23:59",
     menu: [
       {
-        name: "Buffalo Chicken Sliders",
-        price: "Economy",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.APPETIZER,
-        rating: 4.2,
-      },
-      {
-        name: "Loaded Nacho Burger",
-        price: "Medium",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.APPETIZER,
-        rating: 4.5,
-      },
-      {
-        name: "Crispy Portobello Burger",
+        name: "Tuna Tataki",
         price: "Luxury",
         image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: MealType.APPETIZER,
-        rating: 4.4,
+        type: "DINNER",
+        rating: 4.7,
+      },
+      {
+        name: "Salmon Sashimi",
+        price: "Medium",
+        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        type: "DINNER",
+        rating: 4.6,
+      },
+      {
+        name: "Matcha Mochi Ice Cream",
+        price: "Economy",
+        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        type: "DESSERT",
+        rating: 4.5,
       },
     ],
   },
@@ -224,7 +245,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     dateTime: new Date(),
     restaurantId: restaurant.id,
   });
-  const [date, setDate] = React.useState<Date>(new Date);
+  const [date, setDate] = React.useState<Date>(new Date());
   const [time, setTime] = useState("");
   const [amPm, setAmPm] = useState("AM");
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -255,7 +276,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       <Card>
         <CardHeader>
           <Image
-            src={restaurant.image}
+            src={restaurant.image[0]}
             alt={restaurant.name}
             width={800}
             height={400}
@@ -404,9 +425,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                         id="time"
                         name="time"
                         type="datetime-local"
-                        value={date
-                          .toISOString()
-                          .slice(0, 16)}
+                        value={date.toISOString().slice(0, 16)}
                         onChange={(e) => setDate(new Date(e.target.value))}
                         className="mt-1 hover:cursor-default"
                       />
