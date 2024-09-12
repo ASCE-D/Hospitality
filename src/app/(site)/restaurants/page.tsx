@@ -36,7 +36,7 @@ const FoodOptionsPage = () => {
             </CardContent>
             <CardFooter>
               <Link
-                href={`/restaurants/cm0ner3ks0003htvdm9zzhwy${option.id}`}
+                href={`/restaurants/cm0zoop35000n70zxduqcx0e2`}
                 className="w-full justify-center"
               >
                 {" "}

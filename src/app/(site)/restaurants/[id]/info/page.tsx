@@ -38,7 +38,7 @@ const MealType = {
 
 const restaurants = [
   {
-    id: "cm0ner3ks0003htvdm9zzhwy3",
+    id: "cm0zo7rsr000770zxzvmlfish",
     name: "Josna Ristorante Indiano",
     image: [
       "/images/restaurants/josna/1.jpg",
@@ -86,7 +86,7 @@ const restaurants = [
     ],
   },
   {
-    id: "cm0ner3ks0003htvdm9zzhwy4",
+    id: "cm0zob13u000b70zxbw6i45aa",
     name: "E. Prie Rosse",
     image: [
       "/images/restaurants/rosse/1.jpg",
@@ -127,7 +127,7 @@ const restaurants = [
     ],
   },
   {
-    id: "cm0ner3ks0003htvdm9zzhwy5",
+    id: "cm0zodb8c000f70zxhky2g5j8",
     name: "Osteria Le Colonne",
     image: [
       "/images/restaurants/colonne/1.jpg",
@@ -159,7 +159,7 @@ const restaurants = [
     ],
   },
   {
-    id: "cm0ner3ks0003htvdm9zzhwy6",
+    id: "cm0zon70zxduqop35000cx0e2",
     name: "Broadside Sushi Genova",
     images: [
       "/images/restaurants/sushi/1.jpg",

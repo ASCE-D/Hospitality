@@ -43,6 +43,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
+import { sendRestaurantWhatsapp } from "@/actions/sendrestaurantwhatsapp";
 
 const MealType = {
   BREAKFAST: "Breakfast",
@@ -53,7 +54,7 @@ const MealType = {
 
 const restaurants = [
   {
-    id: "cm0ner3ks0003htvdm9zzhwy3",
+    id: "cm0zo7rsr000770zxzvmlfish",
     name: "Josna Ristorante Indiano",
     image: [
       "/images/restaurants/josna/1.jpg",
@@ -101,7 +102,7 @@ const restaurants = [
     ],
   },
   {
-    id: "cm0ner3ks0003htvdm9zzhwy4",
+    id: "cm0zob13u000b70zxbw6i45aa",
     name: "E. Prie Rosse",
     image: [
       "/images/restaurants/rosse/1.jpg",
@@ -121,28 +122,28 @@ const restaurants = [
       {
         name: "Ravioli al Pesto",
         price: "Luxury",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/ravioli.jpg"],
         type: "LUNCH",
         rating: 4.7,
       },
       {
         name: "Tagliatelle al Ragu",
         price: "Medium",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/tagliatelle.jpg"],
         type: "LUNCH",
         rating: 4.5,
       },
       {
         name: "Seafood Risotto",
         price: "Luxury",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/risotto.jpg"],
         type: "DINNER",
         rating: 4.8,
       },
     ],
   },
   {
-    id: "cm0ner3ks0003htvdm9zzhwy5",
+    id: "cm0zodb8c000f70zxhky2g5j8",
     name: "Osteria Le Colonne",
     image: [
       "/images/restaurants/colonne/1.jpg",
@@ -160,21 +161,21 @@ const restaurants = [
       {
         name: "Carbonara Moderna",
         price: "Luxury",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/carbonara.jpg"],
         type: "DINNER",
         rating: 4.9,
       },
       {
         name: "Tiramisu Tradizionale",
         price: "Economy",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/tiramisu.jpg"],
         type: "DESSERT",
         rating: 4.8,
       },
     ],
   },
   {
-    id: "cm0ner3ks0003htvdm9zzhwy6",
+    id: "cm0zon70zxduqop35000cx0e2",
     name: "Broadside Sushi Genova",
     images: [
       "/images/restaurants/sushi/1.jpg",
@@ -192,21 +193,21 @@ const restaurants = [
       {
         name: "Tuna Tataki",
         price: "Luxury",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/tuna-tataki.jpg"],
         type: "DINNER",
         rating: 4.7,
       },
       {
         name: "Salmon Sashimi",
         price: "Medium",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/salmon-sashimi.jpg"],
         type: "DINNER",
         rating: 4.6,
       },
       {
         name: "Matcha Mochi Ice Cream",
         price: "Economy",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
+        image: ["/images/restaurants/menu/matcha-mochi.jpg"],
         type: "DESSERT",
         rating: 4.5,
       },
@@ -258,12 +259,18 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     e.preventDefault();
     console.log("Reservation made:", reservationDetails);
     const result = await createFoodReservation(reservationDetails);
-    console.log(result);
+    console.log("wow",result);
     let reservationid;
+    let reservationStatus
     if (result.success) {
       reservationid = result?.reservation?.id;
+      reservationStatus= result?.reservation?.status;
     }
-
+    await sendRestaurantWhatsapp(
+      reservationDetails.restaurantId,
+      reservationDetails,
+      reservationid,
+    reservationStatus)
     await sendrestaurantemail(
       reservationDetails.restaurantId,
       reservationDetails,

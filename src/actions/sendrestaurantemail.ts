@@ -6,8 +6,8 @@ import { Resend } from 'resend';
 const key = process.env.RESEND_API_KEY;
 const resend = new Resend(key);
 
-export async function sendrestaurantemail(restaurantId: string, reservationdetails:any,reservationId : any) {
-  console.log(reservationdetails)
+export async function sendrestaurantemail(restaurantId: string, reservationdetails: any, reservationId: any) {
+  console.log(reservationdetails);
   try {
     // Find the restaurant and its owner's email
     const restaurant = await prisma.restaurant.findUnique({
@@ -19,12 +19,18 @@ export async function sendrestaurantemail(restaurantId: string, reservationdetai
       throw new Error("Restaurant or owner email not found");
     }
 
+    // Check if mail is true for the restaurant
+    if (!restaurant.mail) {
+      console.log("Email notifications are disabled for this restaurant");
+      return { success: false, message: "Email notifications are disabled for this restaurant" };
+    }
+
     const { data, error } = await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>',
-      // to: [restaurant.owner.email],
-      to: "ashispandey138c@gmail.com",
+       // to: [restaurant.owner.email],
+       to: "ashispandey138c@gmail.com",
       subject: 'Restaurant Notification',
-      react: EmailTemplate({ firstName: restaurant.owner.name || 'Restaurant Owner' , reservationdetails,reservationId}),
+      react: EmailTemplate({ firstName: restaurant.owner.name || 'Restaurant Owner', reservationdetails, reservationId }),
     });
 
     console.log("Email sent");
@@ -39,4 +45,4 @@ export async function sendrestaurantemail(restaurantId: string, reservationdetai
     console.error("Error in sendrestaurantemail:", error);
     return { success: false, error: (error as Error).message };
   } 
-  }
+}
