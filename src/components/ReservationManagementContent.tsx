@@ -91,8 +91,7 @@ export const ReservationManagementContent = ({
           .map((reservation) => (
             <li key={reservation.id} className="rounded border p-4 shadow">
               <p>Customer: {reservation.firstName} {reservation.lastName}</p>
-              <p>Email: {reservation.email}</p>
-              <p>Date: {new Date(reservation.dateTime).toLocaleString()}</p>
+             <p>Date: {new Date(reservation.dateTime).toLocaleString()}</p>
               <p>Party Size: {reservation.seats}</p>
               <div className="mt-2 space-x-2">
                 <Button
