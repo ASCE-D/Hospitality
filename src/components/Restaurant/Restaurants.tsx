@@ -44,6 +44,8 @@ import { cn } from "@/lib/utils";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
 import { sendRestaurantWhatsapp } from "@/actions/sendrestaurantwhatsapp";
+import restaurantsData from "@/utils/restaurants.json";
+const { restaurants } = restaurantsData;
 
 const MealType = {
   BREAKFAST: "Breakfast",
@@ -51,169 +53,6 @@ const MealType = {
   DINNER: "Dinner",
   APPETIZER: "Appetizer",
 };
-
-const restaurants = [
-  {
-    id: "cm0zo7rsr000770zxzvmlfish",
-    name: "Josna Ristorante Indiano",
-    image: [
-      "/images/restaurants/josna/1.jpg",
-      "/images/restaurants/josna/2.jpg",
-      "/images/restaurants/josna/3.jpg",
-      "/images/restaurants/josna/4.jpg",
-    ],
-    description: "Authentic Italian pasta dishes in a cozy atmosphere.",
-    rating: 4.5,
-    address:
-      "Via di Porta Soprana 31R From Piazza de Ferrari the backdrop is between the Palazzo del Regione Liguria and the headquarters of Banca Unicredit., 16123, Genoa Italy",
-    location:
-      "https://maps.google.com/maps?saddr=&daddr=Via%20di%20Porta%20Soprana%2031R%20From%20Piazza%20de%20Ferrari%20the%20backdrop%20is%20between%20the%20Palazzo%20del%20Regione%20Liguria%20and%20the%20headquarters%20of%20Banca%20Unicredit.,%2016123,%20Genoa%20Italy@44.406246,8.93323",
-    phone: "+39 328 868 5641",
-    hours: "12:30 pm - 2:30 pm--7:00 pm - 11:00 pm",
-    menu: [
-      {
-        name: "Penne Arrabbiata",
-        price: "Medium",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: "LUNCH",
-        rating: 4.8,
-      },
-      {
-        name: "Gnocchi al Pesto",
-        price: "Economy",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: "LUNCH",
-        rating: 4.5,
-      },
-      {
-        name: "Four-Cheese Lasagna",
-        price: "Luxury",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: "LUNCH",
-        rating: 4.7,
-      },
-      {
-        name: "Grilled Chicken Panini",
-        price: "Economy",
-        image: ["/images/restaurants/menu/sughi-speciali-del-giorno.jpg"],
-        type: "LUNCH",
-        rating: 4.1,
-      },
-    ],
-  },
-  {
-    id: "cm0zob13u000b70zxbw6i45aa",
-    name: "E. Prie Rosse",
-    image: [
-      "/images/restaurants/rosse/1.jpg",
-      "/images/restaurants/rosse/2.jpg",
-      "/images/restaurants/rosse/3.jpg",
-      "/images/restaurants/rosse/4.jpg",
-    ],
-    description:
-      "Traditional Italian cuisine with an emphasis on fresh, local ingredients.",
-    rating: 4.6,
-    address: "56 R Via di Ravecca 54, 16128, Genoa Italy",
-    location:
-      "https://maps.google.com/maps?saddr=&daddr=56%20R%20Via%20di%20Ravecca%2054,%2016128,%20Genoa%20Italy@44.40485,8.933568",
-    phone: "+39 3457164046 / +39 3482991686 / +39 347 4295460",
-    hours: "12:30 pm - 2:30 pm -- 7:30 pm - 11:00 pm",
-    menu: [
-      {
-        name: "Ravioli al Pesto",
-        price: "Luxury",
-        image: ["/images/restaurants/menu/ravioli.jpg"],
-        type: "LUNCH",
-        rating: 4.7,
-      },
-      {
-        name: "Tagliatelle al Ragu",
-        price: "Medium",
-        image: ["/images/restaurants/menu/tagliatelle.jpg"],
-        type: "LUNCH",
-        rating: 4.5,
-      },
-      {
-        name: "Seafood Risotto",
-        price: "Luxury",
-        image: ["/images/restaurants/menu/risotto.jpg"],
-        type: "DINNER",
-        rating: 4.8,
-      },
-    ],
-  },
-  {
-    id: "cm0zodb8c000f70zxhky2g5j8",
-    name: "Osteria Le Colonne",
-    image: [
-      "/images/restaurants/colonne/1.jpg",
-      "/images/restaurants/colonne/2.jpg",
-    ],
-    description:
-      "Modern Italian dining experience with a creative twist on classic dishes.",
-    rating: 4.7,
-    address: "Piazza Invrea 3R, 16129, Genova Italia",
-    location:
-      "https://maps.google.com/maps?saddr=&daddr=Piazza%20Invrea%203R,%2016129,%20Genova%20Italia@44.408283,8.930823",
-    phone: "+39 010 292 7649",
-    hours: "12:15-02:30 PM -- 07:15-10:30 PM",
-    menu: [
-      {
-        name: "Carbonara Moderna",
-        price: "Luxury",
-        image: ["/images/restaurants/menu/carbonara.jpg"],
-        type: "DINNER",
-        rating: 4.9,
-      },
-      {
-        name: "Tiramisu Tradizionale",
-        price: "Economy",
-        image: ["/images/restaurants/menu/tiramisu.jpg"],
-        type: "DESSERT",
-        rating: 4.8,
-      },
-    ],
-  },
-  {
-    id: "cm0zon70zxduqop35000cx0e2",
-    name: "Broadside Sushi Genova",
-    images: [
-      "/images/restaurants/sushi/1.jpg",
-      "/images/restaurants/sushi/2.jpg",
-    ],
-    description:
-      "Fusion sushi with a unique blend of Italian and Japanese flavors.",
-    rating: 4.8,
-    address: "Via 12 Ottobre, 27, 16121, Genova Italia",
-    location:
-      "https://maps.google.com/maps?saddr=&daddr=Via%2012%20Ottobre,%2027,%2016121,%20Genova%20Italia@44.408344,8.937496",
-    phone: "+39 340 6201419",
-    hours: "12:00-15:00 -- 19:00-23:59",
-    menu: [
-      {
-        name: "Tuna Tataki",
-        price: "Luxury",
-        image: ["/images/restaurants/menu/tuna-tataki.jpg"],
-        type: "DINNER",
-        rating: 4.7,
-      },
-      {
-        name: "Salmon Sashimi",
-        price: "Medium",
-        image: ["/images/restaurants/menu/salmon-sashimi.jpg"],
-        type: "DINNER",
-        rating: 4.6,
-      },
-      {
-        name: "Matcha Mochi Ice Cream",
-        price: "Economy",
-        image: ["/images/restaurants/menu/matcha-mochi.jpg"],
-        type: "DESSERT",
-        rating: 4.5,
-      },
-    ],
-  },
-];
 
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
@@ -457,352 +296,75 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
 };
 
 const RestaurantDetails = ({ params }: { params: { id: string } }) => {
-  const [selectedMealType, setSelectedMealType] = useState<any>(null);
   const [selectedMeal, setSelectedMeal] = useState<any>(null);
   const { data: session } = useSession();
   const router = useRouter();
-  const [isReservationOpen, setIsReservationOpen] = useState(false);
-  const [reservationDetails, setReservationDetails] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    countryCode: "+1",
-    mealType: "",
-    seats: "1",
-    dateTime: new Date(),
-    restaurantId: params.id,
-  });
-  const isDesktop = useMediaQuery("(min-width: 768px)");
   const menuRef = useRef<any>(null);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  // Assuming you have a way to fetch the restaurant data based on the ID
-  const restaurant = restaurants.find((r) => r.id === params.id);
+  // Filter restaurants based on the mealType passed in the query parameter
+  const filteredRestaurants = restaurants.filter((r) =>
+    r.mealType.includes(params.id.toUpperCase()),
+  );
 
-  if (!restaurant) {
-    return <div>Restaurant not found</div>;
+  if (filteredRestaurants.length === 0) {
+    return <div>No restaurants found for this meal type</div>;
   }
-
-  const handleMealTypeSelect = (mealType: any) => {
-    setSelectedMealType(mealType);
-    setSelectedMeal(null);
-    setReservationDetails((prev) => ({
-      ...prev,
-      mealType: mealType,
-    }));
-    // Scroll to the menu items after a short delay to ensure rendering is complete
-    setTimeout(() => {
-      menuRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
-
-  const handleMealSelect = (meal: any) => {
-    setSelectedMeal(meal);
-    setReservationDetails((prev) => ({
-      ...prev,
-      mealType: `${selectedMealType} - ${meal.name}`,
-    }));
-    setIsReservationOpen(true);
-  };
-
-  const handleReservationChange = (field: any, value: any) => {
-    setReservationDetails((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleMakeReservation = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Reservation made:", reservationDetails);
-    const result = await createFoodReservation(reservationDetails);
-    console.log(result);
-    let reservationid;
-    if (result.success) {
-      reservationid = result?.reservation?.id;
-    }
-
-    await sendrestaurantemail(
-      reservationDetails.restaurantId,
-      reservationDetails,
-      reservationid,
-    );
-    setIsReservationOpen(false);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!session) {
-      router.push("/login");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/reservations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          // restaurantId,
-          // dateTime,
-          // partySize: parseInt(partySize),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create reservation");
-      }
-
-      const newReservation = await response.json();
-      console.log("Created reservation:", newReservation.reservation);
-
-      const dateTime2: any = new Date(newReservation.reservation.dateTime);
-
-      const formattedDate = new Intl.DateTimeFormat("en-GB", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: false, // Change to true if you prefer 12-hour format
-      }).format(dateTime2);
-      const response2 = await fetch("/api/restaurantnoti", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          restaurantId: newReservation.reservation.restaurantId,
-          title: "newReservation request",
-          message: `Party size ${newReservation.reservation.partySize} on ${formattedDate}`,
-          link: "/dashboard/restaurant",
-        }),
-      });
-      console.log(response2);
-
-      const data = await response2.json();
-      await sendresendemail();
-      await sendMessage();
-      console.log(data);
-    } catch (error) {
-      console.error("Error creating reservation:", error);
-      // addNotification("error", "Failed to make reservation. Please try again.");
-    }
-  };
 
   return (
     <div className="container mx-auto p-4 pt-[80px] md:pt-[130px] lg:pt-[160px]">
-      {/* <Card>
-        <CardContent>
-          <div className="py-4" ref={menuRef}>
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-              {restaurant.menu.map((item, index) => (
-                <Card
-                  key={index}
-                  className="cursor-pointer"
-                  onClick={() => handleMealSelect(item)}
-                >
-                  <CardContent className="p-2">
-                    <Image
-                      src={item.image[0] || "/api/placeholder/200/200"}
-                      alt={item.name}
-                      width={200}
-                      height={200}
-                      className="h-40 w-full rounded object-cover"
-                    />
-                    <h3 className="mt-2 font-semibold">{item.name}</h3>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {!isDesktop && (
-            <CardFooter>
-              <ReservationDrawer restaurantName={restaurant.name} />
-            </CardFooter>
-          )}
-        </CardContent>
-      </Card> */}
       <div className="" ref={menuRef}>
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-          {restaurant.menu.map((item, index) => (
-            <Card
-              key={index}
-              className="cursor-pointer"
-              // onClick={() => handleMealSelect(item)}
-            >
-              <Link href={`/restaurants/${params.id}/info`}>
-                {" "}
+          {filteredRestaurants.map((restaurant, index) => (
+            <Card key={index} className="cursor-pointer">
+              <Link href={`/restaurants/${restaurant.id}/info`}>
                 <CardContent className="p-2">
                   <Image
-                    src={item.image[0] || "/api/placeholder/200/200"}
-                    alt={item.name}
+                    src={restaurant.image[0] || "/api/placeholder/200/200"}
+                    alt={restaurant.name}
                     width={200}
                     height={200}
                     className="h-40 w-full rounded object-cover"
                   />
-                  <h3 className="mt-2 font-semibold">{item.name}</h3>
+                  <h3 className="mt-2 font-semibold">{restaurant.name}</h3>
                   <div>
-                    <StarRating rating={item.rating} />{" "}
+                    <StarRating rating={restaurant.rating} />
                   </div>
                 </CardContent>
               </Link>
             </Card>
           ))}
         </div>
-        <Card className="relative my-4">
-          <CardHeader className="px-3 py-2 text-xl font-bold">
-            Recommended
-          </CardHeader>
-          <Link href={`/restaurants/${params.id}/info`}>
-            <CardContent className="relative flex h-full flex-col items-center justify-center p-2">
-              {/* Image with opacity and black overlay */}
-              <div className="relative h-72 w-full">
-                <Image
-                  src={restaurant.menu[0].image[0]}
-                  alt={restaurant.menu[0].name}
-                  height={100}
-                  width={200}
-                  className="h-72 w-full rounded-xl object-cover"
-                />
-                {/* Black overlay */}
-                <div className="absolute inset-0 rounded-lg bg-black opacity-40"></div>
-
-                {/* Title on top of the image */}
-                <h3 className="absolute inset-0 flex flex-col-reverse items-start justify-start p-6 text-3xl font-bold text-white">
-                  <div>
-                    <StarRating rating={restaurant.menu[0].rating} />{" "}
-                  </div>
-                  <div>{restaurant.menu[0].name}</div>
-                </h3>
-              </div>
-            </CardContent>
-          </Link>
-        </Card>
+        {filteredRestaurants.length > 0 && (
+          <Card className="relative my-4">
+            <CardHeader className="px-3 py-2 text-xl font-bold">
+              Recommended
+            </CardHeader>
+            <Link href={`/restaurants/${filteredRestaurants[0].id}/info`}>
+              <CardContent className="relative flex h-full flex-col items-center justify-center p-2">
+                <div className="relative h-72 w-full">
+                  <Image
+                    src={filteredRestaurants[0].image[0]}
+                    alt={filteredRestaurants[0].name}
+                    height={100}
+                    width={200}
+                    className="h-72 w-full rounded-xl object-cover"
+                  />
+                  <div className="absolute inset-0 rounded-lg bg-black opacity-40"></div>
+                  <h3 className="absolute inset-0 flex flex-col-reverse items-start justify-start p-6 text-3xl font-bold text-white">
+                    <div>
+                      <StarRating rating={filteredRestaurants[0].rating} />
+                    </div>
+                    <div>{filteredRestaurants[0].name}</div>
+                  </h3>
+                </div>
+              </CardContent>
+            </Link>
+          </Card>
+        )}
       </div>
-      {/* {!isDesktop && <ReservationDrawer restaurantName={restaurant.name} />}
-      <Drawer
-        open={isReservationOpen}
-        onOpenChange={setIsReservationOpen}
-        onClose={() => setIsReservationOpen(false)}
-      >
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Make a Reservation</DrawerTitle>
-            <DrawerDescription>
-              Reserve a table at {restaurant.name}
-            </DrawerDescription>
-          </DrawerHeader>
-          <form onSubmit={handleMakeReservation} className="p-4">
-            <div className="px-4">
-              <div className="mb-4 grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input
-                    id="firstName"
-                    value={reservationDetails.firstName}
-                    onChange={(e) =>
-                      handleReservationChange("firstName", e.target.value)
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    value={reservationDetails.lastName}
-                    onChange={(e) =>
-                      handleReservationChange("lastName", e.target.value)
-                    }
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={reservationDetails.email}
-                  onChange={(e) =>
-                    handleReservationChange("email", e.target.value)
-                  }
-                />
-              </div>
-              <div className="mb-4 grid grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="countryCode">Country Code</Label>
-                  <Select
-                    value={reservationDetails.countryCode}
-                    onValueChange={(value) =>
-                      handleReservationChange("countryCode", value)
-                    }
-                  >
-                    <SelectTrigger id="countryCode">
-                      <SelectValue placeholder="Code" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="+1">+1 (US)</SelectItem>
-                      <SelectItem value="+44">+44 (UK)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="col-span-2">
-                  <Label htmlFor="phoneNumber">Phone Number</Label>
-                  <Input
-                    id="phoneNumber"
-                    value={reservationDetails.phoneNumber}
-                    onChange={(e) =>
-                      handleReservationChange("phoneNumber", e.target.value)
-                    }
-                  />
-                </div>
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="mealType">Meal Type</Label>
-                <Input
-                  id="mealType"
-                  value={selectedMeal ? `${selectedMeal.name}` : ""}
-                  readOnly
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="seats">Number of Seats</Label>
-                <Select
-                  value={reservationDetails.seats}
-                  onValueChange={(value) =>
-                    handleReservationChange("seats", parseInt(value, 10))
-                  }
-                >
-                  <SelectTrigger id="seats">
-                    <SelectValue placeholder="Select seats" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                      <SelectItem key={num} value={num.toString()}>
-                        {num}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="mb-4">
-                <Label>Select Date</Label>
-                <DatePicker
-                  selected={reservationDetails.dateTime}
-                  onSelect={(date) => handleReservationChange("date", date)}
-                />
-              </div>
-            </div>
-            <DrawerFooter>
-              <Button type="submit" className="bg-yellow-400 text-black">
-                Submit Reservation
-              </Button>
-              <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </form>
-        </DrawerContent>
-      </Drawer> */}
     </div>
   );
 };
+
 export { RestaurantList, RestaurantDetails };

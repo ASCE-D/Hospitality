@@ -36,7 +36,7 @@ const FoodOptionsPage = () => {
             </CardContent>
             <CardFooter>
               <Link
-                href={`/restaurants/cm0zoop35000n70zxduqcx0e2`}
+                href={`/restaurants/${option.title.toLowerCase()}`}
                 className="w-full justify-center"
               >
                 {" "}
