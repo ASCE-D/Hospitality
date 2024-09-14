@@ -42,7 +42,7 @@ const FoodOptionsPage = () => {
                 {" "}
                 {option.title == "Dinner" ? (
                   <Button variant="outline" className="w-full">
-                    "10% off - Book Directly"
+                    10% off - Book Directly
                   </Button>
                 ) : (
                   <Button variant="outline" className="w-full">
