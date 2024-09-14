@@ -28,7 +28,6 @@ import { Description } from "@radix-ui/react-toast";
 import { useRouter } from "next/navigation";
 
 const ImproveYourStay = () => {
- 
   const features = [
     {
       title: "Early Check-in",
@@ -64,32 +63,22 @@ const ImproveYourStay = () => {
     const [quantity, setQuantity] = useState(1);
     const [dateTime, setDateTime] = useState("");
     const [roomId, setRoomId] = useState("");
-    const router = useRouter()
+    const router = useRouter();
     const total = feature.price * quantity;
     const data = {
-      roomid : 303,
-      description : "4 hrs stay more",
-      price : 50000,
-      restaurantId : "cm0ner3ks0003htvdm9zzhwy3",
-      extendedNights : "4",
+      roomid: 303,
+      description: "4 hrs stay more",
+      price: 50000,
+      restaurantId: "cm0ner3ks0003htvdm9zzhwy3",
+      extendedNights: "4",
+    };
 
-    }
-
-    const handleSubmit = async (data:any) => {
-    
-     
-        const url = await stripe(JSON.stringify(data))
-       if (url) {
-          router.push(url); // Redirect to Stripe checkout page
-        }
-      } 
-    ;
-  
-  
-
-
-  
-
+    const handleSubmit = async (data: any) => {
+      const url = await stripe(JSON.stringify(data));
+      if (url) {
+        router.push(url); // Redirect to Stripe checkout page
+      }
+    };
     const renderFeatureSpecificFields = () => {
       switch (feature.title) {
         case "Luggage Deposit":
@@ -135,59 +124,56 @@ const ImproveYourStay = () => {
                 }
               />
             </div>
-
-          )
-          ;
+          );
         default:
           return null;
       }
     };
-   
 
     return (
-      <Drawer>
-        <DrawerTrigger asChild>
-          <Button className="w-full">
-            <PlusCircle className="mr-2 h-4 w-4" /> Add to Stay
-          </Button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>{feature.title}</DrawerTitle>
-            <DrawerDescription>{feature.description}</DrawerDescription>
-          </DrawerHeader>
-          <div className="p-4 pb-0">
-            <div className="grid w-full items-center gap-4">
-              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="roomId">Room ID</Label>
-                <Input
-                  id="roomId"
-                  value={roomId}
-                  onChange={(e) => setRoomId(e.target.value)}
-                />
-              </div>
-              {renderFeatureSpecificFields()}
-              <div>
-                <p>
-                  Price: ${feature.price} {feature.unit}
-                </p>
-                <p className="font-bold">Total: ${total}</p>
-              </div>
-            </div>
-          </div>
-          <DrawerFooter>
-            <DrawerClose asChild>
-              <Button onClick = {() =>handleSubmit(data)}>Confirm</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <Button className="w-full">
+        <PlusCircle className="mr-2 h-4 w-4" /> Add to Stay
+      </Button>
+      // <Drawer>
+      //   <DrawerTrigger asChild>
+      //   </DrawerTrigger>
+      //   <DrawerContent>
+      //     <DrawerHeader>
+      //       <DrawerTitle>{feature.title}</DrawerTitle>
+      //       <DrawerDescription>{feature.description}</DrawerDescription>
+      //     </DrawerHeader>
+      //     <div className="p-4 pb-0">
+      //       <div className="grid w-full items-center gap-4">
+      //         <div className="grid w-full items-center gap-1.5">
+      //           <Label htmlFor="roomId">Room ID</Label>
+      //           <Input
+      //             id="roomId"
+      //             value={roomId}
+      //             onChange={(e) => setRoomId(e.target.value)}
+      //           />
+      //         </div>
+      //         {renderFeatureSpecificFields()}
+      //         <div>
+      //           <p>
+      //             Price: ${feature.price} {feature.unit}
+      //           </p>
+      //           <p className="font-bold">Total: ${total}</p>
+      //         </div>
+      //       </div>
+      //     </div>
+      //     <DrawerFooter>
+      //       <DrawerClose asChild>
+      //         <Button onClick = {() =>handleSubmit(data)}>Confirm</Button>
+      //       </DrawerClose>
+      //     </DrawerFooter>
+      //   </DrawerContent>
+      // </Drawer>
     );
   };
 
   return (
     <div className="mx-auto max-w-4xl px-4 pt-[80px] md:pt-[130px] lg:pt-[160px]">
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-16">
+      <div className="mb-16 grid grid-cols-1 gap-5 md:grid-cols-2">
         {features.map((feature, index) => (
           <Card key={index}>
             <CardHeader>
