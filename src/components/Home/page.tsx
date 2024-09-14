@@ -33,12 +33,12 @@ const HomePage = () => {
     {
       title: t("homepage.activities.transports"),
       image: "/images/transport/cover.jpg",
-      url: "/homestay",
+      url: "/guest/tours",
     },
     {
       title: t("homepage.activities.city_tours"),
       image: "/images/tours/cover.jpg",
-      url: "/homestay",
+      url: "/guest/transports",
     },
   ];
 
@@ -98,7 +98,7 @@ const HomePage = () => {
                   {t("homepage.manage_your_stay")}
                 </p>
                 <p className="mr-1 text-center text-sm">
-                  Early check-In/ checkout/ luggage
+                  Early check-in/ Late-checkout/ Luggage
                 </p>
               </div>
 

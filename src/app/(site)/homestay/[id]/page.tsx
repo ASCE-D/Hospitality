@@ -9,28 +9,30 @@ import Image from "next/image";
 const hotels = [
   {
     id: 0,
-    name: "Luxury Resort & Spa",
+    name: "Palazzina San Giorgio",
     image: "api/placeholder/400/300",
     description:
-      "Experience ultimate relaxation in our 5-star resort with breathtaking ocean views.",
-    price: "$299",
-    rating: 4.8,
-    location:
-      "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
-    contact: { email: "Tmhbc.bom@tajhotels.com", phone: "022 6665 3366" },
-    images: ["/images/restaurants/service-1.jpg"],
+      "Welcome to Palazzina San Giorgio. Please make yourself at home.",
+    price: "$299", // Keeping this as is since no new price information was provided
+    rating: 4.8, // Keeping this as is since no new rating information was provided
+    location: "Vico Dei Cartai 1, int 5, 16123, Genova",
+    contact: {
+      email: "elscapitalpm@gmail.com",
+      phone: "+39 328 363 1642",
+    },
+    images: ["/images/restaurants/service-1.jpg"], // Keeping this as is since no new image information was provided
     amenities: [
       "Swimming pool",
       "Fitness center",
       "Restaurant",
       "Airport shuttle",
-    ],
-    services: ["Room service", "24/7 customer support"],
-    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"],
-    reviews: [{}],
+    ], // Keeping these as is since no new amenity information was provided
+    services: ["Room service", "24/7 customer support"], // Keeping these as is since no new service information was provided
+    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"], // Keeping these as is since no new facility information was provided
+    reviews: [{}], // Keeping this as is since no new review information was provided
     wifi: {
       networkName: "WIFI-Cartai",
-      password: "123456789O",
+      password: "1234567890",
     },
     houseRules: [
       "No smoking inside the property.",
@@ -39,10 +41,10 @@ const hotels = [
       "Noise and the neighbourhood please be considerate",
     ],
     checkOut: {
-      time: "11am",
+      time: "10am",
       instructions: [
         "Please leave unit as found.",
-        "Dishes places in dishwasher",
+        "Dishes placed in dishwasher",
         "Towel left on bathroom floor",
         "Turn off lights",
         "Close all windows",
@@ -50,10 +52,18 @@ const hotels = [
         "Notify host of departure",
       ],
     },
+    host: {
+      name: "ELS Capital",
+      phone: "+39 328 363 1642",
+      email: "elscapitalpm@gmail.com",
+    },
+    socialMedia: {
+      instagram: "@palazzinasangiorgio",
+    },
   },
   {
     id: 1,
-    name: "City Center Hotel",
+    name: "E. Prie Rosse",
     image: "/api/placeholder/400/300",
     description:
       "Stay in the heart of the city, walking distance from major attractions and business centers.",
@@ -97,7 +107,7 @@ const hotels = [
   },
   {
     id: 2,
-    name: "Mountain Lodge",
+    name: "Osteria Le Colonne",
     image: "/api/placeholder/400/300",
     description:
       "Escape to nature in our cozy lodge surrounded by stunning mountain landscapes.",
@@ -141,7 +151,7 @@ const hotels = [
   },
   {
     id: 3,
-    name: "Beachfront Bungalows",
+    name: "Broadside Sushi Genova",
     image: "/placeholder/400/300",
     description:
       "Wake up to the sound of waves in our private beachfront bungalows.",

@@ -100,12 +100,12 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     e.preventDefault();
     console.log("Reservation made:", reservationDetails);
     const result = await createFoodReservation(reservationDetails);
-    console.log("wow",result);
+    console.log("wow", result);
     let reservationid;
-    let reservationStatus
+    let reservationStatus;
     if (result.success) {
       reservationid = result?.reservation?.id;
-      reservationStatus= result?.reservation?.status;
+      reservationStatus = result?.reservation?.status;
     }
     // await sendRestaurantWhatsapp(
     //   reservationDetails.restaurantId,
@@ -116,7 +116,8 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       reservationDetails.restaurantId,
       reservationDetails,
       reservationid,
-    reservationStatus)
+      reservationStatus,
+    );
     // await sendrestaurantemail(
     //   reservationDetails.restaurantId,
     //   reservationDetails,
@@ -129,6 +130,10 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     );
     setIsReservationOpen(false);
   };
+
+  const showReservationButton =
+    restaurant.mealType.includes("DINNER") ||
+    restaurant.mealType.includes("LUNCH");
   return (
     <div className="container mx-auto p-4 pt-[80px] md:pt-[130px] lg:grid-cols-4 lg:pt-[160px]">
       <Card>
@@ -163,12 +168,19 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
           >
             <DrawerTrigger asChild>
               <div className="relative inline-block w-full">
-                <Button className="w-full bg-yellow-400 text-black">
-                  Reserve a table
-                </Button>
-                <span className="absolute -right-2 -top-2 rotate-12 transform rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white">
-                  10% OFF
-                </span>
+                {showReservationButton && (
+                  <Button
+                    className="w-full bg-yellow-400 text-black"
+                    onClick={() => setIsReservationOpen(true)}
+                  >
+                    Reserve a table
+                  </Button>
+                )}
+                {restaurant.mealType.includes("DINNER") && (
+                  <span className="absolute -right-2 -top-2 rotate-12 transform rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white">
+                    10% OFF
+                  </span>
+                )}
               </div>
             </DrawerTrigger>
             <DrawerContent>
@@ -215,7 +227,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                           <SelectValue placeholder="Code" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="+1">+1 (US)</SelectItem>
+                          <SelectItem value="+1">+39(IT)</SelectItem>
                           <SelectItem value="+44">+44 (UK)</SelectItem>
                         </SelectContent>
                       </Select>
@@ -233,23 +245,19 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                   </div>
                   <div className="mb-4">
                     <Label htmlFor="seats">Number of Seats</Label>
-                    <Select
+                    <Input
+                      type="number"
+                      id="seats"
                       value={reservationDetails.seats}
-                      onValueChange={(value) =>
-                        handleReservationChange("seats", parseInt(value, 10))
+                      onChange={(e) =>
+                        handleReservationChange(
+                          "seats",
+                          parseInt(e.target.value, 10),
+                        )
                       }
-                    >
-                      <SelectTrigger id="seats">
-                        <SelectValue placeholder="Select seats" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                          <SelectItem key={num} value={num.toString()}>
-                            {num}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+
+                      max={8}
+                    />
                   </div>
                   <div className="mb-4">
                     <div className="flex pt-2">

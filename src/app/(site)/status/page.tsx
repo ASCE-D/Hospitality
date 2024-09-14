@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const AcceptDeclinePage = () => {
   const searchParams = useSearchParams();
-  const status = searchParams.get('status');
+  const status = searchParams?.get('status');
   const isAccepted = status === 'true';
 
   return (

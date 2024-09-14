@@ -44,7 +44,7 @@ export default function ClientLayout({
             <PreLoader />
           ) : (
             <>
-              {/* <Header /> */}
+              <Header />
               {children}
               {/* <Footer /> */}
               <ScrollToTop />

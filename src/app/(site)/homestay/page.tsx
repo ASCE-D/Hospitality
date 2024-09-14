@@ -17,32 +17,35 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const hotels = [
   {
     id: 0,
-    name: "Josna Ristorante Indiano",
+    name: "Palazzina San Giorgio",
     image: "api/placeholder/400/300",
     description:
-      "Experience ultimate relaxation in our 5-star resort with breathtaking ocean views.",
-    price: "$299",
-    rating: 4.8,
-    location:
-      "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
-    contact: { email: "Tmhbc.bom@tajhotels.com", phone: "022 6665 3366" },
-    images: ["/images/restaurants/service-1.jpg"],
+      "Welcome to Palazzina San Giorgio. Please make yourself at home.",
+    price: "$299", // Keeping this as is since no new price information was provided
+    rating: 4.8, // Keeping this as is since no new rating information was provided
+    location: "Vico Dei Cartai 1, int 5, 16123, Genova",
+    contact: {
+      email: "elscapitalpm@gmail.com",
+      phone: "+39 328 363 1642",
+    },
+    images: ["/images/hotels/1.jpg"], // Keeping this as is since no new image information was provided
     amenities: [
       "Swimming pool",
       "Fitness center",
       "Restaurant",
       "Airport shuttle",
-    ],
-    services: ["Room service", "24/7 customer support"],
-    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"],
-    reviews: [{}],
+    ], // Keeping these as is since no new amenity information was provided
+    services: ["Room service", "24/7 customer support"], // Keeping these as is since no new service information was provided
+    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"], // Keeping these as is since no new facility information was provided
+    reviews: [{}], // Keeping this as is since no new review information was provided
     wifi: {
       networkName: "WIFI-Cartai",
-      password: "123456789O",
+      password: "1234567890",
     },
     houseRules: [
       "No smoking inside the property.",
@@ -51,16 +54,24 @@ const hotels = [
       "Noise and the neighbourhood please be considerate",
     ],
     checkOut: {
-      time: "10 Am",
+      time: "10am",
       instructions: [
         "Please leave unit as found.",
-        "Dishes places in dishwasher",
+        "Dishes placed in dishwasher",
         "Towel left on bathroom floor",
         "Turn off lights",
         "Close all windows",
         "Lock doors",
         "Notify host of departure",
       ],
+    },
+    host: {
+      name: "ELS Capital",
+      phone: "+39 328 363 1642",
+      email: "elscapitalpm@gmail.com",
+    },
+    socialMedia: {
+      instagram: "@palazzinasangiorgio",
     },
   },
   {
@@ -206,28 +217,19 @@ const HotelReviewMobile = () => {
     <div className="container mx-auto p-4 pt-[80px] md:pt-[130px] lg:grid-cols-4 lg:pt-[160px]">
       <Card>
         <CardHeader>
+          <Image alt="image" src={hotel.images[0]} width={300} height={100}/>
           <h1 className="mb-2 text-2xl font-bold">{hotel.name}</h1>
           <div className="mb-2 flex items-center">
             <MapPin size={16} className="mr-1" />
             <span className="text-sm text-gray-500">{hotel.location}</span>
           </div>
-          <div className="flex items-center">
-            <Star size={16} className="mr-1 text-yellow-500" />
-            <span className="font-semibold">{hotel.rating}</span>
-          </div>
+
         </CardHeader>
         <CardContent>
           <p className="mb-4 text-gray-700">{hotel.description}</p>
 
-          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div>
-              <h2 className="mb-2 text-xl font-semibold">{t("amenities")}</h2>
-              <ul className="list-inside list-disc">
-                {hotel.amenities.map((amenity, index) => (
-                  <li key={index}>{amenity}</li>
-                ))}
-              </ul>
-            </div>
+          {/* <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+
             <div>
               <h2 className="mb-2 text-xl font-semibold">{t("services")}</h2>
               <ul className="list-inside list-disc">
@@ -236,7 +238,7 @@ const HotelReviewMobile = () => {
                 ))}
               </ul>
             </div>
-          </div>
+          </div> */}
 
           <div className="mb-4">
             <h2 className="mb-2 text-xl font-semibold">{t("facilities")}</h2>

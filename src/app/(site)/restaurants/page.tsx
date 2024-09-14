@@ -40,11 +40,17 @@ const FoodOptionsPage = () => {
                 className="w-full justify-center"
               >
                 {" "}
-                <Button variant="outline" className="w-full">
-                  {option.title == "Dinner" || option.title == "Lunch"
-                    ? "10% off - Book Directly"
-                    : "Suggested spots"}
-                </Button>
+                {option.title == "Dinner" ? (
+                  <Button variant="outline" className="w-full">
+                    "10% off - Book Directly"
+                  </Button>
+                ) : (
+                  <Button variant="outline" className="w-full">
+                    {option.title == "Lunch"
+                      ? "Book Directly"
+                      : "Suggested spots"}
+                  </Button>
+                )}
               </Link>
             </CardFooter>
           </Card>
