@@ -8,7 +8,7 @@ const SuccessPage = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const sessionId = searchParams.get('session_id');
+    const sessionId = searchParams?.get('session_id');
 
     if (sessionId) {
       fetchPaymentDetails(sessionId);

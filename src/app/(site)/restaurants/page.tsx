@@ -32,7 +32,7 @@ const FoodOptionsPage = () => {
               <CardTitle>{option.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Explore our {option.title.toLowerCase()} menu</p>
+              <p>Explore the best food Genoa </p>
             </CardContent>
             <CardFooter>
               <Link
@@ -41,9 +41,9 @@ const FoodOptionsPage = () => {
               >
                 {" "}
                 <Button variant="outline" className="w-full">
-                  {option.title == "Dinner"
-                    ? "10% off - View Menu"
-                    : "View Menu"}
+                  {option.title == "Dinner" || option.title == "Lunch"
+                    ? "10% off - Book Directly"
+                    : "Suggested spots"}
                 </Button>
               </Link>
             </CardFooter>

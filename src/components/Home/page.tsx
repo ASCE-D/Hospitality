@@ -87,14 +87,21 @@ const HomePage = () => {
               </Card>
             ))}
           </div>
-          <Button className="mt-6 flex w-full items-center justify-center bg-yellow-400 p-4 text-black hover:bg-yellow-400">
+          <Button className="mt-6 flex h-32 w-full items-center justify-center bg-yellow-400 p-4 text-black hover:bg-yellow-400">
             <Link
               href="/guest/services"
               className="flex items-center justify-center"
             >
-              <p className="mr-1 text-center">
-                {t("homepage.manage_your_stay")}
-              </p>
+              <div className="flex flex-col">
+                {" "}
+                <p className="mr-1 text-center text-2xl">
+                  {t("homepage.manage_your_stay")}
+                </p>
+                <p className="mr-1 text-center text-sm">
+                  Early check-In/ checkout/ luggage
+                </p>
+              </div>
+
               <ArrowBigRightIcon className="" />
             </Link>
           </Button>
