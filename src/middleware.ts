@@ -58,10 +58,10 @@ export function middleware(req: NextRequest) {
   console.log("Language cookie:", language);
 
   // If 'language' is not set, redirect to /language
-  if (!language && url.pathname !== "/language") {
-    console.log("Redirecting to language selector");
-    return NextResponse.redirect(new URL("/language", req.url));
-  }
+  // if (!language && url.pathname !== "/language") {
+  //   console.log("Redirecting to language selector");
+  //   return NextResponse.redirect(new URL("/language", req.url));
+  // }
 
   // Allow the request to proceed
   console.log("Proceeding with request");
