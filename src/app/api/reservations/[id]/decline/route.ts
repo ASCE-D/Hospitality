@@ -33,7 +33,7 @@ export async function GET(
     await sendUserNotification2(id);
 
     // Redirect to a confirmation page
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-declined`);
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/status?status=false`);
   } catch (error) {
     console.error("Error declining reservation:", error);
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-error?message=An unexpected error occurred`);

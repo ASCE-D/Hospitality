@@ -34,7 +34,7 @@ export async function GET(
     await sendUserNotification2(id);
 
     // Redirect to a confirmation page
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-confirmed`);
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/status?status=true`);
   } catch (error) {
     console.error("Error accepting reservation:", error);
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-error?message=An unexpected error occurred`);

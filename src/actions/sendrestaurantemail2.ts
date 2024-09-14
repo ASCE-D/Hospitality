@@ -1,5 +1,6 @@
 "use server"
-import { EmailTemplate } from '@/components/emailtemplate2';
+
+import { EmailTemplate2 } from '@/components/emailtemplate2';
 import { prisma } from '@/utils/prismaDB';
 import { Resend } from 'resend';
 
@@ -32,9 +33,10 @@ export async function sendrestaurantemail2(restaurantId: string, reservationdeta
 
     const { data, error } = await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>',
-      to: restaurant.owner.email,
+      // to: restaurant.owner.email,
+      to: "ashispandey138c@gmail.com",
       subject: 'New Reservation Request',
-      react: EmailTemplate({ 
+      react: EmailTemplate2({ 
         firstName: restaurant.owner.name || 'Restaurant Owner', 
         reservationdetails, 
         reservationId,

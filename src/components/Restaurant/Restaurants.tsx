@@ -37,14 +37,16 @@ import { sendMessage } from "@/actions/sendwhatsapp";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createFoodReservation } from "@/actions/foodreservation";
-import { sendrestaurantemail } from "@/actions/sendrestaurantemail";
+// import { sendrestaurantemail } from "@/actions/sendrestaurantemail";
 import StarRating from "../Common/StarRating";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns";
-import { sendRestaurantWhatsapp } from "@/actions/sendrestaurantwhatsapp";
+// import { sendRestaurantWhatsapp } from "@/actions/sendrestaurantwhatsapp";
 import restaurantsData from "@/utils/restaurants.json";
+import { sendRestaurantWhatsapp2 } from "@/actions/sendrestaurantwhatsapp2";
+import { sendrestaurantemail2 } from "@/actions/sendrestaurantemail2";
 const { restaurants } = restaurantsData;
 
 const MealType = {
@@ -105,12 +107,22 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       reservationid = result?.reservation?.id;
       reservationStatus= result?.reservation?.status;
     }
-    await sendRestaurantWhatsapp(
+    // await sendRestaurantWhatsapp(
+    //   reservationDetails.restaurantId,
+    //   reservationDetails,
+    //   reservationid,
+    // reservationStatus)
+    await sendRestaurantWhatsapp2(
       reservationDetails.restaurantId,
       reservationDetails,
       reservationid,
     reservationStatus)
-    await sendrestaurantemail(
+    // await sendrestaurantemail(
+    //   reservationDetails.restaurantId,
+    //   reservationDetails,
+    //   reservationid,
+    // );
+    await sendrestaurantemail2(
       reservationDetails.restaurantId,
       reservationDetails,
       reservationid,

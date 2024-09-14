@@ -7,7 +7,7 @@ const Language:React.FC = () => {
   const router = useRouter();
 
   const selectLanguage = (lang: string) => {
-    document.cookie = `language=${lang}; path=/`; // Set the language cookie
+    document.cookie = `NEXT_LOCALE=${lang}; path=/`; // Set the language cookie
     router.push("/"); // Redirect to home page
   };
 

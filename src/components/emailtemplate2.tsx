@@ -8,7 +8,7 @@ interface EmailTemplateProps {
   declineUrl: string;
 }
 
-export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
+export const EmailTemplate2: React.FC<Readonly<EmailTemplateProps>> = ({
   firstName,
   reservationdetails,
   reservationId,

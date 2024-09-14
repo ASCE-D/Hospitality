@@ -2,7 +2,7 @@
 import Stripe from "stripe";
 
 export async function stripe(data: any) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  const stripe = new Stripe("sk_test_51ORESZFdzidHbKbkt49St8FS4UsUaQsaHvDpEuZ8zIXPn2qnTQ9jK4qgQwwLowljjMNwyFt8SVCUpaBR29qZdpl400O90wUxjO", {
     apiVersion: "2023-10-16",
   });
 

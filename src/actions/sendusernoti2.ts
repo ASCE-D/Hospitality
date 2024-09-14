@@ -40,8 +40,8 @@ export async function sendUserNotification2(foodReservationId: string) {
         const twilioMessage = await client.messages.create({
             body: message,
             from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
-            to: `whatsapp:+${countryCode}${phoneNumber}`
-            // For testing: to: 'whatsapp:+919929840831'
+            // to: `whatsapp:+${countryCode}${phoneNumber}`
+           to: 'whatsapp:+919929840831'
         })
 
         console.log('WhatsApp message sent:', twilioMessage.sid)
