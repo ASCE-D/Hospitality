@@ -41,8 +41,7 @@ export default async function RestaurantDashboard() {
   const reservations = await getRestaurantReservations(restaurant.ownerId);
 
   return (
-    <div className=" m-32">
-      <h1 className="mb-4 text-2xl font-bold">Restaurant Dashboard</h1>
+    <div className="mt-2">
       <ReservationManagement reservations={reservations} restaurantId={restaurant.id} />
     </div>
   );

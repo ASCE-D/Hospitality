@@ -41,8 +41,8 @@ export default async function SpecificReservationPage({ params }: { params: { id
   }
 
   return (
-    <div className="m-32">
-      <h1 className="mb-4 text-2xl font-bold">Food Reservation Details</h1>
+    <div className="w-full">
+      <h1 className="">Food Reservation Details</h1>
       <ReservationManagement reservations={[reservation]} restaurantId={restaurant.id} />
     </div>
   );

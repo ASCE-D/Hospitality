@@ -11,7 +11,8 @@
   },
   "LocaleSwitcher": {
     "en": "🇬🇧 English",
-    "it": "🇮🇹 Italian"
+    "it": "🇮🇹 Italian",
+    "label": "English"
   },
   "hotelReviewMobile": {
     "amenities": "Amenities",

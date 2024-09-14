@@ -11,7 +11,8 @@
   },
   "LocaleSwitcher": {
     "en": "🇬🇧 Inglese",
-    "it": "🇮🇹 Italiano"
+    "it": "🇮🇹 Italiano",
+    "label": "Italiano"
   },
   "hotelReviewMobile": {
     "amenities": "Servizi",
