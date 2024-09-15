@@ -6,10 +6,10 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const ReservationConfirmationPage = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center text-green-600">
+          <CardTitle className="text-center text-2xl font-bold text-green-600">
             Booking Request Successful!
           </CardTitle>
           <CardDescription className="text-center">
@@ -17,7 +17,7 @@ const ReservationConfirmationPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-center mb-6">
+          <div className="mb-6 flex justify-center">
             <div className="rounded-full bg-green-100 p-3">
               <Check className="h-8 w-8 text-green-600" />
             </div>
@@ -29,7 +29,8 @@ const ReservationConfirmationPage = () => {
             </AlertDescription>
           </Alert>
           <p className="mt-6 text-center text-sm text-gray-600">
-            Thank you for choosing our service. If you have any questions, please don't hesitate to contact us.
+            Thank you for choosing our service. If you have any questions,
+            please don&apos;t hesitate to contact us.
           </p>
         </CardContent>
       </Card>
