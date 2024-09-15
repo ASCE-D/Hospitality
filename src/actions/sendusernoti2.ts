@@ -39,13 +39,19 @@ export async function sendUserNotification2(foodReservationId: string) {
         // Prepare the message based on the reservation status
         let message = ''
         if (status === 'CONFIRMED') {
-            message = `Great news! Your reservation at ${restaurant.name} has been confirmed for ${dateTime.toLocaleString()}. Party size: ${seats}.
+            message = 
+            
+            
+            `
+            
+            
+          Great news! Your reservation at ${restaurant.name} has been confirmed for ${dateTime.toLocaleString()}. Party size: ${seats}.
 
-Restaurant Address: ${restaurant.address}
-Google Maps: ${googleMapsLink}
-Restaurant Phone: ${restaurantPhone}
+          Restaurant Address: ${restaurant.address}
+          Google Maps: ${googleMapsLink}
+          Restaurant Phone: ${restaurantPhone}
 
-We look forward to seeing you!`
+          We look forward to seeing you!`
         } else if (status === 'REJECTED') {
             message = `We're sorry, but your reservation at ${restaurant.name} for ${dateTime.toLocaleString()} has been declined. Please contact the restaurant for more information or to make alternative arrangements.
 
@@ -55,15 +61,17 @@ Restaurant Phone: ${restaurantPhone}`
 
 Restaurant Address: ${restaurant.address}
 Google Maps: ${googleMapsLink}
-Restaurant Phone: ${restaurantPhone}`
+Restaurant Phone: ${restaurantPhone}
+
+`
         }
 
         // Send the WhatsApp message
         const twilioMessage = await client.messages.create({
             body: message,
             from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
-            // to: `whatsapp:+${countryCode}${phoneNumber}`
-           to: 'whatsapp:+919929840831'
+             to: `whatsapp:+${countryCode}${phoneNumber}`
+        //    to: 'whatsapp:+919929840831'
         })
 
         console.log('WhatsApp message sent:', twilioMessage.sid)

@@ -60,7 +60,8 @@ Note: These links will only work if the reservation status is still pending.
       client.messages.create({
         body: message,
         from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
-        to: 'whatsapp:+919929840831' // Replace this with the actual device number in production
+        // to: 'whatsapp:+919929840831' 
+        to: `whatsapp:+${device.countryCode}${device.phoneNumber}`
       })
     );
 

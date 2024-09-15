@@ -22,108 +22,96 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Clock, Briefcase, Calendar, PlusCircle } from "lucide-react";
+import { Clock, Briefcase, PlusCircle } from "lucide-react";
 import { stripe } from "@/actions/stripe";
-import { Description } from "@radix-ui/react-toast";
 import { useRouter } from "next/navigation";
 
+interface Feature {
+  title: string;
+  icon: React.ElementType;
+  description: string;
+  price: number;
+  unit: string;
+}
+
 const ImproveYourStay = () => {
-  const features = [
+  const features: Feature[] = [
     {
       title: "Early Check-in",
       icon: Clock,
       description: "Arrive earlier and start your stay sooner",
-      price: 30,
-      unit: "per hour",
+      price: 10,
+      unit: "fixed price",
     },
     {
       title: "Luggage Deposit",
       icon: Briefcase,
       description: "Store your luggage securely before or after your stay",
-      price: 10,
-      unit: "per bag per day",
+      price: 5,
+      unit: "fixed price",
     },
     {
       title: "Late Checkout",
       icon: Clock,
       description: "Extend your last day and leave at your convenience",
-      price: 40,
-      unit: "per hour",
-    },
-    {
-      title: "Extend Your Stay",
-      icon: Calendar,
-      description: "Add extra nights to your reservation",
-      price: 150,
-      unit: "per night",
+      price: 10,
+      unit: "fixed price",
     },
   ];
 
-  const FeatureDrawer = ({ feature }: any) => {
-    const [quantity, setQuantity] = useState(1);
-    const [dateTime, setDateTime] = useState("");
-    const [roomId, setRoomId] = useState("");
+  const FeatureDrawer = ({ feature }: { feature: Feature }) => {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
     const router = useRouter();
-    const total = feature.price * quantity;
-    const data = {
-      roomid: 303,
-      description: "4 hrs stay more",
-      price: 50000,
-      restaurantId: "cm0ner3ks0003htvdm9zzhwy3",
-      extendedNights: "4",
-    };
 
-    const handleSubmit = async (data: any) => {
-      const url = await stripe(JSON.stringify(data));
+    const handleSubmit = async () => {
+      const data = {
+        firstName,
+        lastName,
+        feature: feature.title,
+        price: feature.price
+      };
+      const url = await stripe(data);
       if (url) {
         router.push(url); // Redirect to Stripe checkout page
       }
     };
+
     const renderFeatureSpecificFields = () => {
       switch (feature.title) {
+        case "Early Check-in":
+          return (
+            <>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="date">Day</Label>
+                <Input
+                  type="date"
+                  id="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="time">Time (12 PM onwards)</Label>
+                <Input
+                  type="time"
+                  id="time"
+                  min="12:00"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                />
+              </div>
+            </>
+          );
         case "Luggage Deposit":
           return (
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="quantity">Number of Bags</Label>
-              <Input
-                type="number"
-                id="quantity"
-                value={quantity}
-                onChange={(e) =>
-                  setQuantity(Math.max(1, parseInt(e.target.value)))
-                }
-              />
-            </div>
+            <p>Available from 10 AM. Fixed price: {feature.price} Euros</p>
           );
-        case "Early Check-in":
         case "Late Checkout":
           return (
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="dateTime">
-                {feature.title === "Early Check-in" ? "Check-in" : "Check-out"}{" "}
-                Time
-              </Label>
-              <Input
-                type="datetime-local"
-                id="dateTime"
-                value={dateTime}
-                onChange={(e) => setDateTime(e.target.value)}
-              />
-            </div>
-          );
-        case "Extend Your Stay":
-          return (
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="quantity">Number of Nights</Label>
-              <Input
-                type="number"
-                id="quantity"
-                value={quantity}
-                onChange={(e) =>
-                  setQuantity(Math.max(1, parseInt(e.target.value)))
-                }
-              />
-            </div>
+            <p>Available until 1 PM. Fixed price: {feature.price} Euros</p>
           );
         default:
           return null;
@@ -131,43 +119,49 @@ const ImproveYourStay = () => {
     };
 
     return (
-      <Button className="w-full">
-        <PlusCircle className="mr-2 h-4 w-4" /> Add to Stay
-      </Button>
-      // <Drawer>
-      //   <DrawerTrigger asChild>
-      //   </DrawerTrigger>
-      //   <DrawerContent>
-      //     <DrawerHeader>
-      //       <DrawerTitle>{feature.title}</DrawerTitle>
-      //       <DrawerDescription>{feature.description}</DrawerDescription>
-      //     </DrawerHeader>
-      //     <div className="p-4 pb-0">
-      //       <div className="grid w-full items-center gap-4">
-      //         <div className="grid w-full items-center gap-1.5">
-      //           <Label htmlFor="roomId">Room ID</Label>
-      //           <Input
-      //             id="roomId"
-      //             value={roomId}
-      //             onChange={(e) => setRoomId(e.target.value)}
-      //           />
-      //         </div>
-      //         {renderFeatureSpecificFields()}
-      //         <div>
-      //           <p>
-      //             Price: ${feature.price} {feature.unit}
-      //           </p>
-      //           <p className="font-bold">Total: ${total}</p>
-      //         </div>
-      //       </div>
-      //     </div>
-      //     <DrawerFooter>
-      //       <DrawerClose asChild>
-      //         <Button onClick = {() =>handleSubmit(data)}>Confirm</Button>
-      //       </DrawerClose>
-      //     </DrawerFooter>
-      //   </DrawerContent>
-      // </Drawer>
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button className="w-full">
+            <PlusCircle className="mr-2 h-4 w-4" /> Add to Stay
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>{feature.title}</DrawerTitle>
+            <DrawerDescription>{feature.description}</DrawerDescription>
+          </DrawerHeader>
+          <div className="p-4 pb-0">
+            <div className="grid w-full items-center gap-4">
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+              {renderFeatureSpecificFields()}
+              <div>
+                <p className="font-bold">Total: {feature.price} Euros</p>
+              </div>
+            </div>
+          </div>
+          <DrawerFooter>
+            <Button onClick={handleSubmit}>Confirm</Button>
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     );
   };
 
