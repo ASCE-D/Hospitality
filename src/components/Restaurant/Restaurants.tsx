@@ -91,7 +91,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
   const [time, setTime] = useState("");
   const [amPm, setAmPm] = useState("AM");
   const isDesktop = useMediaQuery("(min-width: 768px)");
-
+  const router = useRouter()
   const handleReservationChange = (field: any, value: any) => {
     setReservationDetails((prev) => ({ ...prev, [field]: value }));
   };
@@ -129,6 +129,8 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       reservationid,
     );
     setIsReservationOpen(false);
+    router.push("/restaurantreservationstatus")
+
   };
 
   const showReservationButton =

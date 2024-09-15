@@ -44,6 +44,7 @@ Date & Time: ${reservationDetails.dateTime}
 Party Size: ${reservationDetails.partySize}
 Customer: ${reservationDetails.firstName} ${reservationDetails.lastName}
 Status: ${reservationStatus}
+phoneNumber : ${reservationDetails.phoneNumber}
 
 To accept this reservation, click here:
 ${acceptUrl}

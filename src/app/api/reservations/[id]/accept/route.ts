@@ -10,12 +10,11 @@ export async function GET(
   const { id } = params;
 
   try {
-    // First, fetch the current reservation
     const currentReservation = await prisma.foodReservation.findUnique({
       where: { id },
+      include: { restaurant: true }, // Include restaurant details
     });
 
-    // Check if the reservation exists and its status is PENDING
     if (!currentReservation) {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-error?message=Reservation not found`);
     }
@@ -24,17 +23,27 @@ export async function GET(
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-error?message=Reservation is no longer pending`);
     }
 
-    // If the status is PENDING, update it to CONFIRMED
     const updatedReservation = await prisma.foodReservation.update({
       where: { id },
       data: { status: "CONFIRMED" },
     });
 
-    // Send notification to the user
     await sendUserNotification2(id);
 
-    // Redirect to a confirmation page
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/status?status=true`);
+    // Encode reservation details in the URL
+    const reservationDetails = encodeURIComponent(JSON.stringify({
+      id: updatedReservation.id,
+      dateTime: updatedReservation.dateTime.toISOString(),
+      seats: updatedReservation.seats,
+      firstName: updatedReservation.firstName,
+      lastName: updatedReservation.lastName,
+      status: updatedReservation.status,
+      phoneNumber: updatedReservation.phoneNumber,
+      restaurantName: currentReservation.restaurant.name,
+      restaurantAddress: currentReservation.restaurant.address,
+    }));
+
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/status?status=true&details=${reservationDetails}`);
   } catch (error) {
     console.error("Error accepting reservation:", error);
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-error?message=An unexpected error occurred`);
