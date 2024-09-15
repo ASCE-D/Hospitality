@@ -33,12 +33,12 @@ const HomePage = () => {
     {
       title: t("homepage.activities.transports"),
       image: "/images/transport/cover.jpg",
-      url: "/guest/tours",
+      url: "/guest/transports",
     },
     {
       title: t("homepage.activities.city_tours"),
       image: "/images/tours/cover.jpg",
-      url: "/guest/transports",
+      url: "/guest/tours",
     },
   ];
 
@@ -87,7 +87,7 @@ const HomePage = () => {
               </Card>
             ))}
           </div>
-          <Button className="mt-6 flex h-32 w-full items-center justify-center bg-yellow-400 p-4 text-black hover:bg-yellow-400">
+          <Button className="mt-6 flex h-24 w-full items-center justify-center bg-yellow-400 p-4 text-black hover:bg-yellow-400">
             <Link
               href="/guest/services"
               className="flex items-center justify-center"

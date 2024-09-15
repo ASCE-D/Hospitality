@@ -18,14 +18,15 @@ import {
 } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import Link from "next/link";
 
 const hotels = [
   {
     id: 0,
-    name: "Palazzina San Giorgio",
-    image: "api/placeholder/400/300",
+    name: "EL’s CAPITAL APARTMENTS",
+    image: "/images/hotels/header.png",
     description:
-      "Welcome to Palazzina San Giorgio. Please make yourself at home.",
+      "EL’s Capital S.r.l. offers high-quality host services, ensuring an unforgettable stay thanks to our commitment, experience and attention to detail. With precise knowledge of the area and a dedicated team, we strive to provide a welcoming environment and impeccable service for an authentic and unmatched experience. EL’s Capital S.r.l. offers high-quality host services, ensuring an unforgettable stay thanks to our commitment, experience and attention to detail. With precise knowledge of the area and a dedicated team, we strive to provide a welcoming environment and impeccable service for an authentic and unmatched experience. ",
     price: "$299", // Keeping this as is since no new price information was provided
     rating: 4.8, // Keeping this as is since no new rating information was provided
     location: "Vico Dei Cartai 1, int 5, 16123, Genova",
@@ -33,15 +34,14 @@ const hotels = [
       email: "elscapitalpm@gmail.com",
       phone: "+39 328 363 1642",
     },
-    images: ["/images/hotels/1.jpg"], // Keeping this as is since no new image information was provided
-    amenities: [
-      "Swimming pool",
-      "Fitness center",
-      "Restaurant",
-      "Airport shuttle",
-    ], // Keeping these as is since no new amenity information was provided
+    images: [
+      "/images/hotels/1.jpg",
+      "/images/hotels/2.jpg",
+      "/images/hotels/3.jpg",
+      "/images/hotels/4.jpg",
+    ], // Keeping this as is since no new image information was provided
     services: ["Room service", "24/7 customer support"], // Keeping these as is since no new service information was provided
-    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"], // Keeping these as is since no new facility information was provided
+    facilities: ["Free Wi-Fi", "Welcome Kit", "Self Check In"], // Keeping these as is since no new facility information was provided
     reviews: [{}], // Keeping this as is since no new review information was provided
     wifi: {
       networkName: "WIFI-Cartai",
@@ -74,138 +74,6 @@ const hotels = [
       instagram: "@palazzinasangiorgio",
     },
   },
-  {
-    id: 1,
-    name: "E. Prie Rosse",
-    image: "/api/placeholder/400/300",
-    description:
-      "Stay in the heart of the city, walking distance from major attractions and business centers.",
-    price: "$189",
-    rating: 4.5,
-    location:
-      "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
-    contact: { email: "", phone: "" },
-    images: ["/images/restaurants/service-1.jpg"],
-    amenities: [
-      "Swimming pool",
-      "Fitness center",
-      "Restaurant",
-      "Airport shuttle",
-    ],
-    services: ["Room service", "24/7 customer support"],
-    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"],
-    reviews: [{}],
-    wifi: {
-      networkName: "WIFI-Cartai",
-      password: "123456789O",
-    },
-    houseRules: [
-      "No smoking inside the property.",
-      "No parties or events.",
-      "No unregistered guests.",
-      "Noise and the neighbourhood please be considerate",
-    ],
-    checkOut: {
-      time: "11am",
-      instructions: [
-        "Please leave unit as found.",
-        "Dishes places in dishwasher",
-        "Towel left on bathroom floor",
-        "Turn off lights",
-        "Close all windows",
-        "Lock doors",
-        "Notify host of departure",
-      ],
-    },
-  },
-  {
-    id: 2,
-    name: "Osteria Le Colonne",
-    image: "/api/placeholder/400/300",
-    description:
-      "Escape to nature in our cozy lodge surrounded by stunning mountain landscapes.",
-    price: "$159",
-    rating: 4.6,
-    location:
-      "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
-    contact: { email: "", phone: "" },
-    images: ["/images/restaurants/service-1.jpg"],
-    amenities: [
-      "Swimming pool",
-      "Fitness center",
-      "Restaurant",
-      "Airport shuttle",
-    ],
-    services: ["Room service", "24/7 customer support"],
-    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"],
-    reviews: [{}],
-    wifi: {
-      networkName: "WIFI-Cartai",
-      password: "123456789O",
-    },
-    houseRules: [
-      "No smoking inside the property.",
-      "No parties or events.",
-      "No unregistered guests.",
-      "Noise and the neighbourhood please be considerate",
-    ],
-    checkOut: {
-      time: "11am",
-      instructions: [
-        "Please leave unit as found.",
-        "Dishes places in dishwasher",
-        "Towel left on bathroom floor",
-        "Turn off lights",
-        "Close all windows",
-        "Lock doors",
-        "Notify host of departure",
-      ],
-    },
-  },
-  {
-    id: 3,
-    name: "Broadside Sushi Genova",
-    image: "/placeholder/400/300",
-    description:
-      "Wake up to the sound of waves in our private beachfront bungalows.",
-    price: "$229",
-    rating: 4.7,
-    location:
-      "Apollo Bundar Opposite Gateway of India, Colaba, Mumbai 400001 India",
-    contact: { email: "", phone: "" },
-    images: ["/images/restaurants/service-1.jpg"],
-    amenities: [
-      "Swimming pool",
-      "Fitness center",
-      "Restaurant",
-      "Airport shuttle",
-    ],
-    services: ["Room service", "24/7 customer support"],
-    facilities: ["Breakfast", "Free Wi-Fi", "Concierge service"],
-    reviews: [{}],
-    wifi: {
-      networkName: "WIFI-Cartai",
-      password: "123456789O",
-    },
-    houseRules: [
-      "No smoking inside the property.",
-      "No parties or events.",
-      "No unregistered guests.",
-      "Noise and the neighbourhood please be considerate",
-    ],
-    checkOut: {
-      time: "11am",
-      instructions: [
-        "Please leave unit as found.",
-        "Dishes places in dishwasher",
-        "Towel left on bathroom floor",
-        "Turn off lights",
-        "Close all windows",
-        "Lock doors",
-        "Notify host of departure",
-      ],
-    },
-  },
 ];
 
 const HotelReviewMobile = () => {
@@ -214,32 +82,27 @@ const HotelReviewMobile = () => {
   const hotel = hotels[0];
 
   return (
-    <div className="container mx-auto p-4 pt-[80px] md:pt-[130px] lg:grid-cols-4 lg:pt-[160px]">
+    <div className="container mx-auto p-4 ">
       <Card>
         <CardHeader>
-          <Image alt="image" src={hotel.images[0]} width={300} height={100}/>
-          <h1 className="mb-2 text-2xl font-bold">{hotel.name}</h1>
-          <div className="mb-2 flex items-center">
-            <MapPin size={16} className="mr-1" />
-            <span className="text-sm text-gray-500">{hotel.location}</span>
+          <Image alt="image" src={hotel.image} width={300} height={100} />
+          <div className="grid grid-cols-2 gap-4">
+            {hotel.images.map((image, index) => (
+              <div key={index} className="h-48 w-full">
+                <Image
+                  src={image}
+                  alt={`Image ${index + 1}`}
+                  className="h-full w-full object-cover"
+                  width={400}
+                  height={100}
+                />
+              </div>
+            ))}
           </div>
-
+          <h1 className="mb-2 text-2xl font-bold">{hotel.name}</h1>
         </CardHeader>
         <CardContent>
           <p className="mb-4 text-gray-700">{hotel.description}</p>
-
-          {/* <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-
-            <div>
-              <h2 className="mb-2 text-xl font-semibold">{t("services")}</h2>
-              <ul className="list-inside list-disc">
-                {hotel.services.map((service, index) => (
-                  <li key={index}>{service}</li>
-                ))}
-              </ul>
-            </div>
-          </div> */}
-
           <div className="mb-4">
             <h2 className="mb-2 text-xl font-semibold">{t("facilities")}</h2>
             <ul className="list-inside list-disc">
@@ -255,29 +118,17 @@ const HotelReviewMobile = () => {
             </h2>
             <div className="mb-2 flex items-center">
               <Phone size={16} className="mr-2" />
-              <span>{hotel.contact.phone || "N/A"}</span>
+              <a href={`telto:${hotel.contact.phone}`}>
+                {hotel.contact.phone || "N/A"}
+              </a>
             </div>
             <div className="flex items-center">
               <Mail size={16} className="mr-2" />
-              <span>{hotel.contact.email || "N/A"}</span>
+              <a href={`mailto:${hotel.contact.email}`}>
+                {hotel.contact.email || "N/A"}
+              </a>
             </div>
           </div>
-
-          <div className="mt-6">
-            <h2 className="mb-2 text-xl font-semibold">{t("wifi")}</h2>
-            <div className="flex items-center">
-              <Wifi size={16} className="mr-2" />
-              <div>
-                <p className="flex items-center">
-                  <strong>{t("wifi_network")}:</strong> {hotel.wifi.networkName}
-                </p>
-                <p className="">
-                  <strong>{t("wifi_password")}:</strong> {hotel.wifi.password}
-                </p>
-              </div>
-            </div>
-          </div>
-
           <div className="mt-6">
             <h2 className="mb-2 text-xl font-semibold">{t("house_rules")}</h2>
             <ul className="list-inside list-disc">
@@ -292,10 +143,8 @@ const HotelReviewMobile = () => {
               <Clock size={18} className="mr-2" />
               {t("check_out")}
             </h2>
-            <p className="mb-2 ">
-              {t("check_out_time", { time: hotel.checkOut.time })}
-            </p>
             <ul className="list-inside list-disc">
+              <li>{t("check_out_time", { time: hotel.checkOut.time })}</li>
               {hotel.checkOut.instructions.map((instruction, index) => (
                 <li key={index}>{instruction}</li>
               ))}
@@ -305,14 +154,17 @@ const HotelReviewMobile = () => {
           <div className="mt-6">
             <h2 className="mb-2 text-xl font-semibold">{t("reviews")}</h2>
             <p className="flex items-center">
-              <Star size={16} className="mr-2 text-yellow-500" />
-              {t("reviews_message", { hotelName: hotel.name })}
+              If you enjoyed your time with EL’s Apartments, please leave a
+              review, your feedback is important for us.
             </p>
           </div>
 
-          <div className="mt-6 text-center">
+          <div className="t mt-6">
             <h2 className="mb-2 text-2xl font-bold">{t("thank_you")}</h2>
-            <p>{t("thank_you_message")}</p>
+            <p className="flex items-center">
+              We hope you enjoyed your visit and made yourself at home. Thank
+              you for choosing to stay with us.
+            </p>
           </div>
         </CardContent>
       </Card>

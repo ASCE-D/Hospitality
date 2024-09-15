@@ -17,13 +17,14 @@ export async function createFoodReservation(reservationdetails: any) {
     userId,
   } = reservationdetails;
 
+  const seats2 = parseInt(seats);
   try {
     // Create new reservation
     const newReservation = await prisma.foodReservation.create({
       data: {
         firstName,
         lastName,
-        seats,
+        seats: seats2,
         phoneNumber,
         countryCode,
         restaurantId,

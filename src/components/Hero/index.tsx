@@ -8,7 +8,7 @@ const Hero = () => {
     <>
       <section
         id="home"
-        className="relative overflow-hidden bg-primary pt-[80px] md:pt-[130px] lg:pt-[160px]"
+        className="relative overflow-hidden bg-primary"
       >
         <div className="container"></div>
         <HomePage />

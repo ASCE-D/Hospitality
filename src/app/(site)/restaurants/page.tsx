@@ -16,10 +16,20 @@ const FoodOptionsPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const foodOptions = [
-    { id: 3, title: "Breakfast", discount: false },
-    { id: 4, title: "Lunch", discount: false },
-    { id: 5, title: "Dinner", discount: true },
-    { id: 6, title: "Appetizer", discount: false },
+    {
+      id: 3,
+      title: "Breakfast",
+      discount: false,
+      tagline: "the best breakfasts in Genoa",
+    },
+    { id: 4, title: "Lunch", discount: false, tagline: "Book Directly" },
+    { id: 5, title: "Dinner", discount: true, tagline: "Book Directly" },
+    {
+      id: 6,
+      title: "Appetizer",
+      discount: false,
+      tagline: "taste the Italian Dolcevita",
+    },
   ];
 
   return (
@@ -39,18 +49,9 @@ const FoodOptionsPage = () => {
                 href={`/restaurants/${option.title.toLowerCase()}`}
                 className="w-full justify-center"
               >
-                {" "}
-                {option.title == "Dinner" ? (
-                  <Button variant="outline" className="w-full">
-                    10% off - Book Directly
-                  </Button>
-                ) : (
-                  <Button variant="outline" className="w-full">
-                    {option.title == "Lunch"
-                      ? "Book Directly"
-                      : "Suggested spots"}
-                  </Button>
-                )}
+                <Button variant="outline" className="w-full">
+                  {option.tagline}
+                </Button>
               </Link>
             </CardFooter>
           </Card>
