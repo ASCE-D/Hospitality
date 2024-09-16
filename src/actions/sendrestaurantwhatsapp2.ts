@@ -56,7 +56,7 @@ Note: These links will only work if the reservation status is still pending.
     `;
 
     // Send WhatsApp message to all devices
-    const sendPromises = restaurant.devices.map(device => 
+    const sendPromises = restaurant.devices.map((device) =>
       client.messages.create({
         body: message,
         from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
