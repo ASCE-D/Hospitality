@@ -1,23 +1,28 @@
-"use server"
-import { prisma } from '@/utils/prismaDB';
-import twilio from 'twilio';
+"use server";
+import { prisma } from "@/utils/prismaDB";
+import twilio from "twilio";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 const client = twilio(accountSid, authToken);
 
-export async function sendRestaurantWhatsapp2(restaurantId: string, reservationDetails: any, reservationId: any, reservationStatus: any) {
+export async function sendRestaurantWhatsapp2(
+  restaurantId: string,
+  reservationDetails: any,
+  reservationId: any,
+  reservationStatus: any,
+) {
   console.log(reservationDetails);
   try {
     // Find the restaurant and its associated devices
     const restaurant = await prisma.restaurant.findUnique({
       where: { id: restaurantId },
-      include: { 
+      include: {
         devices: true,
-        owner: true
+        owner: true,
       },
     });
 
@@ -28,13 +33,16 @@ export async function sendRestaurantWhatsapp2(restaurantId: string, reservationD
     // Check if whatsapp is true for the restaurant
     if (!restaurant.whatsapp) {
       console.log("WhatsApp notifications are disabled for this restaurant");
-      return { success: false, message: "WhatsApp notifications are disabled for this restaurant" };
+      return {
+        success: false,
+        message: "WhatsApp notifications are disabled for this restaurant",
+      };
     }
-    console.log("we are here ")
+    console.log("we are here ");
 
     // Generate accept and decline URLs
-    const acceptUrl = `${baseUrl}/api/reservations/${reservationId}/accept`;
-    const declineUrl = `${baseUrl}/api/reservations/${reservationId}/decline`;
+    const acceptUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/accept`;
+    const declineUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/decline`;
 
     // Construct the message with accept and decline links
     const message = `
@@ -59,33 +67,37 @@ Note: These links will only work if the reservation status is still pending.
     const sendPromises = restaurant.devices.map((device) =>
       client.messages.create({
         body: message,
-        from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
-        // to: 'whatsapp:+919929840831' 
-        to: `whatsapp:+${device.countryCode}${device.phoneNumber}`
-      })
+        from: "whatsapp:+14155238886", // Your Twilio WhatsApp number
+        // to: 'whatsapp:+919929840831'
+        to: `whatsapp:+${device.countryCode}${device.phoneNumber}`,
+      }),
     );
 
     const results = await Promise.allSettled(sendPromises);
 
     // Process results
-    const successfulSends = results.filter(result => result.status === 'fulfilled');
-    const failedSends = results.filter(result => result.status === 'rejected');
+    const successfulSends = results.filter(
+      (result) => result.status === "fulfilled",
+    );
+    const failedSends = results.filter(
+      (result) => result.status === "rejected",
+    );
 
     console.log(`WhatsApp messages sent to ${successfulSends.length} devices`);
     if (failedSends.length > 0) {
       console.error(`Failed to send messages to ${failedSends.length} devices`);
     }
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       data: {
         successfulSends: successfulSends.length,
         failedSends: failedSends.length,
-        totalDevices: restaurant.devices.length
-      }
+        totalDevices: restaurant.devices.length,
+      },
     };
   } catch (error) {
     console.error("Error in sendRestaurantWhatsapp:", error);
     return { success: false, error: (error as Error).message };
-  } 
+  }
 }
