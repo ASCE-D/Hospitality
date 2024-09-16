@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,15 +13,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Clock, Briefcase, PlusCircle } from "lucide-react";
 import { stripe } from "@/actions/stripe";
 import { useRouter } from "next/navigation";
@@ -66,12 +65,48 @@ const ImproveYourStay = () => {
     const [time, setTime] = useState("");
     const router = useRouter();
 
+    const contentRef = useRef<any>(null);
+
+    useEffect(() => {
+      // Prevent zooming
+      const metaViewport = document.querySelector("meta[name=viewport]");
+      const originalContent = metaViewport!.getAttribute("content");
+      metaViewport!.setAttribute(
+        "content",
+        "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
+      );
+
+      // Handle keyboard appearance
+      const handleFocus = () => {
+        setTimeout(() => {
+          if (contentRef.current) {
+            contentRef.current.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        }, 100);
+      };
+
+      const inputs = document.querySelectorAll("input, textarea");
+      inputs.forEach((input) => input.addEventListener("focus", handleFocus));
+
+      return () => {
+        // Restore original viewport settings
+        metaViewport!.setAttribute("content", originalContent as string);
+        // Remove event listeners
+        inputs.forEach((input) =>
+          input.removeEventListener("focus", handleFocus),
+        );
+      };
+    }, []);
+
     const handleSubmit = async () => {
       const data = {
         firstName,
         lastName,
         feature: feature.title,
-        price: feature.price
+        price: feature.price,
       };
       const url = await stripe(data);
       if (url) {
@@ -119,17 +154,17 @@ const ImproveYourStay = () => {
     };
 
     return (
-      <Drawer>
-        <DrawerTrigger asChild>
+      <Dialog>
+        <DialogTrigger asChild>
           <Button className="w-full">
             <PlusCircle className="mr-2 h-4 w-4" /> Add to Stay
           </Button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>{feature.title}</DrawerTitle>
-            <DrawerDescription>{feature.description}</DrawerDescription>
-          </DrawerHeader>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{feature.title}</DialogTitle>
+            <DialogDescription>{feature.description}</DialogDescription>
+          </DialogHeader>
           <div className="p-4 pb-0">
             <div className="grid w-full items-center gap-4">
               <div className="grid w-full items-center gap-1.5">
@@ -154,14 +189,13 @@ const ImproveYourStay = () => {
               </div>
             </div>
           </div>
-          <DrawerFooter>
-            <Button onClick={handleSubmit}>Confirm</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+          <DialogFooter>
+            <Button onClick={handleSubmit} className="bg-yellow-400 text-black">
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     );
   };
 
