@@ -309,7 +309,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                     <SelectContent>
                       <ScrollArea className="h-[400px] w-full">
                         {countryCodes.map(({ code, country }) => (
-                          <SelectItem value={code}>
+                          <SelectItem value={code} key={code}>
                             {code} ({country})
                           </SelectItem>
                         ))}
