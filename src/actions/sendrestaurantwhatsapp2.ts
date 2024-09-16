@@ -49,7 +49,7 @@ export async function sendRestaurantWhatsapp2(
 New Reservation at ${restaurant.name}!
 Reservation ID: ${reservationId}
 Date & Time: ${reservationDetails.dateTime}
-Party Size: ${reservationDetails.partySize}
+Party Size: ${reservationDetails.seats}
 Customer: ${reservationDetails.firstName} ${reservationDetails.lastName}
 Status: ${reservationStatus}
 phoneNumber : ${reservationDetails.phoneNumber}

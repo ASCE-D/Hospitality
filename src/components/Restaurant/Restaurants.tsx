@@ -195,22 +195,12 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       reservationStatus = result?.reservation?.status;
       toast.success("You reservation request has been sent we'll inform you");
     }
-    // await sendRestaurantWhatsapp(
-    //   reservationDetails.restaurantId,
-    //   reservationDetails,
-    //   reservationid,
-    // reservationStatus)
     await sendRestaurantWhatsapp2(
       reservationDetails.restaurantId,
       reservationDetails,
       reservationid,
       reservationStatus,
     );
-    // await sendrestaurantemail(
-    //   reservationDetails.restaurantId,
-    //   reservationDetails,
-    //   reservationid,
-    // );
     await sendrestaurantemail2(
       reservationDetails.restaurantId,
       reservationDetails,
