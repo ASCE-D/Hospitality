@@ -41,7 +41,100 @@ import restaurantsData from "@/utils/restaurants.json";
 import { sendRestaurantWhatsapp2 } from "@/actions/sendrestaurantwhatsapp2";
 import { sendrestaurantemail2 } from "@/actions/sendrestaurantemail2";
 import toast from "react-hot-toast";
+import { ScrollArea } from "../ui/scroll-area";
 const { restaurants } = restaurantsData;
+
+const countryCodes = [
+  { code: "+1", country: "United States" },
+  { code: "+1", country: "Canada" },
+  { code: "+7", country: "Russia" },
+  { code: "+20", country: "Egypt" },
+  { code: "+27", country: "South Africa" },
+  { code: "+30", country: "Greece" },
+  { code: "+31", country: "Netherlands" },
+  { code: "+32", country: "Belgium" },
+  { code: "+33", country: "France" },
+  { code: "+34", country: "Spain" },
+  { code: "+36", country: "Hungary" },
+  { code: "+39", country: "Italy" },
+  { code: "+40", country: "Romania" },
+  { code: "+41", country: "Switzerland" },
+  { code: "+43", country: "Austria" },
+  { code: "+44", country: "United Kingdom" },
+  { code: "+45", country: "Denmark" },
+  { code: "+46", country: "Sweden" },
+  { code: "+47", country: "Norway" },
+  { code: "+48", country: "Poland" },
+  { code: "+49", country: "Germany" },
+  { code: "+51", country: "Peru" },
+  { code: "+52", country: "Mexico" },
+  { code: "+54", country: "Argentina" },
+  { code: "+55", country: "Brazil" },
+  { code: "+56", country: "Chile" },
+  { code: "+57", country: "Colombia" },
+  { code: "+58", country: "Venezuela" },
+  { code: "+60", country: "Malaysia" },
+  { code: "+61", country: "Australia" },
+  { code: "+62", country: "Indonesia" },
+  { code: "+63", country: "Philippines" },
+  { code: "+64", country: "New Zealand" },
+  { code: "+65", country: "Singapore" },
+  { code: "+66", country: "Thailand" },
+  { code: "+81", country: "Japan" },
+  { code: "+82", country: "South Korea" },
+  { code: "+84", country: "Vietnam" },
+  { code: "+86", country: "China" },
+  { code: "+90", country: "Turkey" },
+  { code: "+91", country: "India" },
+  { code: "+92", country: "Pakistan" },
+  { code: "+93", country: "Afghanistan" },
+  { code: "+94", country: "Sri Lanka" },
+  { code: "+98", country: "Iran" },
+  { code: "+212", country: "Morocco" },
+  { code: "+213", country: "Algeria" },
+  { code: "+216", country: "Tunisia" },
+  { code: "+218", country: "Libya" },
+  { code: "+220", country: "Gambia" },
+  { code: "+221", country: "Senegal" },
+  { code: "+233", country: "Ghana" },
+  { code: "+234", country: "Nigeria" },
+  { code: "+254", country: "Kenya" },
+  { code: "+255", country: "Tanzania" },
+  { code: "+256", country: "Uganda" },
+  { code: "+260", country: "Zambia" },
+  { code: "+263", country: "Zimbabwe" },
+  { code: "+351", country: "Portugal" },
+  { code: "+352", country: "Luxembourg" },
+  { code: "+353", country: "Ireland" },
+  { code: "+354", country: "Iceland" },
+  { code: "+355", country: "Albania" },
+  { code: "+358", country: "Finland" },
+  { code: "+359", country: "Bulgaria" },
+  { code: "+370", country: "Lithuania" },
+  { code: "+371", country: "Latvia" },
+  { code: "+372", country: "Estonia" },
+  { code: "+380", country: "Ukraine" },
+  { code: "+381", country: "Serbia" },
+  { code: "+385", country: "Croatia" },
+  { code: "+386", country: "Slovenia" },
+  { code: "+420", country: "Czech Republic" },
+  { code: "+421", country: "Slovakia" },
+  { code: "+509", country: "Haiti" },
+  { code: "+593", country: "Ecuador" },
+  { code: "+598", country: "Uruguay" },
+  { code: "+852", country: "Hong Kong" },
+  { code: "+855", country: "Cambodia" },
+  { code: "+880", country: "Bangladesh" },
+  { code: "+886", country: "Taiwan" },
+  { code: "+960", country: "Maldives" },
+  { code: "+962", country: "Jordan" },
+  { code: "+964", country: "Iraq" },
+  { code: "+966", country: "Saudi Arabia" },
+  { code: "+971", country: "United Arab Emirates" },
+  { code: "+972", country: "Israel" },
+  { code: "+977", country: "Nepal" },
+  { code: "+994", country: "Azerbaijan" },
+];
 
 const MealType = {
   BREAKFAST: "Breakfast",
@@ -85,7 +178,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
   const [time, setTime] = useState("");
   const [amPm, setAmPm] = useState("AM");
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const router = useRouter()
+  const router = useRouter();
   const handleReservationChange = (field: any, value: any) => {
     setReservationDetails((prev) => ({ ...prev, [field]: value }));
   };
@@ -124,8 +217,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       reservationid,
     );
     setIsReservationOpen(false);
-    router.push("/restaurantreservationstatus")
-
+    router.push("/restaurantreservationstatus");
   };
 
   const showReservationButton =
@@ -215,16 +307,13 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                       <SelectValue placeholder="Code" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="+1">+1 (US)</SelectItem>
-                      <SelectItem value="+44">+44 (UK)</SelectItem>
-                      <SelectItem value="+91">+91 (India)</SelectItem>
-                      <SelectItem value="+86">+86 (China)</SelectItem>
-                      <SelectItem value="+81">+81 (Japan)</SelectItem>
-                      <SelectItem value="+49">+49 (Germany)</SelectItem>
-                      <SelectItem value="+33">+33 (France)</SelectItem>
-                      <SelectItem value="+7">+7 (Russia)</SelectItem>
-                      <SelectItem value="+55">+55 (Brazil)</SelectItem>
-                      <SelectItem value="+61">+61 (Australia)</SelectItem>
+                      <ScrollArea className="h-[400px] w-full">
+                        {countryCodes.map(({ code, country }) => (
+                          <SelectItem value={code}>
+                            {code} ({country})
+                          </SelectItem>
+                        ))}
+                      </ScrollArea>
                     </SelectContent>
                   </Select>
                 </div>
