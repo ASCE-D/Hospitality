@@ -214,7 +214,43 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     restaurant.mealType.includes("DINNER") ||
     restaurant.mealType.includes("LUNCH");
 
-  return (
+  const contentRef = useRef<any>(null);
+
+  useEffect(() => {
+    // Prevent zooming
+    const metaViewport = document.querySelector("meta[name=viewport]");
+    const originalContent = metaViewport!.getAttribute("content");
+    metaViewport!.setAttribute(
+      "content",
+      "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
+    );
+
+    // Handle keyboard appearance
+    const handleFocus = () => {
+      setTimeout(() => {
+        if (contentRef.current) {
+          contentRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }, 100);
+    };
+
+    const inputs = document.querySelectorAll("input, textarea");
+    inputs.forEach((input) => input.addEventListener("focus", handleFocus));
+
+    return () => {
+      // Restore original viewport settings
+      metaViewport!.setAttribute("content", originalContent as string);
+      // Remove event listeners
+      inputs.forEach((input) =>
+        input.removeEventListener("focus", handleFocus),
+      );
+    };
+  }, []);
+
+  https: return (
     <div className="container mx-auto p-4">
       <Card>
         <CardHeader>
