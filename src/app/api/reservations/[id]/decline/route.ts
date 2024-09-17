@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/utils/prismaDB";
 import { sendUserNotification2 } from "@/actions/sendusernoti2";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/auth";
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
+  const session = await getServerSession(authOptions);
+  
+  if (!session || !session.user) {
+    return NextResponse.json({ error: "Unauthorized or insufficient permissions" }, { status: 401 });
+  }
 
   try {
     // First, fetch the current reservation

@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/utils/prismaDB";
-
 import { sendUserNotification2 } from "@/actions/sendusernoti2";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/auth";
-
 
 export async function GET(
   request: Request,
@@ -14,14 +12,14 @@ export async function GET(
   const session = await getServerSession(authOptions);
   
   if (!session || !session.user) {
-    return { error: "Unauthorized or insufficient permissions" };
+    return NextResponse.json({ error: "Unauthorized or insufficient permissions" }, { status: 401 });
   }
 
   const userEmail = session.user.email;
   try {
     const currentReservation = await prisma.foodReservation.findUnique({
       where: { id },
-      include: { restaurant: true }, // Include restaurant details
+      include: { restaurant: true },
     });
 
     if (!currentReservation) {
@@ -39,7 +37,6 @@ export async function GET(
 
     await sendUserNotification2(id);
 
-    // Encode reservation details in the URL
     const reservationDetails = encodeURIComponent(JSON.stringify({
       id: updatedReservation.id,
       dateTime: updatedReservation.dateTime.toISOString(),
