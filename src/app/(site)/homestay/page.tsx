@@ -1,21 +1,6 @@
 import React from "react";
-import {
-  Star,
-  MapPin,
-  ThumbsUp,
-  Activity,
-  Phone,
-  Mail,
-  Wifi,
-  Clock,
-} from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Phone, Mail, Clock } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,7 +11,7 @@ const hotels = [
     name: "EL’s CAPITAL APARTMENTS",
     image: "/images/hotels/header.png",
     description:
-      "EL’s Capital S.r.l. offers high-quality host services, ensuring an unforgettable stay thanks to our commitment, experience and attention to detail. With precise knowledge of the area and a dedicated team, we strive to provide a welcoming environment and impeccable service for an authentic and unmatched experience. EL’s Capital S.r.l. offers high-quality host services, ensuring an unforgettable stay thanks to our commitment, experience and attention to detail. With precise knowledge of the area and a dedicated team, we strive to provide a welcoming environment and impeccable service for an authentic and unmatched experience. ",
+      "EL’s Capital S.r.l. offers high-quality host services, ensuring an unforgettable stay thanks to our commitment, experience and attention to details. With precise knowledge of the area and a dedicated team, we strive to provide a welcoming environment and impeccable service for an authentic and unmatched experience. ",
     price: "$299", // Keeping this as is since no new price information was provided
     rating: 4.8, // Keeping this as is since no new rating information was provided
     location: "Vico Dei Cartai 1, int 5, 16123, Genova",

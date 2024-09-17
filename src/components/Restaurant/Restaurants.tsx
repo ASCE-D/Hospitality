@@ -42,6 +42,7 @@ import { sendRestaurantWhatsapp2 } from "@/actions/sendrestaurantwhatsapp2";
 import { sendrestaurantemail2 } from "@/actions/sendrestaurantemail2";
 import toast from "react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";
+import { format } from "date-fns";
 const { restaurants } = restaurantsData;
 
 const countryCodes = [
@@ -174,18 +175,24 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     dateTime: new Date(),
     restaurantId: restaurant.id,
   });
-  const [date, setDate] = React.useState<Date>(new Date());
-  const [time, setTime] = useState("");
-  const [amPm, setAmPm] = useState("AM");
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   const router = useRouter();
+
   const handleReservationChange = (field: any, value: any) => {
     setReservationDetails((prev) => ({ ...prev, [field]: value }));
   };
 
+  const isFormValid = () => {
+    return (
+      reservationDetails.firstName.trim() !== "" &&
+      reservationDetails.lastName.trim() !== "" &&
+      reservationDetails.phoneNumber.trim() !== ""
+    );
+  };
+
   const handleMakeReservation = async (e: any) => {
     e.preventDefault();
-    console.log("Reservation made:", reservationDetails);
+    console.log("Reservation details:", reservationDetails);
     const result = await createFoodReservation(reservationDetails);
     console.log("wow", result);
     let reservationid;
@@ -208,6 +215,21 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     );
     setIsReservationOpen(false);
     router.push("/restaurantreservationstatus");
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (isFormValid()) {
+      handleMakeReservation(e);
+    } else {
+      toast.error(
+        "Please enter your first name, last name, and phone number.",
+        {
+          duration: 3000,
+          position: "bottom-center",
+        },
+      );
+    }
   };
 
   const showReservationButton =
@@ -250,7 +272,12 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     };
   }, []);
 
-  https: return (
+  const formatDateForInput = (date: Date) => {
+    if (!date) return "";
+    return format(date, "yyyy-MM-dd'T'HH:mm");
+  };
+
+  return (
     <div className="container mx-auto p-4">
       <Card>
         <CardHeader>
@@ -265,17 +292,26 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
         </CardHeader>
         <CardContent>
           <p className="mb-4 text-gray-600">{restaurant.description}</p>
-          <Link href={restaurant.location}>
-            <div className="mb-2 flex items-center underline ">
-              {" "}
-              <MapPin size={28} className="mr-2" />
-              <span className="text-blue-500">{restaurant.address}</span>
-            </div>
-          </Link>
+          {!showReservationButton && (
+            <Link href={restaurant.location}>
+              <div className="mb-2 flex items-center underline ">
+                {" "}
+                <MapPin size={28} className="mr-2" />
+                <span className="text-blue-500">{restaurant.address}</span>
+              </div>
+            </Link>
+          )}
           <div className="mb-4 flex items-center">
-            <Clock size={16} className="mr-2" />
+            <Clock size={24} className="mr-2" />
             <span>{restaurant.hours}</span>
           </div>
+          {!showReservationButton && (
+            <div className="mb-4 flex items-center">
+              <Phone size={24} className="mr-2" />
+              <span>{restaurant.phone}</span>
+            </div>
+          )}
+          {restaurant.notes !== "" && <Label>{restaurant.notes} </Label>}
         </CardContent>
         {showReservationButton && (
           <CardFooter>
@@ -297,7 +333,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                 Reserve a table at {restaurant.name}
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleMakeReservation} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
@@ -307,6 +343,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                     onChange={(e) =>
                       handleReservationChange("firstName", e.target.value)
                     }
+                    required={true}
                   />
                 </div>
                 <div className="space-y-2">
@@ -317,6 +354,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                     onChange={(e) =>
                       handleReservationChange("lastName", e.target.value)
                     }
+                    required={true}
                   />
                 </div>
               </div>
@@ -351,6 +389,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                     onChange={(e) =>
                       handleReservationChange("phoneNumber", e.target.value)
                     }
+                    required={true}
                   />
                 </div>
               </div>
@@ -379,11 +418,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                 <Input
                   id="dateTime"
                   type="datetime-local"
-                  value={
-                    reservationDetails.dateTime
-                      ? reservationDetails.dateTime.toISOString().slice(0, 16)
-                      : ""
-                  }
+                  value={formatDateForInput(reservationDetails.dateTime)}
                   onChange={(e) =>
                     handleReservationChange(
                       "dateTime",

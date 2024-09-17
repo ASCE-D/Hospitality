@@ -14,7 +14,7 @@ const StarRating = ({ rating }: { rating: number }) => {
     } else if (i - rating < 1) {
       // Half star
       stars.push(
-        <StarHalf
+        <Star
           key={i}
           fill="#FFD700"
           stroke="#FFD700"

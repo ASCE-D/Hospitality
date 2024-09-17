@@ -2,15 +2,7 @@
 
 import React from "react";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import { ArrowBigRight, ArrowBigRightIcon } from "lucide-react";
