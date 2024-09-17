@@ -24,6 +24,14 @@ import {
 import { Clock, Briefcase, PlusCircle } from "lucide-react";
 import { stripe } from "@/actions/stripe";
 import { useRouter } from "next/navigation";
+import { format, parse, addMinutes } from "date-fns";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Feature {
   title: string;
@@ -117,10 +125,24 @@ const ImproveYourStay = () => {
     const renderFeatureSpecificFields = () => {
       switch (feature.title) {
         case "Early Check-in":
+          const generateTimeOptions = () => {
+            const options = [];
+            let currentTime = parse("12:00", "HH:mm", new Date());
+            const endTime = parse("23:30", "HH:mm", new Date());
+
+            while (currentTime <= endTime) {
+              options.push(format(currentTime, "HH:mm"));
+              currentTime = addMinutes(currentTime, 30);
+            }
+
+            return options;
+          };
+
+          const timeOptions = generateTimeOptions();
           return (
             <>
               <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="date">Day</Label>
+                <Label htmlFor="date">Date</Label>
                 <Input
                   type="date"
                   id="date"
@@ -129,14 +151,21 @@ const ImproveYourStay = () => {
                 />
               </div>
               <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="time">Time (12 PM onwards)</Label>
-                <Input
-                  type="time"
-                  id="time"
-                  min="12:00"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                />
+                <Label htmlFor="time">
+                  Time (12 PM onwards)
+                </Label>
+                <Select value={time} onValueChange={setTime}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a time" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {timeOptions.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {format(parse(option, "HH:mm", new Date()), "h:mm a")}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </>
           );
