@@ -41,7 +41,7 @@ export async function sendRestaurantWhatsapp2(
     console.log("we are here ");
 
     // Generate accept and decline URLs
-    const acceptUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/accept`;
+    const acceptUrl = `http://localhost:3000/api/reservations/${reservationId}/accept`;
     const declineUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/decline`;
 
     // Construct the message with accept and decline links
@@ -68,8 +68,8 @@ Note: These links will only work if the reservation status is still pending.
       client.messages.create({
         body: message,
         from: "whatsapp:+14155238886", // Your Twilio WhatsApp number
-        // to: 'whatsapp:+919929840831'
-        to: 'whatsapp:+393283631642'
+        to: 'whatsapp:+919929840831'
+        // to: 'whatsapp:+393283631642'
         // to: `whatsapp:+${device.countryCode}${device.phoneNumber}`,
       }),
     );

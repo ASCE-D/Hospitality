@@ -74,8 +74,8 @@ Restaurant Phone: ${restaurantPhone}
             body: message,
             from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
             //  to: `whatsapp:+${countryCode}${phoneNumber}`
-        //    to: 'whatsapp:+919929840831'
-        to: 'whatsapp:+393483768922'
+           to: 'whatsapp:+919929840831'
+        // to: 'whatsapp:+393483768922'
         })
 
     console.log("WhatsApp message sent:", twilioMessage.sid);
