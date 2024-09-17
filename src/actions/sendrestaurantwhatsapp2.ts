@@ -42,7 +42,7 @@ export async function sendRestaurantWhatsapp2(
 
     // Generate accept and decline URLs
     const acceptUrl = `http://localhost:3000/api/reservations/${reservationId}/accept`;
-    const declineUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/decline`;
+    const declineUrl = `https://hospitality-git-dev-asceds-projects.vercel.app/api/reservations/${reservationId}/decline`;
 
     // Construct the message with accept and decline links
     const message = `
