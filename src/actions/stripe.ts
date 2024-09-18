@@ -17,7 +17,7 @@ export async function stripe(data: PaymentData) {
     line_items: [
       {
         price_data: {
-          currency: 'eur',
+          currency: "eur",
           product_data: {
             name: data.feature,
             description: `${data.feature} service for ${data.firstName} ${data.lastName}`,
@@ -28,8 +28,8 @@ export async function stripe(data: PaymentData) {
       },
     ],
     mode: "payment",
-    success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`,
+    success_url: `https://hospitality-liart.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `https://hospitality-liart.vercel.app/cancel`,
     metadata: {
       firstName: data.firstName,
       lastName: data.lastName,
