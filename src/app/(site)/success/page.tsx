@@ -113,8 +113,6 @@ const StripePaymentResponse = () => {
         )}
 
         <div className="mt-6 text-center">
-          {/* You can add a button here to return to the homepage or perform another action */}
-          {/* <Button className="w-full">Return to Homepage</Button> */}
         </div>
       </div>
     </div>
