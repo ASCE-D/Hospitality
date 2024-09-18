@@ -6,13 +6,16 @@ const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL
 
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
   try {
-    const response = await fetch(`${whatsappServiceUrl}/send-whatsapp`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `https://whatsappservice-nqhu.onrender.com/send-whatsapp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumbers, message }),
       },
-      body: JSON.stringify({ phoneNumbers, message }),
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

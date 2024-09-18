@@ -2,18 +2,21 @@
 
 import { prisma } from "@/utils/prismaDB";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
-const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL;
 
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
   try {
-    const response = await fetch(`${whatsappServiceUrl}/send-whatsapp`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `https://whatsappservice-nqhu.onrender.com/send-whatsapp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumbers, message }),
       },
-      body: JSON.stringify({ phoneNumbers, message }),
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -22,8 +25,11 @@ async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Error sending WhatsApp message:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    console.error("Error sending WhatsApp message:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 }
 
@@ -34,7 +40,7 @@ export async function sendRestaurantWhatsapp3(
   reservationStatus: any,
 ) {
   console.log("Reservation details:", reservationDetails);
-  
+
   try {
     // Find the restaurant and its associated devices
     const restaurant = await prisma.restaurant.findUnique({
@@ -64,7 +70,6 @@ export async function sendRestaurantWhatsapp3(
     const acceptUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/accept`;
     const declineUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/decline`;
 
-
     // Construct the message with accept and decline links
     const message = `
 New Reservation at ${restaurant.name}!
@@ -85,7 +90,9 @@ Note: These links will only work if the reservation status is still pending.
     `;
 
     // Prepare phone numbers
-    const phoneNumbers = restaurant.devices.map(device => `${device.countryCode}${device.phoneNumber}`);
+    const phoneNumbers = restaurant.devices.map(
+      (device) => `${device.countryCode}${device.phoneNumber}`,
+    );
 
     // Send WhatsApp message
     const result = await sendWhatsAppMessage(phoneNumbers, message);
@@ -103,12 +110,12 @@ Note: These links will only work if the reservation status is still pending.
         error: result.error,
       };
     }
-
   } catch (error) {
     console.error("Error in sendRestaurantWhatsapp2:", error);
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'An unknown error occurred' 
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "An unknown error occurred",
     };
   }
 }
