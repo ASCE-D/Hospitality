@@ -82,7 +82,8 @@ const StripePaymentResponse = () => {
             <h2 className="mb-4 text-2xl font-bold">Payment Details</h2>
             <ul className="space-y-2">
               <li>
-                <strong>Amount:</strong> ${paymentDetails.amount_total / 100}
+                <strong>Amount:</strong> {paymentDetails.currency}
+                {paymentDetails.amount_total / 100}
               </li>
               <li>
                 <strong>Currency:</strong>{" "}
