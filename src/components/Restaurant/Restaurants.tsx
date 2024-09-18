@@ -38,7 +38,7 @@ import { createFoodReservation } from "@/actions/foodreservation";
 import StarRating from "../Common/StarRating";
 // import { sendRestaurantWhatsapp } from "@/actions/sendrestaurantwhatsapp";
 import restaurantsData from "@/utils/restaurants.json";
-import { sendRestaurantWhatsapp2 } from "@/actions/sendrestaurantwhatsapp2";
+// import { sendRestaurantWhatsapp2 } from "@/actions/sendrestaurantwhatsapp2";
 import { sendrestaurantemail2 } from "@/actions/sendrestaurantemail2";
 import toast from "react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";
