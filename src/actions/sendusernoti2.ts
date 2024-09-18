@@ -36,7 +36,7 @@ export async function sendUserNotification2(foodReservationId: string) {
 
     // Get restaurant phone number (assuming it's the first device's number)
     const restaurantPhone = restaurant.devices[0]
-      ? `+${restaurant.devices[0].countryCode}${restaurant.devices[0].phoneNumber}`
+      ? `${restaurant.devices[0].countryCode}${restaurant.devices[0].phoneNumber}`
       : "Not available";
 
         // Prepare the message based on the reservation status
@@ -74,8 +74,8 @@ Restaurant Phone: ${restaurantPhone}
             body: message,
             from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
             //  to: `whatsapp:+${countryCode}${phoneNumber}`
-        //    to: 'whatsapp:+919929840831'
-        to: 'whatsapp:+393483768922'
+           to: 'whatsapp:+919929840831'
+        // to: 'whatsapp:+393483768922'
         })
 
     console.log("WhatsApp message sent:", twilioMessage.sid);

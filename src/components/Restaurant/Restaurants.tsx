@@ -43,6 +43,7 @@ import { sendrestaurantemail2 } from "@/actions/sendrestaurantemail2";
 import toast from "react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";
 import { format } from "date-fns";
+import { sendRestaurantWhatsapp3 } from "@/actions/sendrestaurantwhatsapp3";
 const { restaurants } = restaurantsData;
 
 const countryCodes = [
@@ -202,7 +203,13 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       reservationStatus = result?.reservation?.status;
       toast.success("You reservation request has been sent we'll inform you");
     }
-    await sendRestaurantWhatsapp2(
+    // await sendRestaurantWhatsapp2(
+    //   reservationDetails.restaurantId,
+    //   reservationDetails,
+    //   reservationid,
+    //   reservationStatus,
+    // );
+    await sendRestaurantWhatsapp3(
       reservationDetails.restaurantId,
       reservationDetails,
       reservationid,

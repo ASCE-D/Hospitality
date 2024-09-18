@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/utils/prismaDB";
-import { sendUserNotification2 } from "@/actions/sendusernoti2";
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/auth";
+import { sendUserNotification3 } from "@/actions/sendusernoti3";
 
 export async function GET(
   request: Request,
@@ -39,7 +40,7 @@ export async function GET(
     });
 
     // Send notification to the user
-    await sendUserNotification2(id);
+    await sendUserNotification3(id);
 
     // Redirect to a confirmation page
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/status?status=false`);

@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/utils/prismaDB";
-
-import { sendUserNotification2 } from "@/actions/sendusernoti2";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/auth";
+
+import { sendUserNotification3 } from "@/actions/sendusernoti3";
+// import { sendUserNotification3 } from "@/actions/sendusernoti3";
 
 export async function GET(
   request: Request,
@@ -31,14 +32,14 @@ export async function GET(
     if (currentReservation.status !== "PENDING") {
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/reservation-error?message=Reservation is no longer pending`);
     }
-
+console.log("yme")
     const updatedReservation = await prisma.foodReservation.update({
       where: { id },
       data: { status: "CONFIRMED" },
     });
-
-    await sendUserNotification2(id);
-
+console.log("hereeee")
+    await sendUserNotification3(id);
+    console.log("124")
     // Encode reservation details in the URL
     const reservationDetails = encodeURIComponent(JSON.stringify({
       id: updatedReservation.id,
