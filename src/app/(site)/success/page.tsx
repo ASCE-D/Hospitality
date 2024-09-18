@@ -112,8 +112,9 @@ const StripePaymentResponse = () => {
           </div>
         )}
 
-        <div className="mt-6 text-center">
-        </div>
+        <a className="mt-6 text-center" href="/">
+          Click here to go back to home
+        </a>
       </div>
     </div>
   );
