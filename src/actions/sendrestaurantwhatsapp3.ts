@@ -1,10 +1,15 @@
 "use server";
 
-
 import { prisma } from "@/utils/prismaDB";
+import { format } from "date-fns";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL;
+
+const formatDateForInput = (date: Date) => {
+  if (!date) return "";
+  return format(date, "yyyy-MM-dd'T'HH:mm");
+};
 
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
   try {
@@ -75,7 +80,7 @@ export async function sendRestaurantWhatsapp3(
     const message = `
 New Reservation at ${restaurant.name}!
 Reservation ID: ${reservationId}
-Date & Time: ${reservationDetails.dateTime}
+Date & Time: ${formatDateForInput(reservationDetails.dateTime)}
 Party Size: ${reservationDetails.seats}
 Customer: ${reservationDetails.firstName} ${reservationDetails.lastName}
 Status: ${reservationStatus}

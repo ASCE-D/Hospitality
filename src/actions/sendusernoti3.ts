@@ -1,9 +1,10 @@
 "use server";
 
 import { prisma } from "@/utils/prismaDB";
-import {restaurants as r} from "@/utils/restaurants.json"
+import { restaurants as r } from "@/utils/restaurants.json";
+import { format } from "date-fns";
 
-const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL 
+const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL;
 
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
   try {
@@ -25,13 +26,21 @@ async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error('Error sending WhatsApp message:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    console.error("Error sending WhatsApp message:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 }
 
+const formatDateForInput = (date: Date) => {
+  if (!date) return "";
+  return format(date, "yyyy-MM-dd'T'HH:mm");
+};
+
 export async function sendUserNotification3(foodReservationId: string) {
-  console.log('we are herrrrrrrreeeeeeee')
+  console.log("we are herrrrrrrreeeeeeee");
   try {
     // Find the food reservation
     const foodReservation = await prisma.foodReservation.findUnique({
@@ -63,14 +72,14 @@ export async function sendUserNotification3(foodReservationId: string) {
       : "Not available";
 
     // Prepare the message based on the reservation status
-    let message = '';
-    if (status === 'CONFIRMED') {
-      message = `Great news! Your reservation at ${restaurant.name} has been confirmed for ${dateTime.toLocaleString()}. Party size: ${seats}.
+    let message = "";
+    if (status === "CONFIRMED") {
+      message = `Great news! Your reservation at ${restaurant.name} has been confirmed for ${formatDateForInput(dateTime)}. Party size: ${seats}.
                  \nRestaurant Address: ${restaurant.address}\n
                  \nGoogle Maps: ${googleMapsLink}\n
                  \nRestaurant Phone: ${restaurantPhone}\n
                  \nWe look forward to seeing you!`;
-    } else if (status === 'REJECTED') {
+    } else if (status === "REJECTED") {
       message = `We're sorry, but your reservation at ${restaurant.name} for ${dateTime.toLocaleString()} has been declined. Please contact the restaurant for more information or to make alternative arrangements.
                  Restaurant Phone: ${restaurantPhone}`;
     } else {
@@ -82,10 +91,10 @@ export async function sendUserNotification3(foodReservationId: string) {
 
     // Prepare phone numbers
     const phoneNumbers = [`${countryCode}${phoneNumber}`];
-    console.log("haeeeeeeeeeeeeeeeeeeeee",phoneNumber)
+    console.log("haeeeeeeeeeeeeeeeeeeeee", phoneNumber);
     // Send the WhatsApp message
     const result = await sendWhatsAppMessage(phoneNumbers, message);
-    console.log("yooooooooooooo",result)
+    console.log("yooooooooooooo", result);
 
     if (result.success) {
       console.log("WhatsApp message sent:", result.data);
@@ -94,9 +103,12 @@ export async function sendUserNotification3(foodReservationId: string) {
       console.error("Failed to send WhatsApp message:", result.error);
       return { success: false, error: result.error };
     }
-
   } catch (error) {
     console.error("Error sending WhatsApp message:", error);
-    return { success: false, error: error instanceof Error ? error.message : 'An unknown error occurred' };
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "An unknown error occurred",
+    };
   }
 }
