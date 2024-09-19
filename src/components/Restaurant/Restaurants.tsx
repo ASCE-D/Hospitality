@@ -42,6 +42,7 @@ import toast from "react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";
 import { sendRestaurantWhatsapp3 } from "@/actions/sendrestaurantwhatsapp3";
 import { useSession } from "next-auth/react";
+import { sendRestaurantEmail3 } from "@/actions/sendRestaurant3";
 const { restaurants } = restaurantsData;
 
 const countryCodes = [
@@ -230,7 +231,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
         reservationid,
         reservationStatus,
       );
-      await sendrestaurantemail2(
+      await sendRestaurantEmail3(
         reservationDetails.restaurantId,
         reservationDetails,
         reservationid,

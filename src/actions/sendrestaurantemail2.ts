@@ -34,7 +34,7 @@ export async function sendrestaurantemail2(restaurantId: string, reservationdeta
     const { data, error } = await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>',
       // to: restaurant.owner.email,
-      to: "ashispandey138c@gmail.com",
+      to: "deepeshgenani@gmail.com",
       subject: 'New Reservation Request',
       react: EmailTemplate2({ 
         firstName: restaurant.owner.name || 'Restaurant Owner', 
