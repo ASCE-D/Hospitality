@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/utils/prismaDB";
+import {restaurants as r} from "@/utils/restaurants.json"
 
 const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL 
 
@@ -54,7 +55,7 @@ export async function sendUserNotification3(foodReservationId: string) {
     }
 
     // Create Google Maps link
-    const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurant.address)}`;
+    const googleMapsLink = r.find((r) => r.id === restaurant.id)?.location;
 
     // Get restaurant phone number (assuming it's the first device's number)
     const restaurantPhone = restaurant.devices[0]
@@ -64,29 +65,24 @@ export async function sendUserNotification3(foodReservationId: string) {
     // Prepare the message based on the reservation status
     let message = '';
     if (status === 'CONFIRMED') {
-      message = `
-        Great news! Your reservation at ${restaurant.name} has been confirmed for ${dateTime.toLocaleString()}. Party size: ${seats}.
-        
-        Restaurant Address: ${restaurant.address}
-        Google Maps: ${googleMapsLink}
-        Restaurant Phone: ${restaurantPhone}
-
-        We look forward to seeing you!`;
+      message = `Great news! Your reservation at ${restaurant.name} has been confirmed for ${dateTime.toLocaleString()}. Party size: ${seats}.
+                 \nRestaurant Address: ${restaurant.address}\n
+                 \nGoogle Maps: ${googleMapsLink}\n
+                 \nRestaurant Phone: ${restaurantPhone}\n
+                 \nWe look forward to seeing you!`;
     } else if (status === 'REJECTED') {
       message = `We're sorry, but your reservation at ${restaurant.name} for ${dateTime.toLocaleString()} has been declined. Please contact the restaurant for more information or to make alternative arrangements.
-
-      Restaurant Phone: ${restaurantPhone}`;
+                 Restaurant Phone: ${restaurantPhone}`;
     } else {
       message = `Your reservation at ${restaurant.name} is ${status.toLowerCase()} for ${dateTime.toLocaleString()}. Party size: ${seats}. We'll update you when the status changes.
-
-      Restaurant Address: ${restaurant.address}
-      Google Maps: ${googleMapsLink}
-      Restaurant Phone: ${restaurantPhone}`;
+                 Restaurant Address: ${restaurant.address}
+                 Google Maps: ${googleMapsLink}
+                 Restaurant Phone: ${restaurantPhone}`;
     }
 
     // Prepare phone numbers
     const phoneNumbers = [`${countryCode}${phoneNumber}`];
-console.log("haeeeeeeeeeeeeeeeeeeeee",phoneNumber)
+    console.log("haeeeeeeeeeeeeeeeeeeeee",phoneNumber)
     // Send the WhatsApp message
     const result = await sendWhatsAppMessage(phoneNumbers, message);
     console.log("yooooooooooooo",result)

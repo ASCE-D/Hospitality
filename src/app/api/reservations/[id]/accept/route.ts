@@ -49,6 +49,7 @@ console.log("hereeee")
       lastName: updatedReservation.lastName,
       status: updatedReservation.status,
       phoneNumber: updatedReservation.phoneNumber,
+      countryCode : updatedReservation.countryCode,
       restaurantName: currentReservation.restaurant.name,
       restaurantAddress: currentReservation.restaurant.address,
     }));

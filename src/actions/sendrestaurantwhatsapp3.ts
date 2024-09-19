@@ -79,7 +79,7 @@ Date & Time: ${reservationDetails.dateTime}
 Party Size: ${reservationDetails.seats}
 Customer: ${reservationDetails.firstName} ${reservationDetails.lastName}
 Status: ${reservationStatus}
-Phone Number: ${reservationDetails.phoneNumber}
+Phone Number:${reservationDetails.countryCode} ${reservationDetails.phoneNumber}
 
 To accept this reservation, click here:
 ${acceptUrl}

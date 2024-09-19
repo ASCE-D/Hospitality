@@ -53,7 +53,7 @@ const AcceptDeclinePage = () => {
               <li><strong>Party Size:</strong> {reservationDetails.seats}</li>
               <li><strong>Customer:</strong> {`${reservationDetails.firstName} ${reservationDetails.lastName}`}</li>
               <li><strong>Status:</strong> {reservationDetails.status}</li>
-              <li><strong>Phone:</strong> {reservationDetails.phoneNumber}</li>
+              <li><strong>Phone:</strong> {reservationDetails.countryCode} {reservationDetails.phoneNumber}</li>
               <li><strong>Restaurant:</strong> {reservationDetails.restaurantName}</li>
               <li><strong>Address:</strong> {reservationDetails.restaurantAddress}</li>
             </ul>
