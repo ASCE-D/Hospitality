@@ -11,7 +11,6 @@ const formatDateForInput = (date: Date) => {
   return format(date, "yyyy-MM-dd'T'HH:mm");
 };
 
-
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
   try {
     const response = await fetch(
@@ -77,11 +76,20 @@ export async function sendRestaurantWhatsapp3(
     const acceptUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/accept`;
     const declineUrl = `https://hospitality-liart.vercel.app/api/reservations/${reservationId}/decline`;
 
+    const foodReservation = await prisma.foodReservation.findUnique({
+      where: { id: reservationId },
+      include: {
+        restaurant: {
+          include: { devices: true }, // Include devices to get the restaurant's phone number
+        },
+      },
+    });
+
     // Construct the message with accept and decline links
     const message = `
 New Reservation at ${restaurant.name}!
 Reservation ID: ${reservationId}
-Date & Time: ${formatDateForInput(reservationDetails.dateTime)}
+Date & Time: ${formatDateForInput(foodReservation?.dateTime as any)}
 Party Size: ${reservationDetails.seats}
 Customer: ${reservationDetails.firstName} ${reservationDetails.lastName}
 Status: ${reservationStatus}
