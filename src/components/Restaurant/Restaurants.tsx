@@ -28,10 +28,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { DatePicker } from "@/components/Common/Datepicker";
-import { sendresendemail } from "@/actions/sendemail";
-import { sendMessage } from "@/actions/sendwhatsapp";
-import { useSession } from "next-auth/react";
+import { format, parseISO } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
 import { useRouter } from "next/navigation";
 import { createFoodReservation } from "@/actions/foodreservation";
 // import { sendrestaurantemail } from "@/actions/sendrestaurantemail";
@@ -42,8 +40,8 @@ import restaurantsData from "@/utils/restaurants.json";
 import { sendrestaurantemail2 } from "@/actions/sendrestaurantemail2";
 import toast from "react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";
-import { format } from "date-fns";
 import { sendRestaurantWhatsapp3 } from "@/actions/sendrestaurantwhatsapp3";
+import { useSession } from "next-auth/react";
 const { restaurants } = restaurantsData;
 
 const countryCodes = [
@@ -193,8 +191,25 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
 
   const handleMakeReservation = async (e: any) => {
     e.preventDefault();
-    console.log("Reservation details:", reservationDetails);
-    const result = await createFoodReservation(reservationDetails);
+
+    const reservationToSend = { ...reservationDetails };
+
+    // Convert the dateTime string to a Date object while preserving local time
+    if (reservationToSend.dateTime) {
+      const localDate = new Date(reservationToSend.dateTime);
+      const utcDate = new Date(
+        Date.UTC(
+          localDate.getFullYear(),
+          localDate.getMonth(),
+          localDate.getDate(),
+          localDate.getHours(),
+          localDate.getMinutes(),
+        ),
+      );
+      reservationToSend.dateTime = utcDate;
+    }
+    console.log("Reservation details to send:", reservationToSend);
+    const result = await createFoodReservation(reservationToSend);
     console.log("wow", result);
     let reservationid;
     let reservationStatus;
@@ -202,26 +217,29 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       reservationid = result?.reservation?.id;
       reservationStatus = result?.reservation?.status;
       toast.success("You reservation request has been sent we'll inform you");
+
+      // await sendRestaurantWhatsapp2(
+      //   reservationDetails.restaurantId,
+      //   reservationDetails,
+      //   reservationid,
+      //   reservationStatus,
+      // );
+      await sendRestaurantWhatsapp3(
+        reservationDetails.restaurantId,
+        reservationDetails,
+        reservationid,
+        reservationStatus,
+      );
+      await sendrestaurantemail2(
+        reservationDetails.restaurantId,
+        reservationDetails,
+        reservationid,
+      );
+      setIsReservationOpen(false);
+      router.push("/restaurantreservationstatus");
+    } else {
+      toast.error("Please try again");
     }
-    // await sendRestaurantWhatsapp2(
-    //   reservationDetails.restaurantId,
-    //   reservationDetails,
-    //   reservationid,
-    //   reservationStatus,
-    // );
-    await sendRestaurantWhatsapp3(
-      reservationDetails.restaurantId,
-      reservationDetails,
-      reservationid,
-      reservationStatus,
-    );
-    await sendrestaurantemail2(
-      reservationDetails.restaurantId,
-      reservationDetails,
-      reservationid,
-    );
-    setIsReservationOpen(false);
-    router.push("/restaurantreservationstatus");
   };
 
   const handleSubmit = (e: any) => {
@@ -429,7 +447,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                   onChange={(e) =>
                     handleReservationChange(
                       "dateTime",
-                      new Date(e.target.value),
+                      parseISO(e.target.value),
                     )
                   }
                 />

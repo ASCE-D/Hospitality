@@ -8,7 +8,7 @@ const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL;
 
 const formatDateForInput = (date: Date) => {
   if (!date) return "";
-  return format(date, "yyyy-MM-dd'T'HH:mm");
+  return format(date, "PPPp");
 };
 
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
