@@ -7,7 +7,7 @@ const whatsappServiceUrl = process.env.WHATSAPP_SERVICE_URL
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
   try {
     const response = await fetch(
-      `https://whatsappservice-nqhu.onrender.com/send-whatsapp`,
+      `https://whatsappservice-lykx.onrender.com/send-whatsapp`,
       {
         method: "POST",
         headers: {
