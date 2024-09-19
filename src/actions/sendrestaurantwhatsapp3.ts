@@ -81,7 +81,7 @@ export async function sendRestaurantWhatsapp3(
     const message = `
 New Reservation at ${restaurant.name}!
 Reservation ID: ${reservationId}
-Date & Time: ${formatDateForInput(reservationDetails.dateTime)}
+Date & Time: ${reservationDetails.dateTime.toLocaleString()}
 Party Size: ${reservationDetails.seats}
 Customer: ${reservationDetails.firstName} ${reservationDetails.lastName}
 Status: ${reservationStatus}
