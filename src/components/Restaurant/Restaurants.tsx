@@ -330,7 +330,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
             <Clock size={24} className="mr-2" />
             <span>{restaurant.hours}</span>
           </div>
-          {!showReservationButton && (
+          {!showReservationButton && restaurant.phone !== "" && (
             <div className="mb-4 flex items-center">
               <Phone size={24} className="mr-2" />
               <span>{restaurant.phone}</span>

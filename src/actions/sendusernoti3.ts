@@ -74,13 +74,13 @@ export async function sendUserNotification3(foodReservationId: string) {
     // Prepare the message based on the reservation status
     let message = "";
     if (status === "CONFIRMED") {
-      message = `Great news! Your reservation at ${restaurant.name} has been confirmed for ${formatDateForInput(dateTime)}. Party size: ${seats}.
+      message = `Great news! Your reservation at ${restaurant.name} has been CONFIRMED for ${formatDateForInput(dateTime)}. Party size: ${seats}.
                  \nRestaurant Address: ${restaurant.address}\n
                  \nGoogle Maps: ${googleMapsLink}\n
                  \nRestaurant Phone: ${restaurantPhone}\n
                  \nWe look forward to seeing you!`;
     } else if (status === "REJECTED") {
-      message = `We're sorry, but your reservation at ${restaurant.name} for ${dateTime.toLocaleString()} has been declined. Please contact the restaurant for more information or to make alternative arrangements.
+      message = `We're sorry, but your reservation at ${restaurant.name} for ${dateTime.toLocaleString()} has been DECLINED as the restaurant is fully booked. Please contact the restaurant for more information or to make alternative arrangements.
                  Restaurant Phone: ${restaurantPhone}`;
     } else {
       message = `Your reservation at ${restaurant.name} is ${status.toLowerCase()} for ${dateTime.toLocaleString()}. Party size: ${seats}. We'll update you when the status changes.
