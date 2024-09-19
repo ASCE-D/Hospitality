@@ -37,7 +37,6 @@
 //     );
 //   }
 // }
-
 // export const config = {
 //   matcher: [
 //     // Skip all internal paths (_next)
