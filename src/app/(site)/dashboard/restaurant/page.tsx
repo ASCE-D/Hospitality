@@ -35,7 +35,7 @@ export default async function RestaurantDashboard() {
   const restaurant = await getRestaurant(session?.user?.email as string);
 
   if (!session || !restaurant) {
-    redirect("/login");
+    redirect("/signin");
   }
 
   const reservations = await getRestaurantReservations(restaurant.ownerId);

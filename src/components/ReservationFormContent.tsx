@@ -26,7 +26,7 @@ export default function ReservationFormContent({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!session) {
-      router.push("/login");
+      router.push("/signin");
       return;
     }
 

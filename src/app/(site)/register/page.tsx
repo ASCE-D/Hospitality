@@ -22,7 +22,7 @@ export default function Register() {
     });
 
     if (response.ok) {
-      router.push("/login");
+      router.push("/signin");
     } else {
       // Handle errors
     }

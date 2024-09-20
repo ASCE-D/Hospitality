@@ -27,7 +27,7 @@ async function getSpecificFoodReservation(reservationId: string) {
 export default async function SpecificReservationPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   if (!session) {
-    redirect("/login");
+    redirect("/signin");
   }
 
   const restaurant = await getRestaurant(session.user?.email as string);

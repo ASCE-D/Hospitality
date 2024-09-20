@@ -18,7 +18,7 @@ export default function UserDashboard() {
 
   useEffect(() => {
     if (!session) {
-      router.push("/login");
+      router.push("/signin");
     }
   }, [session, router]);
 
