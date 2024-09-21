@@ -538,9 +538,6 @@ export const ReservationManagementContent = ({
                       <TableHeader>
                         <TableRow>
                           <TableHead>Customer</TableHead>
-                          <TableHead className="hidden sm:table-cell">
-                            Type
-                          </TableHead>
                           <TableHead className="sm:table-cell">Date</TableHead>
                           <TableHead className="sm:table-cell">
                             Status
@@ -565,11 +562,11 @@ export const ReservationManagementContent = ({
                             <TableCell className="sm:table-cell">
                               <div className="flex flex-col">
                                 <span>
-                                  {format(selectedReservation.dateTime, "PPPP")}
+                                  {format(reservation.dateTime, "PPPP")}
                                 </span>
                                 <span className="text-sm text-muted-foreground">
                                   Time:{" "}
-                                  {format(selectedReservation.dateTime, "p")}
+                                  {format(reservation.dateTime, "p")}
                                 </span>
                               </div>
                             </TableCell>

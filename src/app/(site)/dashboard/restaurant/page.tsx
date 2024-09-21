@@ -23,7 +23,7 @@ async function getRestaurantReservations(ownerId: string) {
       // },
       foodReservation:{
         include: { user: true },
-        orderBy: {dateTime:"asc"}
+        orderBy: {createdAt:"desc"}
       }
     },
   });
