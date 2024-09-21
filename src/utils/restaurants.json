@@ -217,26 +217,6 @@
       "mealType": [
         "APPETIZER"
       ]
-    },
-    {
-      "id": "cm145fysv000711uyrwqbxu4f",
-      "name": "Elseexperience's Restaurant",
-      "image": [
-        "/images/restaurants/app/M.jpg"
-      ],
-      "recommended": false,
-      "description": "Enjoy refined aperitifs and delicious bites in a stylish environment in the center of Genova",
-      "rating": 4.6,
-      "address": "Via S. Vincenzo, 89r, 16121 Genova GE",
-      "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343321c62b52f:0xb0ec050dfd0566c0?sa=X&ved=1t:8290&ictx=111",
-      "phone": "T. +39 010 860 8927",
-      "hours": "11.00 – 22.00",
-      "mealType": [
-        "APPETIZER",
-        "BREAKFAST",
-        "DINNER",
-        "LUNCH"
-      ]
     }
   ]
 }
