@@ -562,11 +562,21 @@ export const ReservationManagementContent = ({
                             <TableCell className="sm:table-cell">
                               <div className="flex flex-col">
                                 <span>
-                                  {format(reservation.dateTime, "PPPP")}
+                                  {format(
+                                    reservation?.dateTime
+                                      .toUTCString()
+                                      .replace(/ GMT$/, ""),
+                                    "PPPP",
+                                  )}
                                 </span>
                                 <span className="text-sm text-muted-foreground">
                                   Time:{" "}
-                                  {format(reservation.dateTime, "p")}
+                                  {format(
+                                    reservation?.dateTime
+                                      .toUTCString()
+                                      .replace(/ GMT$/, ""),
+                                    "p",
+                                  )}
                                 </span>
                               </div>
                             </TableCell>
