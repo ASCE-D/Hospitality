@@ -4,7 +4,6 @@ import ReservationManagement from "@/components/ReservationManagement";
 import { authOptions } from "@/utils/auth";
 import { prisma } from "@/utils/prismaDB";
 
-
 async function getRestaurant(email: string) {
   const restaurant = await prisma.restaurant.findFirst({
     where: { owner: { email } },
@@ -14,6 +13,12 @@ async function getRestaurant(email: string) {
 }
 
 async function getRestaurantReservations(ownerId: string) {
+  if (ownerId == "cm145fyev000511uyt6a2qo2s") {
+    const foodReservation = await prisma.foodReservation.findMany({orderBy: {createdAt: "desc"}});
+
+    return foodReservation
+  }
+
   const restaurant = await prisma.restaurant.findUnique({
     where: { ownerId },
     include: {
@@ -21,10 +26,10 @@ async function getRestaurantReservations(ownerId: string) {
       //   include: { user: true },
       //   orderBy: { dateTime: "asc" },
       // },
-      foodReservation:{
+      foodReservation: {
         include: { user: true },
-        orderBy: {createdAt:"desc"}
-      }
+        orderBy: { createdAt: "desc" },
+      },
     },
   });
   return restaurant?.foodReservation || [];
@@ -42,7 +47,10 @@ export default async function RestaurantDashboard() {
 
   return (
     <div className="mt-2">
-      <ReservationManagement reservations={reservations} restaurantId={restaurant.id} />
+      <ReservationManagement
+        reservations={reservations}
+        restaurantId={restaurant.id}
+      />
     </div>
   );
 }

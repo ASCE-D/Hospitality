@@ -82,6 +82,8 @@ import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { updateRestaurantPreferences } from "@/actions/updatenotification";
 import { error } from "console";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type ReservationWithUser = foodReservation;
 
@@ -107,6 +109,7 @@ export const ReservationManagementContent = ({
   );
 
   const { addNotification } = useNotification();
+  const router = useRouter()
 
   const currentIndex = reservations.findIndex(
     (r) => r.id === selectedReservation.id,
@@ -247,6 +250,14 @@ export const ReservationManagementContent = ({
       }
     }
   };
+
+  const logoutHandler = async() => {
+    await signOut()
+    toast.success("logged out successfully");
+
+    router.push("/signin")
+  }
+  
   console.log("Rendering reservations:", reservations);
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40 ">
@@ -463,7 +474,7 @@ export const ReservationManagementContent = ({
                 </div>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logoutHandler}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
