@@ -82,8 +82,9 @@ import { Label } from "./ui/label";
 import { Switch } from "./ui/switch";
 import { updateRestaurantPreferences } from "@/actions/updatenotification";
 import { error } from "console";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ReservationStatus } from "@prisma/client";
 
 type ReservationWithUser = foodReservation;
 
@@ -109,7 +110,8 @@ export const ReservationManagementContent = ({
   );
 
   const { addNotification } = useNotification();
-  const router = useRouter()
+  const router = useRouter();
+  const session = useSession();
 
   const currentIndex = reservations.findIndex(
     (r) => r.id === selectedReservation.id,
@@ -251,13 +253,26 @@ export const ReservationManagementContent = ({
     }
   };
 
-  const logoutHandler = async() => {
-    await signOut()
+  const logoutHandler = async () => {
+    await signOut();
     toast.success("logged out successfully");
 
-    router.push("/signin")
-  }
-  
+    router.push("/signin");
+  };
+  const StatusBadge = ({ status }: { status: any }) => {
+    const statusColors: any = {
+      PENDING: "bg-yellow-200 text-yellow-800",
+      CONFIRMED: "bg-green-300 text-green-800",
+      REJECTED: "bg-red-200 text-red-800",
+    };
+
+    return (
+      <Badge className={`${statusColors[status] as any} font-semibold`}>
+        {status}
+      </Badge>
+    );
+  };
+
   console.log("Rendering reservations:", reservations);
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40 ">
@@ -474,7 +489,9 @@ export const ReservationManagementContent = ({
                 </div>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logoutHandler}>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logoutHandler}>
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
@@ -592,7 +609,9 @@ export const ReservationManagementContent = ({
                               </div>
                             </TableCell>
                             <TableCell className="text-right">
-                              {reservation.status === "PENDING" ? (
+                              {reservation.status === "PENDING" &&
+                              session.data?.user?.email !==
+                                "elsexperiences@gmail.com" ? (
                                 <div className="flex flex-col justify-end gap-2 sm:flex-row">
                                   <Button
                                     onClick={() =>
@@ -620,7 +639,7 @@ export const ReservationManagementContent = ({
                                   </Button>
                                 </div>
                               ) : (
-                                reservation.status
+                                <StatusBadge status={reservation.status} />
                               )}
                             </TableCell>
                           </TableRow>
