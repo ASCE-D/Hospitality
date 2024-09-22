@@ -4,14 +4,12 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Reservation } from "@prisma/client";
-import { useNotification } from "@/context/NotificationContext";
 
 type ReservationWithRestaurant = Reservation & { restaurant: { name: string } };
 
 export default function UserDashboard() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { addNotification } = useNotification();
   const [reservations, setReservations] = useState<ReservationWithRestaurant[]>(
     [],
   );

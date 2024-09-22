@@ -1,8 +1,6 @@
 
 import ReservationForm from "@/components/ReservationForm";
-import { NotificationProvider } from "@/context/NotificationContext";
 import { RestaurantDetails } from "@/components/Restaurant/Restaurants";
-import ReservationDrawer from "@/components/Restaurant/RestroDrawer";
 import { prisma } from "@/utils/prismaDB";
 
 async function getRestaurant(id: string) {

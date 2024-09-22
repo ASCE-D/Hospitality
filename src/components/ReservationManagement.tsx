@@ -1,5 +1,3 @@
-import { NotificationProvider } from "@/context/NotificationContext";
-
 import { foodReservation, Reservation } from "@prisma/client";
 import { ReservationManagementContent } from "./ReservationManagementContent";
 import { TooltipProvider } from "./ui/tooltip";
@@ -16,19 +14,17 @@ export default async function ReservationManagement({
 }) {
   const notificationPreference = async () =>
     getNotificationPreferences(restaurantId);
-  
+
   return (
-    <NotificationProvider>
-      <TooltipProvider>
-        <div className="w-full">
-          {" "}
-          <ReservationManagementContent
-            initialReservations={reservations}
-            restaurantId={restaurantId}
-            notificationPreference={(await notificationPreference()).data as any}
-          />
-        </div>
-      </TooltipProvider>
-    </NotificationProvider>
+    <TooltipProvider>
+      <div className="w-full">
+        {" "}
+        <ReservationManagementContent
+          initialReservations={reservations}
+          restaurantId={restaurantId}
+          notificationPreference={(await notificationPreference()).data as any}
+        />
+      </div>
+    </TooltipProvider>
   );
 }

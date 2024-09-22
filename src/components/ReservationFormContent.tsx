@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNotification } from "@/context/NotificationContext";
 import useFcmToken from "@/hooks/useFcmtoken";
 import { sendresendemail } from "@/actions/sendemail";
 import { sendMessage } from "@/actions/sendwhatsapp";
+import toast from "react-hot-toast";
 
 export default function ReservationFormContent({
   restaurantId,
@@ -20,7 +20,6 @@ export default function ReservationFormContent({
   const [partySize, setPartySize] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
-  const { addNotification } = useNotification();
   const { token, notificationPermissionStatus } = useFcmToken();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,7 +78,7 @@ export default function ReservationFormContent({
       console.log(data);
     } catch (error) {
       console.error("Error creating reservation:", error);
-      addNotification("error", "Failed to make reservation. Please try again.");
+      toast.error("Failed to make reservation. Please try again.");
     }
   };
 

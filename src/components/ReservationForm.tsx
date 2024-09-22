@@ -1,5 +1,4 @@
-"use client"
-import { NotificationProvider } from "@/context/NotificationContext";
+"use client";
 import ReservationFormContent from "./ReservationFormContent";
 
 export default function ReservationForm({
@@ -7,9 +6,5 @@ export default function ReservationForm({
 }: {
   restaurantId: string;
 }) {
-  return (
-    <NotificationProvider>
-      <ReservationFormContent restaurantId={restaurantId} />
-    </NotificationProvider>
-  );
+  return <ReservationFormContent restaurantId={restaurantId} />;
 }

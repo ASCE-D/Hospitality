@@ -16,6 +16,7 @@ async function getRestaurantReservations(ownerId: string) {
   if (ownerId == "cm145fyev000511uyt6a2qo2s") {
     const foodReservation = await prisma.foodReservation.findMany({
       orderBy: { createdAt: "desc" },
+      include: { restaurant: true },
     });
 
     return foodReservation;
@@ -35,31 +36,6 @@ async function getRestaurantReservations(ownerId: string) {
     },
   });
   return restaurant?.foodReservation || [];
-}
-
-export async function searchReservations(formData: FormData) {
-  const searchQuery = formData.get("query") as string;
-
-  if (!searchQuery) {
-    return [];
-  }
-
-  const reservations = await prisma.foodReservation.findMany({
-    where: {
-      OR: [
-        { firstName: { contains: searchQuery, mode: "insensitive" } },
-        { lastName: { contains: searchQuery, mode: "insensitive" } },
-      ],
-    },
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      // Add other fields you want to return
-    },
-  });
-
-  return reservations;
 }
 
 export default async function RestaurantDashboard() {

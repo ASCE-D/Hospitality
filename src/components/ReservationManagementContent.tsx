@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { foodReservation, Reservation } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import { useNotification } from "@/context/NotificationContext";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
 import { sendresendemail } from "@/actions/sendemail";
@@ -86,7 +85,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ReservationStatus } from "@prisma/client";
 
-type ReservationWithUser = foodReservation;
+type ReservationWithUser = any;
 
 export const ReservationManagementContent = ({
   initialReservations,
@@ -108,8 +107,6 @@ export const ReservationManagementContent = ({
   const [whatsappEnabled, setWhatsappEnabled] = useState(
     notificationPreference.whatsapp,
   );
-
-  const { addNotification } = useNotification();
   const router = useRouter();
   const session = useSession();
 
@@ -178,8 +175,7 @@ export const ReservationManagementContent = ({
       await sendUserNotification(reservationId);
     } catch (error) {
       console.error("Error updating reservation:", error);
-      addNotification(
-        "error",
+      toast.error(
         `Failed to ${newStatus.toLowerCase()} reservation. Please try again.`,
       );
     }
@@ -267,7 +263,9 @@ export const ReservationManagementContent = ({
     };
 
     return (
-      <Badge className={`${statusColors[status] as any} font-semibold`}>
+      <Badge
+        className={`${statusColors[status] as any} rounded-full px-2 py-1 text-xs font-semibold  `}
+      >
         {status}
       </Badge>
     );
@@ -639,7 +637,12 @@ export const ReservationManagementContent = ({
                                   </Button>
                                 </div>
                               ) : (
-                                <StatusBadge status={reservation.status} />
+                                <div className="flex flex-col items-end space-y-2">
+                                  <div className="text-right text-sm">
+                                    {reservation?.restaurant?.name}
+                                  </div>
+                                  <StatusBadge status={reservation.status} />
+                                </div>
                               )}
                             </TableCell>
                           </TableRow>
