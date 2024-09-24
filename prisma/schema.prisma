@@ -77,7 +77,19 @@ model Restaurant {
   updatedAt       DateTime          @updatedAt
   foodReservation foodReservation[]
   PaymentDetails  PaymentDetails[]
-   devices         Device[]
+  devices         Device[]
+  hours           RestaurantHours[]
+}
+
+model RestaurantHours {
+  id           String     @id @default(cuid())
+  dayOfWeek    Int // 0 for Sunday, 1 for Monday, etc.
+  openTime     DateTime   @db.Time
+  closeTime    DateTime   @db.Time
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+  @@unique([restaurantId, dayOfWeek])
 }
 
 model Reservation {
@@ -123,6 +135,7 @@ model PaymentDetails {
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 }
+
 model Device {
   id           String     @id @default(cuid())
   countryCode  String
