@@ -523,7 +523,7 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
             <CardHeader className="px-3 py-2 text-xl font-bold">
               Recommended
             </CardHeader>
-            <Link href={`/restaurants/${recommendedRestaurant.id}/info`}>
+            <Link href={`/restaurants/${recommendedRestaurant.id}/info?meal=${params.id}`}>
               <CardContent className="relative flex h-full flex-col items-center justify-center p-2">
                 <div className="relative h-72 w-full">
                   <Image
