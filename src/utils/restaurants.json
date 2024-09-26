@@ -91,6 +91,10 @@
       "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d3430f0a916357:0x5fbcc0affd114875?sa=X&ved=1t:8290&ictx=111",
       "phone": "T. +39 010 292 7649",
       "hours": "12:15-14:30 | 19:15-22:30",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
       "mealType": [
         "DINNER"
       ]
@@ -109,6 +113,10 @@
       "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d3430f0a916357:0x5fbcc0affd114875?sa=X&ved=1t:8290&ictx=111",
       "phone": "T. +39 010 292 7649",
       "hours": "12:15-14:30 | 19:15-22:30",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
       "mealType": [
         "LUNCH"
       ]
@@ -127,6 +135,10 @@
       "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d343e840be04f1:0x5546b7ef3f653e07?sa=X&ved=1t:8290&ictx=111",
       "phone": "T. +39 340 6201419",
       "hours": "12:00-17:00 | 19:00-23:59",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
       "mealType": [
         "DINNER"
       ]
@@ -233,5 +245,6 @@
         "APPETIZER"
       ]
     }
+   
   ]
 }
