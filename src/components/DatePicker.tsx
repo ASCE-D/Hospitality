@@ -205,18 +205,23 @@ function CalendarBookingForm({
 
           {step === 2 && (
           <div className="space-y-4">
-          <div className="grid grid-cols-4 gap-2">
-            {availableTimeSlots.map((time) => (
-              <Button
-                key={time}
-                variant={selectedTime === time ? "default" : "outline"}
-                className="h-12"
-                onClick={(e) => handleTimeSelect(time,e)}
-              >
-                {time}
-              </Button>
-            ))}
-          </div>
+       <div className="grid grid-cols-4 gap-2">
+  {availableTimeSlots.length > 0 ? (
+    availableTimeSlots.map((time) => (
+      <Button
+        key={time}
+        variant={selectedTime === time ? "default" : "outline"}
+        className="h-12"
+        onClick={(e) => handleTimeSelect(time, e)}
+      >
+        {time}
+      </Button>
+    ))
+  ) : (
+    <div className="col-span-4 text-center">No available slots</div>
+  )}
+</div>
+
     
           <Card>
             <CardContent className="pt-6">
