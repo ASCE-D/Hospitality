@@ -7,25 +7,6 @@ import {
   RestaurantDetails,
   RestaurantList,
 } from "@/components/Restaurant/Restaurants";
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import restaurantsData from "@/utils/restaurants.json";
@@ -38,6 +19,9 @@ const MealType = {
 };
 
 const MenuItemPage = ({ params }: { params: { id: string } }) => {
+    const searchParams = useSearchParams();
+    const meal = searchParams?.get("meal");
+
   const { restaurants } = restaurantsData;
   const [selectedMealType, setSelectedMealType] = useState<any>(null);
   const [selectedMeal, setSelectedMeal] = useState<any>(null);
@@ -57,6 +41,7 @@ const MenuItemPage = ({ params }: { params: { id: string } }) => {
   console.log(id);
   const restaurant = restaurants.find((r) => r.id === id);
   if (!restaurant) return <div>Restaurant not found</div>;
+
 
   const handleReservationChange = (field: any, value: any) => {
     setReservationDetails((prev) => ({ ...prev, [field]: value }));
@@ -78,7 +63,7 @@ const MenuItemPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div>
-      <RestaurantList restaurant={restaurant} />
+      <RestaurantList restaurant={restaurant} meal={meal} />
     </div>
   );
 };

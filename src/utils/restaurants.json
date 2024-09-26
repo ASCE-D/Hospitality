@@ -14,7 +14,14 @@
       "address": "Via di Porta Soprana, 31/R, 16123 Genova GE",
       "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343dd167fa705:0xa0b23ba072457e3d?sa=X&ved=1t:8290&hl=it&ictx=111",
       "phone": "T. +39 328 868 5641",
-      "hours": "12.30 – 14.30PM  19.00 – 23.00PM ",
+      "hours": "12:30-14:30 | 19:00-23:00",
+      "closed": {
+        "LUNCH": [
+          "Monday",
+          "Tuesday"
+        ],
+        "DINNER": []
+      },
       "notes": "(Closed on Monday and Tuesday at lunch)",
       "recommended": false,
       "mealType": [
@@ -37,7 +44,11 @@
       "address": "Via di Ravecca, 54, 16100 Genova GE",
       "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343dcf9344c6f:0x6af0c3579427d048?sa=X&ved=1t:8290&hl=it&ictx=111",
       "phone": "T. +39 010 2512591",
-      "hours": "12:30 pm - 14:30 -- 19:30 pm - 23:00",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
+      "hours": "12:30-14:30 | 19:30-23:00",
       "mealType": [
         "DINNER"
       ]
@@ -57,7 +68,11 @@
       "address": "Via di Ravecca, 54, 16100 Genova GE",
       "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343dcf9344c6f:0x6af0c3579427d048?sa=X&ved=1t:8290&hl=it&ictx=111",
       "phone": "T. +39 010 2512591",
-      "hours": "12:30 pm - 14:30 -- 19:30 pm - 23:00",
+      "hours": "12:30-14:30 | 19:30-23:00",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
       "mealType": [
         "LUNCH"
       ]
@@ -75,7 +90,7 @@
       "address": "Piazza Invrea 3R, 16129, Genova Italia",
       "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d3430f0a916357:0x5fbcc0affd114875?sa=X&ved=1t:8290&ictx=111",
       "phone": "T. +39 010 292 7649",
-      "hours": "12:15-02:30 PM -- 07:15-10:30 PM",
+      "hours": "12:15-14:30 | 19:15-22:30",
       "mealType": [
         "DINNER"
       ]
@@ -93,7 +108,7 @@
       "address": "Piazza Invrea 3R, 16129, Genova Italia",
       "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d3430f0a916357:0x5fbcc0affd114875?sa=X&ved=1t:8290&ictx=111",
       "phone": "T. +39 010 292 7649",
-      "hours": "12:15-02:30 PM -- 07:15-10:30 PM",
+      "hours": "12:15-14:30 | 19:15-22:30",
       "mealType": [
         "LUNCH"
       ]
@@ -111,7 +126,7 @@
       "address": "Via 12 Ottobre, 27, 16121, Genova Italia",
       "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d343e840be04f1:0x5546b7ef3f653e07?sa=X&ved=1t:8290&ictx=111",
       "phone": "T. +39 340 6201419",
-      "hours": "12:00-15:00 -- 19:00-23:59",
+      "hours": "12:00-17:00 | 19:00-23:59",
       "mealType": [
         "DINNER"
       ]

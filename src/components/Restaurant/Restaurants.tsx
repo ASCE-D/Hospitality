@@ -28,8 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { format, parseISO } from "date-fns";
-import { toZonedTime } from "date-fns-tz";
+import { format, parseISO, set } from "date-fns";
 import { useRouter } from "next/navigation";
 import { createFoodReservation } from "@/actions/foodreservation";
 // import { sendrestaurantemail } from "@/actions/sendrestaurantemail";
@@ -43,7 +42,10 @@ import { ScrollArea } from "../ui/scroll-area";
 import { sendRestaurantWhatsapp3 } from "@/actions/sendrestaurantwhatsapp3";
 import { useSession } from "next-auth/react";
 import { sendRestaurantEmail3 } from "@/actions/sendRestaurant3";
+import CalendarBookingForm from "@/components/DatePicker";
 const { restaurants } = restaurantsData;
+
+type BookingPeriod = "LUNCH" | "DINNER";
 
 const countryCodes = [
   { code: "+1", country: "United States" },
@@ -137,13 +139,6 @@ const countryCodes = [
   { code: "+994", country: "Azerbaijan" },
 ];
 
-const MealType = {
-  BREAKFAST: "Breakfast",
-  LUNCH: "Lunch",
-  DINNER: "Dinner",
-  APPETIZER: "Appetizer",
-};
-
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
 
@@ -160,9 +155,13 @@ const useMediaQuery = (query: string) => {
   return matches;
 };
 
-const RestaurantList = ({ restaurant }: { restaurant: any }) => {
-  const [selectedMealType, setSelectedMealType] = useState<any>(null);
-  const [selectedMeal, setSelectedMeal] = useState<any>(null);
+const RestaurantList = ({
+  restaurant,
+  meal,
+}: {
+  restaurant: any;
+  meal: any;
+}) => {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [reservationDetails, setReservationDetails] = useState({
     firstName: "",
@@ -175,8 +174,12 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     dateTime: new Date(),
     restaurantId: restaurant.id,
   });
+  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
   const router = useRouter();
+
+  type BookingPeriod = "LUNCH" | "DINNER";
 
   const handleReservationChange = (field: any, value: any) => {
     setReservationDetails((prev) => ({ ...prev, [field]: value }));
@@ -196,18 +199,15 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
     const reservationToSend = { ...reservationDetails };
 
     // Convert the dateTime string to a Date object while preserving local time
-    if (reservationToSend.dateTime) {
-      const localDate = new Date(reservationToSend.dateTime);
-      const utcDate = new Date(
-        Date.UTC(
-          localDate.getFullYear(),
-          localDate.getMonth(),
-          localDate.getDate(),
-          localDate.getHours(),
-          localDate.getMinutes(),
-        ),
+    if (selectedDate) {
+      reservationToSend.dateTime = selectedDate;
+
+      console.log(
+        "selectedDate: ",
+        selectedDate,
+        // "ISO string: ",
+        // selectedDate.toISOString(),
       );
-      reservationToSend.dateTime = utcDate;
     }
     console.log("Reservation details to send:", reservationToSend);
     const result = await createFoodReservation(reservationToSend);
@@ -272,6 +272,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
       "content",
       "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0",
     );
+    console.log("Date", selectedDate);
 
     // Handle keyboard appearance
     const handleFocus = () => {
@@ -296,7 +297,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
         input.removeEventListener("focus", handleFocus),
       );
     };
-  }, []);
+  }, [selectedDate]);
 
   const formatDateForInput = (date: Date) => {
     if (!date) return "";
@@ -386,7 +387,7 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="countryCode">Country Code</Label>
+                  <Label htmlFor="countryCode">Code</Label>
                   <Select
                     value={reservationDetails.countryCode}
                     onValueChange={(value) =>
@@ -439,9 +440,9 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
+              <div className="flex flex-col space-y-2">
                 <Label htmlFor="dateTime">Select Date and Time</Label>
-                <Input
+                {/* <Input
                   id="dateTime"
                   type="datetime-local"
                   value={formatDateForInput(reservationDetails.dateTime)}
@@ -451,6 +452,11 @@ const RestaurantList = ({ restaurant }: { restaurant: any }) => {
                       parseISO(e.target.value),
                     )
                   }
+                /> */}
+                <CalendarBookingForm
+                  restaurantId={restaurant.id}
+                  meal={meal.toUpperCase() as BookingPeriod}
+                  setDate={setSelectedDate}
                 />
               </div>
               <DialogFooter>
@@ -492,7 +498,9 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
             .filter((r) => !r.recommended)
             .map((restaurant, index) => (
               <Card key={index} className="cursor-pointer">
-                <Link href={`/restaurants/${restaurant.id}/info`}>
+                <Link
+                  href={`/restaurants/${restaurant.id}/info?meal=${params.id}`}
+                >
                   <CardContent className="p-2">
                     <Image
                       src={restaurant.image[0] || "/api/placeholder/200/200"}
