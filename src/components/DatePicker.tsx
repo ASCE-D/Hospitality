@@ -10,6 +10,7 @@ import {
   isBefore,
   parseISO,
   formatISO,
+  isSameDay,
 } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -27,6 +28,9 @@ import {
 import { Button } from "@/components/ui/button";
 import restaurantsData from "@/utils/restaurants.json";
 import { fromZonedTime } from "date-fns-tz";
+import { Card, CardContent } from "./ui/card";
+import DatePicker from "react-datepicker";
+import { Grid } from "lucide-react";
 
 type ClosedPeriods = {
   LUNCH: string[];
@@ -70,10 +74,9 @@ function checkAvailability(
     const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
     return (
       !closed[bookingFor].includes(dayOfWeek) &&
-      isAfter(startOfDay(date), startOfDay(new Date()))
+      (isSameDay(date, new Date()) || isAfter(startOfDay(date), startOfDay(new Date())))
     );
   };
-
   const getAvailableTimeSlots = (date: Date): Date[] => {
     // console.log("morning", morning, "evening", evening);
     if (!bookingFor || (!morning && !evening)) return [];
@@ -108,17 +111,19 @@ function checkAvailability(
 function CalendarBookingForm({
   restaurantId,
   meal,
-  setDate,
+  handleReservationChange,
+  step,
 }: {
   restaurantId: string;
   meal: BookingPeriod;
-  setDate: any;
+  handleReservationChange: any;
+  step: number;
 }) {
   const [bookingFor, setBookingFor] = useState<BookingPeriod>(meal);
-  const [selectedDate, setSelectedDate] = useState<any>(new Date());
-  const [selectedTime, setSelectedTime] = useState<any>(new Date());
+  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [selectedTime, setSelectedTime] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const [selectedSeats, setSelectedSeats] = useState("1");
   const restaurant = restaurantsData.restaurants.find((r) => {
     if (r.id === restaurantId && r.mealType.includes(meal)) return r;
   });
@@ -131,120 +136,130 @@ function CalendarBookingForm({
     [hours, closed, bookingFor],
   );
 
-  const handleDateSelect = useCallback((date: Date | undefined) => {
-    setSelectedDate(date || null);
+  const handleDateSelect = useCallback((date: any) => {
+    setSelectedDate(date);
     setSelectedTime(null);
     setError(null);
-  }, []);
 
-  const handleTimeSelect = useCallback((time: string) => {
+    if (date) {
+      const formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+      handleReservationChange("dateTime", formattedDate);
+    }
+  }, [handleReservationChange]);
+
+  const handleTimeSelect = useCallback((time: string , e:any) => {
+    e.preventDefault()
     setSelectedTime(time);
     setError(null);
-  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (selectedDate && selectedTime) {
-      // Parse the selected time
-      const [hours, minutes] = selectedTime.split(":").map(Number);
-
-      // Create a new Date object with the selected date and time in local time
-      const localDateTime = new Date(selectedDate);
-      localDateTime.setHours(hours, minutes, 0, 0);
-
-      // Convert local time to UTC
-      const utcDateTime = fromZonedTime(
-        localDateTime,
-        Intl.DateTimeFormat().resolvedOptions().timeZone,
-      );
-
-      // Format the UTC date and time without timezone information
-      const formattedDateTime = format(utcDateTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-      console.log("Booking submitted:", {
-        bookingFor,
-        dateTime: formattedDateTime,
-      });
-
-      // Update parent component with the selected date and time in UTC
-      setDate(formattedDateTime);
-    } else {
-      setError("Please select both a date and time");
+    if (selectedDate) {
+      const [hours, minutes] = time.split(':').map(Number);
+      const updatedDate = new Date(selectedDate);
+      updatedDate.setHours(hours, minutes, 0, 0);
+      const formattedDateTime = format(updatedDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+      handleReservationChange("dateTime", formattedDateTime);
     }
-  };
+  }, [selectedDate, handleReservationChange]);
+
+  const handleSeatSelect = useCallback((seats: string) => {
+    
+    setSelectedSeats(seats);
+    setError(null);
+
+      handleReservationChange("seats", parseInt(seats));
+    
+  }, [selectedSeats, handleReservationChange]);
+
+
   const availableTimeSlots = useMemo(() => {
     if (!selectedDate) return [];
     const slots = getAvailableTimeSlots(selectedDate);
-    // console.log("Available time slots:", slots);
-    return slots.map((date) => format(date, "HH:mm"));
+    return slots.map((date) => format(date, 'HH:mm'));
   }, [selectedDate, getAvailableTimeSlots]);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline">{format(selectedDate, "PPP")}</Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="bookingFor" className="block text-sm font-medium">
-              Booking For
-            </label>
-            {/* <Select
-              value={bookingFor}
-              onValueChange={(value) => setBookingFor(value as BookingPeriod)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select booking type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="LUNCH">Lunch</SelectItem>
-                <SelectItem value="DINNER">Dinner</SelectItem>
-              </SelectContent>
-            </Select> */}
-          </div>
+    <Card>
+      <CardContent className="w-80">
+        <form className="space-y-4">
+          {step === 1 && (
+            <>
+              <div>
+                <label htmlFor="bookingFor" className="block text-sm font-medium">
+                  Booking For
+                </label>
+                {/* Booking type selection code here */}
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium">Select Date</label>
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleDateSelect}
-              disabled={(date) => !isDateAvailable(date)}
-              className="rounded-md border"
-            />
-          </div>
+              <div>
+                <label className="block text-sm font-medium">Select Date</label>
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={handleDateSelect}
+                  disabled={(date) => !isDateAvailable(date)}
+                  className="rounded-md border"
+                />
+              </div>
+            </>
+          )}
 
-          {selectedDate && (
-            <div>
-              <label htmlFor="time" className="block text-sm font-medium">
-                Select Time
-              </label>
-              <Select
-                value={selectedTime || ""}
-                onValueChange={handleTimeSelect}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a time" />
+          {step === 2 && (
+          <div className="space-y-4">
+       <div className="grid grid-cols-4 gap-2">
+  {availableTimeSlots.length > 0 ? (
+    availableTimeSlots.map((time) => (
+      <Button
+        key={time}
+        variant={selectedTime === time ? "default" : "outline"}
+        className="h-12"
+        onClick={(e) => handleTimeSelect(time, e)}
+      >
+        {time}
+      </Button>
+    ))
+  ) : (
+    <div className="col-span-4 text-center">No available slots</div>
+  )}
+</div>
+
+    
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center space-x-2">
+                <Grid className="h-4 w-4" />
+                <label htmlFor="seats" className="text-sm font-medium">
+                  Number of Seats
+                </label>
+              </div>
+              <Select value={selectedSeats} onValueChange={handleSeatSelect}>
+                <SelectTrigger id="seats" className="w-full mt-2">
+                  <SelectValue placeholder="Select seats" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableTimeSlots.map((time) => (
-                    <SelectItem key={time} value={time}>
-                      {time}
+                  {[1, 2, 3, 4, 5, 6].map((num) => (
+                    <SelectItem key={num} value={num.toString()}>
+                      {num}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            </div>
+            </CardContent>
+          </Card>
+    
+          {selectedTime && selectedSeats && (
+            <p className="text-sm">
+              Selected: {selectedTime}, {selectedSeats} seat(s)
+            </p>
+          )}
+        </div>
           )}
 
           {error && <div className="text-red-500">{error}</div>}
-
-          <Button type="submit">Book Now</Button>
         </form>
-      </PopoverContent>
-    </Popover>
+      </CardContent>
+    </Card>
   );
 }
+
 
 export default CalendarBookingForm;
