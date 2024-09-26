@@ -294,6 +294,8 @@ const RestaurantList = ({
       }, 100);
     };
 
+    
+
     const inputs = document.querySelectorAll("input, textarea");
     inputs.forEach((input) => input.addEventListener("focus", handleFocus));
 
@@ -325,6 +327,19 @@ const RestaurantList = ({
             />
           </div>
         );
+
+        case 2:
+          return (
+            <div className="space-y-4">
+              <CalendarBookingForm
+                restaurantId={restaurant.id}
+                meal={meal.toUpperCase()}
+                handleReservationChange={handleReservationChange}
+                step={step}
+              />
+            </div>
+          );
+
       case 3:
         return (
           <div className="space-y-4">
@@ -365,13 +380,14 @@ const RestaurantList = ({
                     <SelectValue placeholder="Code" />
                   </SelectTrigger>
                   <SelectContent>
-                    <ScrollArea className="h-[200px]">
-                      {/* Add country codes here */}
-                      <SelectItem value="+1">+1 (US)</SelectItem>
-                      <SelectItem value="+44">+44 (UK)</SelectItem>
-                      {/* Add more country codes */}
-                    </ScrollArea>
-                  </SelectContent>
+                      <ScrollArea className="h-[400px] w-full">
+                        {countryCodes.map(({ code, country }) => (
+                          <SelectItem value={code} key={code}>
+                            {code} ({country})
+                          </SelectItem>
+                        ))}
+                      </ScrollArea>
+                    </SelectContent>
                 </Select>
                 <Input
                   className="col-span-2"
@@ -401,7 +417,20 @@ const RestaurantList = ({
                 : "Not selected"}
             </p>
             <p>
-              Time: {format(reservationDetails.dateTime, "p") || "Not selected"}
+            Time: {(() => {
+  const dateTimeString = `${reservationDetails.dateTime}` || "Not selected";
+  if (dateTimeString === "Not selected") return dateTimeString;
+  
+  const tIndex = dateTimeString.indexOf('T');
+  const zIndex = dateTimeString.indexOf('Z');
+  
+  if (tIndex !== -1 && zIndex !== -1) {
+    const fullTime = dateTimeString.substring(tIndex + 1, zIndex);
+    return fullTime.substring(0, 5); // This will return only the hours and minutes
+  }
+  
+  return "Invalid format";
+})()}
             </p>
             <p>Seats: {reservationDetails.seats || "Not selected"}</p>
             <p>
@@ -498,9 +527,10 @@ const RestaurantList = ({
                     Next
                   </Button>
                 ) : (
-                  <Button type="submit" className="bg-yellow-400 text-black">
-                    Book Now
-                  </Button>
+                  <Button type="button" onClick={handleSubmit} className="bg-yellow-400 text-black hover:bg-white" >
+                  Book Now
+                </Button>
+               
                 )}
               </DialogFooter>
             </form>
@@ -562,7 +592,9 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
             <CardHeader className="px-3 py-2 text-xl font-bold">
               Recommended
             </CardHeader>
-            <Link href={`/restaurants/${recommendedRestaurant.id}/info`}>
+            <Link
+                  href={`/restaurants/${recommendedRestaurant.id}/info?meal=${params.id}`}
+                >
               <CardContent className="relative flex h-full flex-col items-center justify-center p-2">
                 <div className="relative h-72 w-full">
                   <Image
