@@ -27,6 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import restaurantsData from "@/utils/restaurants.json";
 import { fromZonedTime } from "date-fns-tz";
+import { Card, CardContent } from "./ui/card";
 
 type ClosedPeriods = {
   LUNCH: string[];
@@ -108,11 +109,13 @@ function checkAvailability(
 function CalendarBookingForm({
   restaurantId,
   meal,
-  setDate,
+  handleReservationChange,
+  step,
 }: {
   restaurantId: string;
   meal: BookingPeriod;
-  setDate: any;
+  handleReservationChange: any;
+  step: number;
 }) {
   const [bookingFor, setBookingFor] = useState<BookingPeriod>(meal);
   const [selectedDate, setSelectedDate] = useState<any>(new Date());
@@ -167,7 +170,7 @@ function CalendarBookingForm({
       });
 
       // Update parent component with the selected date and time in UTC
-      setDate(formattedDateTime);
+      handleReservationChange.dateTime("dateTime", formattedDateTime);
     } else {
       setError("Please select both a date and time");
     }
@@ -180,17 +183,19 @@ function CalendarBookingForm({
   }, [selectedDate, getAvailableTimeSlots]);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline">{format(selectedDate, "PPP")}</Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
+    <Card>
+      <CardContent className="w-80">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="bookingFor" className="block text-sm font-medium">
-              Booking For
-            </label>
-            {/* <Select
+          {step === 1 && (
+            <>
+              <div>
+                <label
+                  htmlFor="bookingFor"
+                  className="block text-sm font-medium"
+                >
+                  Booking For
+                </label>
+                {/* <Select
               value={bookingFor}
               onValueChange={(value) => setBookingFor(value as BookingPeriod)}
             >
@@ -202,20 +207,22 @@ function CalendarBookingForm({
                 <SelectItem value="DINNER">Dinner</SelectItem>
               </SelectContent>
             </Select> */}
-          </div>
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium">Select Date</label>
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleDateSelect}
-              disabled={(date) => !isDateAvailable(date)}
-              className="rounded-md border"
-            />
-          </div>
+              <div>
+                <label className="block text-sm font-medium">Select Date</label>
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  disabled={(date) => !isDateAvailable(date)}
+                  className="rounded-md border"
+                />
+                </div>
+            </>
+          )}
 
-          {selectedDate && (
+          {step === 2 && (
             <div>
               <label htmlFor="time" className="block text-sm font-medium">
                 Select Time
@@ -239,11 +246,9 @@ function CalendarBookingForm({
           )}
 
           {error && <div className="text-red-500">{error}</div>}
-
-          <Button type="submit">Book Now</Button>
         </form>
-      </PopoverContent>
-    </Popover>
+      </CardContent>
+    </Card>
   );
 }
 
