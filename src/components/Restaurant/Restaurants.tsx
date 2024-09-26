@@ -401,7 +401,7 @@ const RestaurantList = ({
               </div>
             </div>
             <p className="text-sm text-gray-500">
-              We'll use this number to send you notifications about your
+              We&apos;ll use this number to send you notifications about your
               reservation.
             </p>
           </div>
