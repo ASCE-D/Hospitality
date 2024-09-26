@@ -42,7 +42,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { sendRestaurantWhatsapp3 } from "@/actions/sendrestaurantwhatsapp3";
 import { useSession } from "next-auth/react";
 import { sendRestaurantEmail3 } from "@/actions/sendRestaurant3";
-import CalendarBookingForm from "@/components/DatePicker";
+import CalendarBookingForm from "../DatePicker";
 const { restaurants } = restaurantsData;
 
 type BookingPeriod = "LUNCH" | "DINNER";
@@ -175,7 +175,7 @@ const RestaurantList = ({
     restaurantId: restaurant.id,
   });
   const [selectedDate, setSelectedDate] = useState<any>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [step, setStep] = useState(1);
 
   const router = useRouter();
 
@@ -258,6 +258,14 @@ const RestaurantList = ({
     }
   };
 
+  const handleNextStep = () => {
+    setStep((prev) => Math.min(prev + 1, 4));
+  };
+
+  const handlePrevStep = () => {
+    setStep((prev) => Math.max(prev - 1, 1));
+  };
+
   const showReservationButton =
     restaurant.mealType.includes("DINNER") ||
     restaurant.mealType.includes("LUNCH");
@@ -286,6 +294,8 @@ const RestaurantList = ({
       }, 100);
     };
 
+    
+
     const inputs = document.querySelectorAll("input, textarea");
     inputs.forEach((input) => input.addEventListener("focus", handleFocus));
 
@@ -302,6 +312,140 @@ const RestaurantList = ({
   const formatDateForInput = (date: Date) => {
     if (!date) return "";
     return format(date, "yyyy-MM-dd'T'HH:mm");
+  };
+
+  const renderStepContent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <div className="space-y-4">
+            <CalendarBookingForm
+              restaurantId={restaurant.id}
+              meal={meal.toUpperCase()}
+              handleReservationChange={handleReservationChange}
+              step={step}
+            />
+          </div>
+        );
+
+        case 2:
+          return (
+            <div className="space-y-4">
+              <CalendarBookingForm
+                restaurantId={restaurant.id}
+                meal={meal.toUpperCase()}
+                handleReservationChange={handleReservationChange}
+                step={step}
+              />
+            </div>
+          );
+
+      case 3:
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  value={reservationDetails.firstName}
+                  onChange={(e) =>
+                    handleReservationChange("firstName", e.target.value)
+                  }
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  value={reservationDetails.lastName}
+                  onChange={(e) =>
+                    handleReservationChange("lastName", e.target.value)
+                  }
+                  required
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber">WhatsApp Number</Label>
+              <div className="grid grid-cols-3 gap-2">
+                <Select
+                  value={reservationDetails.countryCode}
+                  onValueChange={(value) =>
+                    handleReservationChange("countryCode", value)
+                  }
+                >
+                  <SelectTrigger id="countryCode">
+                    <SelectValue placeholder="Code" />
+                  </SelectTrigger>
+                  <SelectContent>
+                      <ScrollArea className="h-[400px] w-full">
+                        {countryCodes.map(({ code, country }) => (
+                          <SelectItem value={code} key={code}>
+                            {code} ({country})
+                          </SelectItem>
+                        ))}
+                      </ScrollArea>
+                    </SelectContent>
+                </Select>
+                <Input
+                  className="col-span-2"
+                  id="phoneNumber"
+                  value={reservationDetails.phoneNumber}
+                  onChange={(e) =>
+                    handleReservationChange("phoneNumber", e.target.value)
+                  }
+                  required
+                />
+              </div>
+            </div>
+            <p className="text-sm text-gray-500">
+              We'll use this number to send you notifications about your
+              reservation.
+            </p>
+          </div>
+        );
+      case 4:
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Reservation Summary</h3>
+            <p>
+              Date:{" "}
+              {reservationDetails.dateTime
+                ? format(reservationDetails.dateTime, "MMMM d, yyyy")
+                : "Not selected"}
+            </p>
+            <p>
+            Time: {(() => {
+  const dateTimeString = `${reservationDetails.dateTime}` || "Not selected";
+  if (dateTimeString === "Not selected") return dateTimeString;
+  
+  const tIndex = dateTimeString.indexOf('T');
+  const zIndex = dateTimeString.indexOf('Z');
+  
+  if (tIndex !== -1 && zIndex !== -1) {
+    const fullTime = dateTimeString.substring(tIndex + 1, zIndex);
+    return fullTime.substring(0, 5); // This will return only the hours and minutes
+  }
+  
+  return "Invalid format";
+})()}
+            </p>
+            <p>Seats: {reservationDetails.seats || "Not selected"}</p>
+            <p>
+              Name:{" "}
+              {`${reservationDetails.firstName} ${reservationDetails.lastName}`}
+            </p>
+            <p>
+              Contact:{" "}
+              {`${reservationDetails.countryCode} ${reservationDetails.phoneNumber}`}
+            </p>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -353,116 +497,41 @@ const RestaurantList = ({
       </Card>
       {showReservationButton && (
         <Dialog open={isReservationOpen} onOpenChange={setIsReservationOpen}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
+          <DialogContent className="h-screen sm:max-w-[425px]">
+            <DialogHeader className="flex">
               <DialogTitle>Make a Reservation</DialogTitle>
-              <DialogDescription>
-                Reserve a table at {restaurant.name}
-              </DialogDescription>
+              <Image
+                src={restaurant.image[0]}
+                alt={restaurant.name}
+                width={100}
+                height={100}
+                className="mb-6 h-24 w-full rounded-lg object-cover"
+              />
+              <h1 className="text-3xl font-bold">{restaurant.name}</h1>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input
-                    id="firstName"
-                    value={reservationDetails.firstName}
-                    onChange={(e) =>
-                      handleReservationChange("firstName", e.target.value)
-                    }
-                    required={true}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    value={reservationDetails.lastName}
-                    onChange={(e) =>
-                      handleReservationChange("lastName", e.target.value)
-                    }
-                    required={true}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="countryCode">Code</Label>
-                  <Select
-                    value={reservationDetails.countryCode}
-                    onValueChange={(value) =>
-                      handleReservationChange("countryCode", value)
-                    }
-                  >
-                    <SelectTrigger id="countryCode">
-                      <SelectValue placeholder="Code" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <ScrollArea className="h-[400px] w-full">
-                        {countryCodes.map(({ code, country }) => (
-                          <SelectItem value={code} key={code}>
-                            {code} ({country})
-                          </SelectItem>
-                        ))}
-                      </ScrollArea>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="col-span-2 space-y-2">
-                  <Label htmlFor="phoneNumber">Phone Number</Label>
-                  <Input
-                    id="phoneNumber"
-                    value={reservationDetails.phoneNumber}
-                    onChange={(e) =>
-                      handleReservationChange("phoneNumber", e.target.value)
-                    }
-                    required={true}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="seats">Number of Seats</Label>
-                <Select
-                  value={`${reservationDetails.seats}`}
-                  onValueChange={(value) =>
-                    handleReservationChange("seats", value)
-                  }
-                >
-                  <SelectTrigger id="seats">
-                    <SelectValue placeholder="Select seats" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                      <SelectItem key={num} value={num.toString()}>
-                        {num}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-col space-y-2">
-                <Label htmlFor="dateTime">Select Date and Time</Label>
-                {/* <Input
-                  id="dateTime"
-                  type="datetime-local"
-                  value={formatDateForInput(reservationDetails.dateTime)}
-                  onChange={(e) =>
-                    handleReservationChange(
-                      "dateTime",
-                      parseISO(e.target.value),
-                    )
-                  }
-                /> */}
-                <CalendarBookingForm
-                  restaurantId={restaurant.id}
-                  meal={meal.toUpperCase() as BookingPeriod}
-                  setDate={setSelectedDate}
-                />
-              </div>
+              {renderStepContent()}
               <DialogFooter>
-                <Button type="submit" className="bg-yellow-400 text-black">
-                  Submit Reservation
+                {step > 1 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handlePrevStep}
+                    className="my-2"
+                  >
+                    Back
+                  </Button>
+                )}
+                {step < 4 ? (
+                  <Button type="button" onClick={handleNextStep}>
+                    Next
+                  </Button>
+                ) : (
+                  <Button type="button" onClick={handleSubmit} className="bg-yellow-400 text-black hover:bg-white" >
+                  Book Now
                 </Button>
+               
+                )}
               </DialogFooter>
             </form>
           </DialogContent>
@@ -523,7 +592,9 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
             <CardHeader className="px-3 py-2 text-xl font-bold">
               Recommended
             </CardHeader>
-            <Link href={`/restaurants/${recommendedRestaurant.id}/info?meal=${params.id}`}>
+            <Link
+                  href={`/restaurants/${recommendedRestaurant.id}/info?meal=${params.id}`}
+                >
               <CardContent className="relative flex h-full flex-col items-center justify-center p-2">
                 <div className="relative h-72 w-full">
                   <Image
