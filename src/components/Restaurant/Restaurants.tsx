@@ -43,6 +43,7 @@ import { sendRestaurantWhatsapp3 } from "@/actions/sendrestaurantwhatsapp3";
 import { useSession } from "next-auth/react";
 import { sendRestaurantEmail3 } from "@/actions/sendRestaurant3";
 import CalendarBookingForm from "../DatePicker";
+import Loader from "../Common/Loader";
 const { restaurants } = restaurantsData;
 
 type BookingPeriod = "LUNCH" | "DINNER";
@@ -176,7 +177,8 @@ const RestaurantList = ({
   });
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [step, setStep] = useState(1);
-
+  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   type BookingPeriod = "LUNCH" | "DINNER";
@@ -211,7 +213,9 @@ const RestaurantList = ({
     }
     console.log("Reservation details to send:", reservationToSend);
     const result = await createFoodReservation(reservationToSend);
+
     console.log("wow", result);
+    setLoading(false);
     let reservationid;
     let reservationStatus;
     if (result.success) {
@@ -245,9 +249,13 @@ const RestaurantList = ({
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent multiple submissions
+    setIsSubmitting(true);
+    setLoading(true);
     if (isFormValid()) {
       handleMakeReservation(e);
     } else {
+      setLoading(false);
       toast.error(
         "Please enter your first name, last name, and phone number.",
         {
@@ -294,8 +302,6 @@ const RestaurantList = ({
       }, 100);
     };
 
-    
-
     const inputs = document.querySelectorAll("input, textarea");
     inputs.forEach((input) => input.addEventListener("focus", handleFocus));
 
@@ -328,17 +334,17 @@ const RestaurantList = ({
           </div>
         );
 
-        case 2:
-          return (
-            <div className="space-y-4">
-              <CalendarBookingForm
-                restaurantId={restaurant.id}
-                meal={meal.toUpperCase()}
-                handleReservationChange={handleReservationChange}
-                step={step}
-              />
-            </div>
-          );
+      case 2:
+        return (
+          <div className="space-y-4">
+            <CalendarBookingForm
+              restaurantId={restaurant.id}
+              meal={meal.toUpperCase()}
+              handleReservationChange={handleReservationChange}
+              step={step}
+            />
+          </div>
+        );
 
       case 3:
         return (
@@ -380,14 +386,14 @@ const RestaurantList = ({
                     <SelectValue placeholder="Code" />
                   </SelectTrigger>
                   <SelectContent>
-                      <ScrollArea className="h-[400px] w-full">
-                        {countryCodes.map(({ code, country }) => (
-                          <SelectItem value={code} key={code}>
-                            {code} ({country})
-                          </SelectItem>
-                        ))}
-                      </ScrollArea>
-                    </SelectContent>
+                    <ScrollArea className="h-[400px] w-full">
+                      {countryCodes.map(({ code, country }) => (
+                        <SelectItem value={code} key={code}>
+                          {code} ({country})
+                        </SelectItem>
+                      ))}
+                    </ScrollArea>
+                  </SelectContent>
                 </Select>
                 <Input
                   className="col-span-2"
@@ -417,20 +423,22 @@ const RestaurantList = ({
                 : "Not selected"}
             </p>
             <p>
-            Time: {(() => {
-  const dateTimeString = `${reservationDetails.dateTime}` || "Not selected";
-  if (dateTimeString === "Not selected") return dateTimeString;
-  
-  const tIndex = dateTimeString.indexOf('T');
-  const zIndex = dateTimeString.indexOf('Z');
-  
-  if (tIndex !== -1 && zIndex !== -1) {
-    const fullTime = dateTimeString.substring(tIndex + 1, zIndex);
-    return fullTime.substring(0, 5); // This will return only the hours and minutes
-  }
-  
-  return "Invalid format";
-})()}
+              Time:{" "}
+              {(() => {
+                const dateTimeString =
+                  `${reservationDetails.dateTime}` || "Not selected";
+                if (dateTimeString === "Not selected") return dateTimeString;
+
+                const tIndex = dateTimeString.indexOf("T");
+                const zIndex = dateTimeString.indexOf("Z");
+
+                if (tIndex !== -1 && zIndex !== -1) {
+                  const fullTime = dateTimeString.substring(tIndex + 1, zIndex);
+                  return fullTime.substring(0, 5); // This will return only the hours and minutes
+                }
+
+                return "Invalid format";
+              })()}
             </p>
             <p>Seats: {reservationDetails.seats || "Not selected"}</p>
             <p>
@@ -527,10 +535,18 @@ const RestaurantList = ({
                     Next
                   </Button>
                 ) : (
-                  <Button type="button" onClick={handleSubmit} className="bg-yellow-400 text-black hover:bg-white" >
-                  Book Now
-                </Button>
-               
+                  //   <Button type="button" onClick={handleSubmit} className="bg-yellow-400 text-black hover:bg-white" >
+                  //   Book Now
+                  // </Button>
+                  <button
+                    onClick={handleSubmit}
+                    type="button"
+                    className="flex w-full cursor-pointer items-center justify-center rounded-md border border-primary bg-primary px-5 py-3 text-base text-white transition duration-300 ease-in-out hover:bg-primary/90"
+                    disabled={isSubmitting || loading}
+                  >
+                    {isSubmitting ? "Booking..." : "Book Now"}{" "}
+                    {loading && <Loader />}
+                  </button>
                 )}
               </DialogFooter>
             </form>
@@ -593,8 +609,8 @@ const RestaurantDetails = ({ params }: { params: { id: string } }) => {
               Recommended
             </CardHeader>
             <Link
-                  href={`/restaurants/${recommendedRestaurant.id}/info?meal=${params.id}`}
-                >
+              href={`/restaurants/${recommendedRestaurant.id}/info?meal=${params.id}`}
+            >
               <CardContent className="relative flex h-full flex-col items-center justify-center p-2">
                 <div className="relative h-72 w-full">
                   <Image
