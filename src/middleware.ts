@@ -8,7 +8,7 @@
 // const locales = ["en", "it"];
 // const defaultLocale = "en";
 
-// function getLocale(request: NextRequest): string {
+// function getLocale(request: NxtRequest): string {
 //   const negotiatorHeaders: Record<string, string> = {};
 //   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
 
