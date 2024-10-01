@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import {
   format,
   parse,
@@ -13,11 +13,6 @@ import {
   isSameDay,
 } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -113,11 +108,13 @@ function CalendarBookingForm({
   meal,
   handleReservationChange,
   step,
+  setIsDisabled,
 }: {
   restaurantId: string;
   meal: BookingPeriod;
   handleReservationChange: any;
   step: number;
+  setIsDisabled: any;
 }) {
   const [bookingFor, setBookingFor] = useState<BookingPeriod>(meal);
   const [selectedDate, setSelectedDate] = useState<any>(null);
@@ -136,45 +133,62 @@ function CalendarBookingForm({
     [hours, closed, bookingFor],
   );
 
-  const handleDateSelect = useCallback((date: any) => {
-    setSelectedDate(date);
-    setSelectedTime(null);
-    setError(null);
+useEffect(() => {
+  if (step === 1) {
+    setIsDisabled(selectedDate === null);
+  } else if (step === 2) {
+    setIsDisabled(!selectedTime || !selectedSeats);
+  }
+}, [step, selectedSeats, selectedDate, selectedTime]);
 
-    if (date) {
-      const formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-      handleReservationChange("dateTime", formattedDate);
-    }
-  }, [handleReservationChange]);
+  const handleDateSelect = useCallback(
+    (date: any) => {
+      setSelectedDate(date);
+      setSelectedTime(null);
+      setError(null);
 
-  const handleTimeSelect = useCallback((time: string , e:any) => {
-    e.preventDefault()
-    setSelectedTime(time);
-    setError(null);
+      if (date) {
+        const formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        handleReservationChange("dateTime", formattedDate);
+      }
+    },
+    [handleReservationChange],
+  );
 
-    if (selectedDate) {
-      const [hours, minutes] = time.split(':').map(Number);
-      const updatedDate = new Date(selectedDate);
-      updatedDate.setHours(hours, minutes, 0, 0);
-      const formattedDateTime = format(updatedDate, "yyyy-MM-dd'T'HH:mm:ss'Z'");
-      handleReservationChange("dateTime", formattedDateTime);
-    }
-  }, [selectedDate, handleReservationChange]);
+  const handleTimeSelect = useCallback(
+    (time: string, e: any) => {
+      e.preventDefault();
+      setSelectedTime(time);
+      setError(null);
 
-  const handleSeatSelect = useCallback((seats: string) => {
-    
-    setSelectedSeats(seats);
-    setError(null);
+      if (selectedDate) {
+        const [hours, minutes] = time.split(":").map(Number);
+        const updatedDate = new Date(selectedDate);
+        updatedDate.setHours(hours, minutes, 0, 0);
+        const formattedDateTime = format(
+          updatedDate,
+          "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        );
+        handleReservationChange("dateTime", formattedDateTime);
+      }
+    },
+    [selectedDate, handleReservationChange],
+  );
+
+  const handleSeatSelect = useCallback(
+    (seats: string) => {
+      setSelectedSeats(seats);
+      setError(null);
 
       handleReservationChange("seats", parseInt(seats));
-    
-  }, [selectedSeats, handleReservationChange]);
-
+    },
+    [selectedSeats, handleReservationChange],
+  );
 
   const availableTimeSlots = useMemo(() => {
     if (!selectedDate) return [];
     const slots = getAvailableTimeSlots(selectedDate);
-    return slots.map((date) => format(date, 'HH:mm'));
+    return slots.map((date) => format(date, "HH:mm"));
   }, [selectedDate, getAvailableTimeSlots]);
 
   return (
@@ -184,7 +198,10 @@ function CalendarBookingForm({
           {step === 1 && (
             <>
               <div>
-                <label htmlFor="bookingFor" className="block text-sm font-medium">
+                <label
+                  htmlFor="bookingFor"
+                  className="block text-sm font-medium"
+                >
                   Booking For
                 </label>
                 {/* Booking type selection code here */}
@@ -204,54 +221,58 @@ function CalendarBookingForm({
           )}
 
           {step === 2 && (
-          <div className="space-y-4">
-       <div className="grid grid-cols-4 gap-2">
-  {availableTimeSlots.length > 0 ? (
-    availableTimeSlots.map((time) => (
-      <Button
-        key={time}
-        variant={selectedTime === time ? "default" : "outline"}
-        className="h-12"
-        onClick={(e) => handleTimeSelect(time, e)}
-      >
-        {time}
-      </Button>
-    ))
-  ) : (
-    <div className="col-span-4 text-center">No available slots</div>
-  )}
-</div>
-
-    
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center space-x-2">
-                <Grid className="h-4 w-4" />
-                <label htmlFor="seats" className="text-sm font-medium">
-                  Number of Seats
-                </label>
+            <div className="space-y-4">
+              <div className="grid grid-cols-4 gap-2">
+                {availableTimeSlots.length > 0 ? (
+                  availableTimeSlots.map((time) => (
+                    <Button
+                      key={time}
+                      variant={selectedTime === time ? "default" : "outline"}
+                      className="h-12"
+                      onClick={(e) => handleTimeSelect(time, e)}
+                    >
+                      {time}
+                    </Button>
+                  ))
+                ) :(
+                  <div className="col-span-4 text-center">
+                    No available slots
+                  </div>
+                )}
               </div>
-              <Select value={selectedSeats} onValueChange={handleSeatSelect}>
-                <SelectTrigger id="seats" className="w-full mt-2">
-                  <SelectValue placeholder="Select seats" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[1, 2, 3, 4, 5, 6].map((num) => (
-                    <SelectItem key={num} value={num.toString()}>
-                      {num}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
-    
-          {selectedTime && selectedSeats && (
-            <p className="text-sm">
-              Selected: {selectedTime}, {selectedSeats} seat(s)
-            </p>
-          )}
-        </div>
+
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex items-center space-x-2">
+                    <Grid className="h-4 w-4" />
+                    <label htmlFor="seats" className="text-sm font-medium">
+                      Number of Seats
+                    </label>
+                  </div>
+                  <Select
+                    value={selectedSeats}
+                    onValueChange={handleSeatSelect}
+                  >
+                    <SelectTrigger id="seats" className="mt-2 w-full">
+                      <SelectValue placeholder="Select seats" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[1, 2, 3, 4, 5, 6].map((num) => (
+                        <SelectItem key={num} value={num.toString()}>
+                          {num}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
+
+              {selectedTime && selectedSeats && (
+                <p className="text-sm">
+                  Selected: {selectedTime}, {selectedSeats} seat(s)
+                </p>
+              )}
+            </div>
           )}
 
           {error && <div className="text-red-500">{error}</div>}

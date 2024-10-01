@@ -179,6 +179,8 @@ const RestaurantList = ({
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+
   const router = useRouter();
 
   type BookingPeriod = "LUNCH" | "DINNER";
@@ -194,7 +196,9 @@ const RestaurantList = ({
       reservationDetails.phoneNumber.trim() !== ""
     );
   };
-
+  const isSeatsSelected = reservationDetails.seats > 0;
+  const disabled =
+    (step === 2 && !isSeatsSelected) || (step === 3 && !isFormValid());
   const handleMakeReservation = async (e: any) => {
     e.preventDefault();
 
@@ -267,12 +271,15 @@ const RestaurantList = ({
   };
 
   const handleNextStep = () => {
+
     setStep((prev) => Math.min(prev + 1, 4));
   };
 
   const handlePrevStep = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
+
+  
 
   const showReservationButton =
     restaurant.mealType.includes("DINNER") ||
@@ -330,6 +337,7 @@ const RestaurantList = ({
               meal={meal.toUpperCase()}
               handleReservationChange={handleReservationChange}
               step={step}
+              setIsDisabled={setIsDisabled}
             />
           </div>
         );
@@ -342,6 +350,7 @@ const RestaurantList = ({
               meal={meal.toUpperCase()}
               handleReservationChange={handleReservationChange}
               step={step}
+              setIsDisabled={setIsDisabled}
             />
           </div>
         );
@@ -531,7 +540,11 @@ const RestaurantList = ({
                   </Button>
                 )}
                 {step < 4 ? (
-                  <Button type="button" onClick={handleNextStep}>
+                  <Button
+                    type="button"
+                    onClick={handleNextStep}
+                    disabled={isDisabled || !isFormValid()}
+                  >
                     Next
                   </Button>
                 ) : (
