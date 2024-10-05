@@ -271,15 +271,12 @@ const RestaurantList = ({
   };
 
   const handleNextStep = () => {
-
     setStep((prev) => Math.min(prev + 1, 4));
   };
 
   const handlePrevStep = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
-
-  
 
   const showReservationButton =
     restaurant.mealType.includes("DINNER") ||
@@ -543,7 +540,7 @@ const RestaurantList = ({
                   <Button
                     type="button"
                     onClick={handleNextStep}
-                    disabled={isDisabled || !isFormValid()}
+                    disabled={isDisabled || (step === 3 && !isFormValid())}
                   >
                     Next
                   </Button>
