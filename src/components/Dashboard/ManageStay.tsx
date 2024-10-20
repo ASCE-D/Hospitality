@@ -21,7 +21,7 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Clock, Briefcase, PlusCircle } from "lucide-react";
+import { Clock, Briefcase, PlusCircle, DollarSign } from "lucide-react";
 import { stripe } from "@/actions/stripe";
 import { useRouter } from "next/navigation";
 import { format, parse, addMinutes } from "date-fns";
@@ -37,7 +37,7 @@ interface Feature {
   title: string;
   icon: React.ElementType;
   description: string;
-  price: number;
+  price: number | ((nights: number, guests: number) => number);
   unit: string;
 }
 
@@ -64,6 +64,13 @@ const ImproveYourStay = () => {
       price: 10,
       unit: "fixed price",
     },
+    {
+      title: "Pay your taxes",
+      icon: DollarSign,
+      description: "Pay the city tax for your stay",
+      price: (nights: number, guests: number) => 1.50 + (3 * guests * nights),
+      unit: "per night per guest",
+    },
   ];
 
   const FeatureDrawer = ({ feature }: { feature: Feature }) => {
@@ -71,6 +78,8 @@ const ImproveYourStay = () => {
     const [lastName, setLastName] = useState("");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [nights, setNights] = useState(1);
+    const [guests, setGuests] = useState(1);
     const router = useRouter();
 
     const contentRef = useRef<any>(null);
@@ -110,11 +119,12 @@ const ImproveYourStay = () => {
     }, []);
 
     const handleSubmit = async () => {
+      const calculatedPrice = calculatePrice();
       const data = {
         firstName,
         lastName,
         feature: feature.title,
-        price: feature.price,
+        price: calculatedPrice,
       };
       const url = await stripe(data);
       if (url) {
@@ -151,9 +161,7 @@ const ImproveYourStay = () => {
                 />
               </div>
               <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="time">
-                  Time (12 PM onwards)
-                </Label>
+                <Label htmlFor="time">Time (12 PM onwards)</Label>
                 <Select value={time} onValueChange={setTime}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a time" />
@@ -171,15 +179,54 @@ const ImproveYourStay = () => {
           );
         case "Luggage Deposit":
           return (
-            <p>Available from 10 AM. Fixed price: {feature.price} Euros</p>
+            <p>Available from 10 AM. Fixed price: {displayPrice(feature.price)} Euros</p>
           );
         case "Late Checkout":
           return (
-            <p>Available until 1 PM. Fixed price: {feature.price} Euros</p>
+            <p>Available until 1 PM. Fixed price: {displayPrice(feature.price)} Euros</p>
+          );
+        case "Pay your taxes":
+          return (
+            <>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="nights">Number of Nights</Label>
+                <Input
+                  type="number"
+                  id="nights"
+                  value={nights}
+                  onChange={(e) => setNights(parseInt(e.target.value))}
+                  min={1}
+                />
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="guests">Number of Guests</Label>
+                <Input
+                  type="number"
+                  id="guests"
+                  value={guests}
+                  onChange={(e) => setGuests(parseInt(e.target.value))}
+                  min={1}
+                />
+              </div>
+            </>
           );
         default:
           return null;
       }
+    };
+
+    const calculatePrice = (): number => {
+      if (typeof feature.price === 'function') {
+        return feature.price(nights, guests);
+      }
+      return feature.price;
+    };
+
+    const displayPrice = (price: number | ((nights: number, guests: number) => number)): string => {
+      if (typeof price === 'function') {
+        return price(nights, guests).toFixed(2);
+      }
+      return price.toFixed(2);
     };
 
     return (
@@ -214,7 +261,7 @@ const ImproveYourStay = () => {
               </div>
               {renderFeatureSpecificFields()}
               <div>
-                <p className="font-bold">Total: {feature.price} Euros</p>
+                <p className="font-bold">Total: {displayPrice(feature.price)} Euros</p>
               </div>
             </div>
           </div>
