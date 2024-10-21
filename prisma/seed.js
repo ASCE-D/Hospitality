@@ -2,58 +2,70 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  const restaurants = [
-    // Breakfast restaurants
+  const restaurantsWithMenus = [
     {
+      id: "cm1293j7g0001p7pak19l8bye", // Replace with actual restaurant ID
       name: "Douce Pâtisserie Cafè",
-      description: "Elegant French-inspired patisserie and café offering exquisite pastries and fine coffee.",
-      address: "Via San Vincenzo 2r, 16121 Genova GE, Italy",
-      mail: false,
-      whatsapp: true,
+      menu: [
+        { name: "Croissant", description: "Buttery, flaky pastry", price: 2.50 },
+        { name: "Pain au Chocolat", description: "Chocolate-filled croissant", price: 3.00 },
+        { name: "Café Latte", description: "Espresso with steamed milk", price: 3.50 },
+        { name: "Quiche Lorraine", description: "Savory tart with bacon and cheese", price: 8.00 },
+      ]
     },
-    // Appetizer restaurants
     {
+      id: "cm1293jsn0003p7pa5a2oglvu", // Replace with actual restaurant ID
       name: "Giano Bifronte Bistrot",
-      description: "Modern Italian bistro offering innovative appetizers and a unique dining experience.",
-      address: "Via Garibaldi 38r, 16124 Genova GE, Italy",
-      mail: true,
-      whatsapp: true,
+      menu: [
+        { name: "Bruschetta al Pomodoro", description: "Toasted bread with fresh tomatoes and basil", price: 6.00 },
+        { name: "Carpaccio di Manzo", description: "Thinly sliced raw beef with arugula and parmesan", price: 12.00 },
+        { name: "Arancini", description: "Sicilian rice balls stuffed with ragu and cheese", price: 8.00 },
+        { name: "Insalata Caprese", description: "Fresh mozzarella, tomatoes, and basil", price: 9.00 },
+      ]
     },
     {
+      id: "cm1293k6r0005p7pano9n96up", // Replace with actual restaurant ID
       name: "N9ve Ristorante Evoluto",
-      description: "Avant-garde Italian cuisine featuring creative appetizers and tasting menus.",
-      address: "Via Balbi 40, 16126 Genova GE, Italy",
-      mail: true,
-      whatsapp: false,
+      menu: [
+        { name: "Sfera di Mozzarella", description: "Molecular gastronomy mozzarella sphere", price: 14.00 },
+        { name: "Tartare di Tonno", description: "Tuna tartare with avocado and citrus", price: 16.00 },
+        { name: "Uovo 65°", description: "Slow-cooked egg with truffle foam", price: 18.00 },
+        { name: "Crudo di Pesce", description: "Raw fish platter with daily selection", price: 22.00 },
+      ]
     },
     {
+      id: "cm1293kl20007p7pamy9f4mzf", // Replace with actual restaurant ID
       name: "Les Rouges Cucina & Cocktails",
-      description: "Chic restaurant blending Italian cuisine with French influences, known for appetizers and cocktails.",
-      address: "Via Carlo Barabino 44R, 16129 Genova GE, Italy",
-      mail: false,
-      whatsapp: true,
+      menu: [
+        { name: "Escargots à la Bourguignonne", description: "Snails in garlic-herb butter", price: 12.00 },
+        { name: "Fritto Misto", description: "Mixed fried seafood platter", price: 15.00 },
+        { name: "Pâté de Foie Gras", description: "Duck liver pâté with brioche", price: 18.00 },
+        { name: "Negroni Sbagliato", description: "Classic cocktail with prosecco", price: 10.00 },
+      ]
     },
   ];
 
-  let id = 22;
-  for (const restaurant of restaurants) {
-    const owner = await prisma.user.create({
-      data: {
-        id: `owner${id}`,
-        email: `owner${id}@example.com`,
-        name: "Restaurant Owner",
-        password: "test",
-      },
+  for (const restaurantData of restaurantsWithMenus) {
+    const restaurant = await prisma.restaurant.findUnique({
+      where: { id: restaurantData.id },
     });
 
-    await prisma.restaurant.create({
-      data: { ...restaurant, ownerId: owner.id },
-    });
-
-    id++;
+    if (restaurant) {
+      for (const menuItem of restaurantData.menu) {
+        await prisma.menuItem.create({
+          data: {
+            ...menuItem,
+            restaurantId: restaurant.id,
+          },
+        });
+      }
+      console.log(`Added ${restaurantData.menu.length} menu items to ${restaurant.name}`);
+    } else {
+      console.log(`Restaurant with ID "${restaurantData.id}" not found. Skipping menu items.`);
+    }
   }
 
-  console.log("Seed data inserted successfully.");
+  console.log("Menu items added successfully.");
 }
 
 main()

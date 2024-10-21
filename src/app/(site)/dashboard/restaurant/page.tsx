@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import ReservationManagement from "@/components/ReservationManagement";
 import { authOptions } from "@/utils/auth";
 import { prisma } from "@/utils/prismaDB";
+import DeliveryDashboardContent from "@/components/ddashboard";
 
 async function getRestaurant(email: string) {
   const restaurant = await prisma.restaurant.findFirst({
@@ -37,6 +38,18 @@ async function getRestaurantReservations(ownerId: string) {
   });
   return restaurant?.foodReservation || [];
 }
+async function getDeliveryOrders(restaurantId: string) {
+  const deliveryOrders = await prisma.deliveryOrder.findMany({
+    where: { restaurantId },
+    include: {
+      orderItems: {
+        include: { menuItem: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return deliveryOrders;
+}
 
 export default async function RestaurantDashboard() {
   const session = await getServerSession(authOptions);
@@ -47,13 +60,18 @@ export default async function RestaurantDashboard() {
   }
 
   const reservations = await getRestaurantReservations(restaurant.ownerId);
-
+  const deliveryOrders = await getDeliveryOrders(restaurant.id);
   return (
     <div className="mt-2">
       <ReservationManagement
         reservations={reservations}
         restaurantId={restaurant.id}
       />
+       <DeliveryDashboardContent
+       //@ts-ignore
+            initialOrders={deliveryOrders}
+            restaurantId={restaurant.id}
+          />
     </div>
   );
 }

@@ -53,6 +53,7 @@ model User {
   Account         Account[]
   Session         Session[]
   foodReservation foodReservation[]
+
 }
 
 model VerificationToken {
@@ -79,6 +80,9 @@ model Restaurant {
   PaymentDetails  PaymentDetails[]
   devices         Device[]
   hours           RestaurantHours[]
+    menu            MenuItem[]
+  deliveryOrders  DeliveryOrder[]
+  deliveryEnabled Boolean          @default(false)
 }
 
 model RestaurantHours {
@@ -146,6 +150,52 @@ model Device {
   updatedAt    DateTime   @updatedAt
 
   @@unique([countryCode, phoneNumber])
+}
+
+
+
+model MenuItem {
+  id           String     @id @default(cuid())
+  name         String
+  description  String?
+  price        Float
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  orderItems   OrderItem[]
+}
+
+model DeliveryOrder {
+  id           String         @id @default(cuid())
+  name         String
+  restaurantId String
+  restaurant   Restaurant     @relation(fields: [restaurantId], references: [id])
+  status       DeliveryStatus @default(PENDING)
+  address      String
+  phoneNumber  String
+  orderItems   OrderItem[]
+  totalAmount  Float
+  estimatedDeliveryTime DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model OrderItem {
+  id             String        @id @default(cuid())
+  menuItemId     String
+  menuItem       MenuItem      @relation(fields: [menuItemId], references: [id])
+  deliveryOrderId String
+  deliveryOrder  DeliveryOrder @relation(fields: [deliveryOrderId], references: [id])
+  quantity       Int
+  price          Float
+}
+
+enum DeliveryStatus {
+  PENDING
+  CONFIRMED
+  IN_PREPARATION
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
 }
 
 enum Role {
