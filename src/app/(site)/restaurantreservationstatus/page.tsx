@@ -1,41 +1,84 @@
-'use client'
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Clock, Check, CalendarDays } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-const ReservationConfirmationPage = () => {
+const ReservationPendingPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold text-green-600">
-            Booking Request Successful!
+          <CardTitle className="text-center text-2xl font-bold text-orange-600">
+            Reservation Request Received
           </CardTitle>
           <CardDescription className="text-center">
-            Your reservation has been received
+            Your booking is pending confirmation
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="mb-6 flex justify-center">
-            <div className="rounded-full bg-green-100 p-3">
-              <Check className="h-8 w-8 text-green-600" />
+            <div className="rounded-full bg-orange-100 p-3">
+              <Clock className="h-8 w-8 text-orange-600 animate-pulse" />
             </div>
           </div>
-          <Alert>
-            <AlertTitle>Confirmation on the way</AlertTitle>
-            <AlertDescription>
-              A confirmation message will be sent to your WhatsApp shortly.
+
+          {/* Timeline */}
+          <div className="mb-6 relative">
+            <div className="absolute left-1/2 h-full w-0.5 bg-gray-200 -translate-x-1/2" />
+            
+            <div className="relative flex items-center mb-8">
+              <div className="flex-1 text-right pr-4">
+                <h3 className="font-medium">Request Submitted</h3>
+                <p className="text-sm text-gray-500">Just now</p>
+              </div>
+              <div className="z-10 rounded-full bg-green-500 p-1">
+                <Check className="h-4 w-4 text-white" />
+              </div>
+              <div className="flex-1" />
+            </div>
+
+            <div className="relative flex items-center mb-8">
+              <div className="flex-1 text-right pr-4">
+                <h3 className="font-medium text-orange-600">Awaiting Confirmation</h3>
+                <p className="text-sm text-gray-500">In progress</p>
+              </div>
+              <div className="z-10 rounded-full bg-orange-500 p-1">
+                <Clock className="h-4 w-4 text-white" />
+              </div>
+              <div className="flex-1" />
+            </div>
+
+            <div className="relative flex items-center opacity-50">
+              <div className="flex-1 text-right pr-4">
+                <h3 className="font-medium">Reservation Confirmed</h3>
+                <p className="text-sm text-gray-500">Pending</p>
+              </div>
+              <div className="z-10 rounded-full bg-gray-300 p-1">
+                <CalendarDays className="h-4 w-4 text-white" />
+              </div>
+              <div className="flex-1" />
+            </div>
+          </div>
+
+          <Alert className="bg-orange-50 border-orange-200">
+            <AlertTitle className="text-orange-800">What happens next?</AlertTitle>
+            <AlertDescription className="text-orange-700">
+              We're reviewing your request and will send a confirmation message to your WhatsApp within 24 hours.
             </AlertDescription>
           </Alert>
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Thank you for choosing our service. If you have any questions,
-            please don&apos;t hesitate to contact us.
-          </p>
+
+          <div className="mt-6 space-y-4 text-sm text-gray-600">
+            <p className="text-center">
+              Your requested reservation details will be reviewed by our team.
+            </p>
+            <p className="text-center font-medium">
+              Need to make changes? Contact us right away.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
   );
 };
 
-export default ReservationConfirmationPage;
+export default ReservationPendingPage;
