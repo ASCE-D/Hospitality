@@ -18,16 +18,16 @@ const ReservationPendingPage = () => {
         <CardContent>
           <div className="mb-6 flex justify-center">
             <div className="rounded-full bg-orange-100 p-3">
-              <Clock className="h-8 w-8 text-orange-600 animate-pulse" />
+              <Clock className="h-8 w-8 animate-pulse text-orange-600" />
             </div>
           </div>
 
           {/* Timeline */}
-          <div className="mb-6 relative">
-            <div className="absolute left-1/2 h-full w-0.5 bg-gray-200 -translate-x-1/2" />
-            
-            <div className="relative flex items-center mb-8">
-              <div className="flex-1 text-right pr-4">
+          <div className="relative mb-6">
+            <div className="absolute left-1/2 h-full w-0.5 -translate-x-1/2 bg-gray-200" />
+
+            <div className="relative mb-8 flex items-center">
+              <div className="flex-1 pr-4 text-right">
                 <h3 className="font-medium">Request Submitted</h3>
                 <p className="text-sm text-gray-500">Just now</p>
               </div>
@@ -37,9 +37,11 @@ const ReservationPendingPage = () => {
               <div className="flex-1" />
             </div>
 
-            <div className="relative flex items-center mb-8">
-              <div className="flex-1 text-right pr-4">
-                <h3 className="font-medium text-orange-600">Awaiting Confirmation</h3>
+            <div className="relative mb-8 flex items-center">
+              <div className="flex-1 pr-4 text-right">
+                <h3 className="font-medium text-orange-600">
+                  Awaiting Confirmation
+                </h3>
                 <p className="text-sm text-gray-500">In progress</p>
               </div>
               <div className="z-10 rounded-full bg-orange-500 p-1">
@@ -49,7 +51,7 @@ const ReservationPendingPage = () => {
             </div>
 
             <div className="relative flex items-center opacity-50">
-              <div className="flex-1 text-right pr-4">
+              <div className="flex-1 pr-4 text-right">
                 <h3 className="font-medium">Reservation Confirmed</h3>
                 <p className="text-sm text-gray-500">Pending</p>
               </div>
@@ -60,10 +62,13 @@ const ReservationPendingPage = () => {
             </div>
           </div>
 
-          <Alert className="bg-orange-50 border-orange-200">
-            <AlertTitle className="text-orange-800">What happens next?</AlertTitle>
+          <Alert className="border-orange-200 bg-orange-50">
+            <AlertTitle className="text-orange-800">
+              What happens next?
+            </AlertTitle>
             <AlertDescription className="text-orange-700">
-              We're reviewing your request and will send a confirmation message to your WhatsApp within 24 hours.
+              We&apos;re reviewing your request and will send a confirmation
+              message to your WhatsApp within 24 hours.
             </AlertDescription>
           </Alert>
 
