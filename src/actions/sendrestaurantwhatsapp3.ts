@@ -14,7 +14,7 @@ const formatDateForInput = (date: Date) => {
 async function sendWhatsAppMessage(phoneNumbers: string[], message: string) {
   try {
     const response = await fetch(
-      `https://whatsapp-8xre.onrender.com/send-whatsapp`,
+      `https://whatsappservice-lykx.onrender.com/send-whatsapp`,
       {
         method: "POST",
         headers: {
