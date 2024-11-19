@@ -28,9 +28,9 @@ const HomePage = () => {
       url: "/guest/transports",
     },
     {
-      title: t("homepage.activities.city_tours"),
-      image: "/images/tours/cover.jpg",
-      url: "/guest/tours",
+      title: "AirParkings",
+      image: "/images/tours/airparking.jpg",
+      url: "https://airparking.tech",
     },
   ];
 
