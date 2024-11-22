@@ -64,15 +64,27 @@ Note: These links will only work if the reservation status is still pending.
     `;
 
     // Send WhatsApp message to all devices
-    const sendPromises = restaurant.devices.map((device) =>
-      client.messages.create({
-        body: message,
-        from: "whatsapp:+14155238886", // Your Twilio WhatsApp number
-        to: 'whatsapp:+919929840831'
-        // to: 'whatsapp:+393283631642'
-        // to: `whatsapp:+${device.countryCode}${device.phoneNumber}`,
-      }),
-    );
+    const sendPromises = restaurant.devices.map(async (device) => {
+      const wp = await client.messages.create({
+        contentSid: "HX93e808e4602595c1241403414d5e6147", // Replace with your Content SID
+        contentVariables: JSON.stringify({
+          1: `${restaurant.name}`,
+          2: `${reservationId}`,
+          3: `${reservationDetails.dateTime.toUTCString().slice(0, 22)}`,
+          4: `${reservationDetails.seats}`,
+          5: `${reservationDetails.firstName} ${reservationDetails.lastName}`,
+          6: `${reservationStatus}`,
+          7: `${reservationDetails.phoneNumber}`,
+          8: `${acceptUrl}`,
+          9: `${declineUrl}`,
+        }),
+        from: "whatsapp:+393759132750", // Replace with your Twilio WhatsApp-enabled number
+        messagingServiceSid: "MG46d3a64f5ddca12596bd7486e93f1027", // Replace with your Messaging Service SID
+        to: `whatsapp:${device.countryCode}${device.phoneNumber}`, // Replace with the recipient's number
+      });
+
+      console.log(wp)
+    });
 
     const results = await Promise.allSettled(sendPromises);
 

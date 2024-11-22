@@ -44,6 +44,7 @@ import { useSession } from "next-auth/react";
 import { sendRestaurantEmail3 } from "@/actions/sendRestaurant3";
 import CalendarBookingForm from "../DatePicker";
 import Loader from "../Common/Loader";
+import { sendRestaurantWhatsapp2 } from "@/actions/sendrestaurantwhatsapp2";
 const { restaurants } = restaurantsData;
 
 type BookingPeriod = "LUNCH" | "DINNER";
@@ -227,18 +228,18 @@ const RestaurantList = ({
       reservationStatus = result?.reservation?.status;
       toast.success("You reservation request has been sent we'll inform you");
 
-      // await sendRestaurantWhatsapp2(
-      //   reservationDetails.restaurantId,
-      //   reservationDetails,
-      //   reservationid,
-      //   reservationStatus,
-      // );
-      await sendRestaurantWhatsapp3(
+      await sendRestaurantWhatsapp2(
         reservationDetails.restaurantId,
         reservationDetails,
         reservationid,
         reservationStatus,
       );
+      // await sendRestaurantWhatsapp3(
+      //   reservationDetails.restaurantId,
+      //   reservationDetails,
+      //   reservationid,
+      //   reservationStatus,
+      // );
       await sendRestaurantEmail3(
         reservationDetails.restaurantId,
         reservationDetails,

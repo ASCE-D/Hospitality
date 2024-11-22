@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/utils/prismaDB";
+import { format } from "date-fns";
 import twilio from "twilio";
 
 export async function sendUserNotification2(foodReservationId: string) {
@@ -39,13 +40,10 @@ export async function sendUserNotification2(foodReservationId: string) {
       ? `${restaurant.devices[0].countryCode}${restaurant.devices[0].phoneNumber}`
       : "Not available";
 
-        // Prepare the message based on the reservation status
-        let message = ''
-        if (status === 'CONFIRMED') {
-            message = 
-            
-            
-            `
+    // Prepare the message based on the reservation status
+    let message = "";
+    if (status === "CONFIRMED") {
+      message = `
             
             
           Great news! Your reservation at ${restaurant.name} has been confirmed for ${dateTime.toLocaleString()}. Party size: ${seats}.
@@ -54,9 +52,9 @@ export async function sendUserNotification2(foodReservationId: string) {
           Google Maps: ${googleMapsLink}
           Restaurant Phone: ${restaurantPhone}
 
-          We look forward to seeing you!`
-        } else if (status === 'REJECTED') {
-            message = `We're sorry, but your reservation at ${restaurant.name} for ${dateTime.toLocaleString()} has been declined. Please contact the restaurant for more information or to make alternative arrangements.
+          We look forward to seeing you!`;
+    } else if (status === "REJECTED") {
+      message = `We're sorry, but your reservation at ${restaurant.name} for ${dateTime.toLocaleString()} has been declined. Please contact the restaurant for more information or to make alternative arrangements.
 
 Restaurant Phone: ${restaurantPhone}`;
     } else {
@@ -66,18 +64,37 @@ Restaurant Address: ${restaurant.address}
 Google Maps: ${googleMapsLink}
 Restaurant Phone: ${restaurantPhone}
 
-`
-        }
+`;
+    }
 
-        // Send the WhatsApp message
-        const twilioMessage = await client.messages.create({
-            body: message,
-            from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
-            //  to: `whatsapp:+${countryCode}${phoneNumber}`
-           to: 'whatsapp:+919929840831'
-        // to: 'whatsapp:+393483768922'
-        })
+    // Send the WhatsApp message
+    // const twilioMessage = await client.messages.create({
+    //     body: message,
+    //     from: 'whatsapp:+14155238886', // Your Twilio WhatsApp number
+    //     //  to: `whatsapp:+${countryCode}${phoneNumber}`
+    //    to: 'whatsapp:+919929840831'
+    // // to: 'whatsapp:+393483768922'
+    // })
 
+    const formatDateForInput = (date: Date) => {
+      if (!date) return "";
+      return format(date, "yyyy-MM-dd'T'HH:mm");
+    };
+
+    const twilioMessage = await client.messages.create({
+      contentSid: "HXd8e50e7bccf886f902f1b1839a591700", // Replace with your Content SID
+      contentVariables: JSON.stringify({
+        1: `${restaurant.name}`,
+        2: `${dateTime.toUTCString().slice(0,22)}`,
+        3: `${seats}`,
+        4: `${restaurant.address}`,
+        5: `$${googleMapsLink}`,
+        6: `${restaurantPhone}`,
+      }),
+      from: "whatsapp:+393759132750", // Replace with your Twilio WhatsApp-enabled number
+      messagingServiceSid: "MG46d3a64f5ddca12596bd7486e93f1027", // Replace with your Messaging Service SID
+      to: `whatsapp:${countryCode}${phoneNumber}`, // Replace with the recipient's number
+    });
     console.log("WhatsApp message sent:", twilioMessage.sid);
     return { success: true, messageSid: twilioMessage.sid };
   } catch (error: any) {

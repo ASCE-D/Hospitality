@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/auth";
 
 import { sendUserNotification3 } from "@/actions/sendusernoti3";
+import { sendUserNotification2 } from "@/actions/sendusernoti2";
 // import { sendUserNotification3 } from "@/actions/sendusernoti3";
 
 export async function GET(
@@ -38,7 +39,7 @@ console.log("yme")
       data: { status: "CONFIRMED" },
     });
 console.log("hereeee")
-    await sendUserNotification3(id);
+    await sendUserNotification2(id);
     console.log("124")
     // Encode reservation details in the URL
     const reservationDetails = encodeURIComponent(JSON.stringify({
