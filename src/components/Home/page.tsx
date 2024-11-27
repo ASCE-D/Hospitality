@@ -9,8 +9,11 @@ import { ArrowBigRight, ArrowBigRightIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useTranslations } from "next-intl";
 
-const HomePage = () => {
+const HomePage = ({ host, house }: { host?: string; house?: string }) => {
   const t = useTranslations();
+  const hostName = host || "els-capital";
+  const houseName = house || "san-giorgio-1";
+
   const activities = [
     {
       title: t("homepage.activities.home_informations"),
@@ -30,7 +33,7 @@ const HomePage = () => {
     {
       title: "AirParkings",
       image: "/images/tours/airparking.jpg",
-      url: "https://airparking.tech",
+      url: `https://airparking.tech/${hostName}/${houseName}`,
     },
   ];
 
