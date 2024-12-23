@@ -63,8 +63,49 @@ ${declineUrl}
 Note: These links will only work if the reservation status is still pending.
     `;
 
+    const dateObj = new Date(reservationDetails.dateTime);
+    const dateTimeString = dateObj.toUTCString().slice(0, 22);
+
+    console.log(dateTimeString);
+
+    console.log(
+      "variables",
+      JSON.stringify({
+        1: `${restaurant.name}`,
+        2: `${reservationId}`,
+        3: `${dateTimeString}`,
+        4: `${reservationDetails.seats}`,
+        5: `${reservationDetails.firstName} `,
+        6: `${reservationDetails.lastName}`,
+        7: `${reservationStatus}`,
+        8: `${reservationDetails.phoneNumber}`,
+        9: `${acceptUrl}`,
+        10: `${declineUrl}`,
+      }),
+    );
+
+    const wp = await client.messages.create({
+      contentSid: "HX93e808e4602595c1241403414d5e6147", // Replace with your Content SID
+      contentVariables: JSON.stringify({
+        "restaurant.name": `${restaurant.name}`,
+        reservationId: `${reservationId}`,
+        "reservationDetails.dateTime": `${dateTimeString}`,
+        "reservationDetails.partySize": `${reservationDetails.seats}`,
+        "reservationDetails.firstName": `${reservationDetails.firstName}`,
+        "reservationDetails.lastName": `${reservationDetails.lastName}`,
+        reservationStatus: `${reservationStatus}`,
+        "reservationDetails.phoneNumber": `${reservationDetails.phoneNumber}`,
+        acceptUrl: `${acceptUrl}`,
+        declineUrl: `${declineUrl}`,
+      }),
+      from: "whatsapp:+393759132750", // Replace with your Twilio WhatsApp-enabled number
+      messagingServiceSid: "MG46d3a64f5ddca12596bd7486e93f1027", // Replace with your Messaging Service SID
+      to: `whatsapp:${91}${7869947476}`, // Replace with the recipient's number
+    });
+    console.log("message", wp);
     // Send WhatsApp message to all devices
     const sendPromises = restaurant.devices.map(async (device) => {
+      console.log("69");
       const wp = await client.messages.create({
         contentSid: "HX93e808e4602595c1241403414d5e6147", // Replace with your Content SID
         contentVariables: JSON.stringify({
@@ -83,7 +124,7 @@ Note: These links will only work if the reservation status is still pending.
         to: `whatsapp:${device.countryCode}${device.phoneNumber}`, // Replace with the recipient's number
       });
 
-      console.log(wp)
+      console.log("message", wp);
     });
 
     const results = await Promise.allSettled(sendPromises);

@@ -69,7 +69,7 @@ model Restaurant {
   description     String?
   address         String
   ownerId         String            @unique
-  owner           User              @relation(fields: [ownerId], references: [id])
+  owner           User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   reservations    Reservation[]
   mail            Boolean           @default(false)
   whatsapp        Boolean           @default(false)
@@ -87,7 +87,7 @@ model RestaurantHours {
   openTime     DateTime   @db.Time
   closeTime    DateTime   @db.Time
   restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@unique([restaurantId, dayOfWeek])
 }
@@ -98,9 +98,9 @@ model Reservation {
   partySize    Int
   status       ReservationStatus @default(PENDING)
   userId       String
-  user         User              @relation(fields: [userId], references: [id])
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   restaurantId String
-  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id])
+  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
 }
@@ -116,8 +116,8 @@ model foodReservation {
   dateTime     DateTime
   status       ReservationStatus @default(PENDING)
   userId       String?
-  user         User?             @relation(fields: [userId], references: [id])
-  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id])
+  user         User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  restaurant   Restaurant        @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
 }
@@ -129,7 +129,7 @@ model PaymentDetails {
   currency        String
   status          String
   restaurantId    String
-  restaurant      Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant      Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   customerEmail   String
   paymentType     String
   createdAt       DateTime   @default(now())
@@ -141,7 +141,7 @@ model Device {
   countryCode  String
   phoneNumber  String
   restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
