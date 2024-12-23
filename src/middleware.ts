@@ -1,81 +1,64 @@
-
-// import { NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
-
-// import { match as matchLocale } from "@formatjs/intl-localematcher";
-// import Negotiator from "negotiator";
-
-// const locales = ["en", "it"];
-// const defaultLocale = "en";
-
-// function getLocale(request: NxtRequest): string {
-//   const negotiatorHeaders: Record<string, string> = {};
-//   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
-
-//   // @ts-ignore locales are readonly
-//   const languages = new Negotiator({ headers: negotiatorHeaders }).languages(
-//     locales,
-//   );
-
-//   const locale = matchLocale(languages, locales, defaultLocale);
-
-//   return locale;
-// }
-
-// export function middleware(request: NextRequest) {
-//   const pathname = request.nextUrl.pathname;
-//   const pathnameIsMissingLocale = locales.every(
-//     (locale) =>
-//       !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
-//   );
-
-//   // Redirect if there is no locale
-//   if (pathnameIsMissingLocale) {
-//     const locale = getLocale(request);
-//     return NextResponse.redirect(
-//       new URL(`/${locale}/${pathname}`, request.url),
-//     );
-//   }
-// }
-// export const config = {
-//   matcher: [
-//     // Skip all internal paths (_next)
-//     "/((?!_next).*)",
-//     // Optional: only run on root (/) URL
-//     // '/'
-//   ],
-// };
 import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
-
-  // Check if the 'language' cookie exists
   const language = req.cookies.get("NEXT_LOCALE");
+  const origin = req.headers.get("origin");
 
   console.log("Current URL:", url.pathname);
   console.log("Language cookie:", language);
+  console.log("Origin:", origin);
 
-  // If 'language' is not set, redirect to /language
-  // if (!language && url.pathname !== "/language") {
-  //   console.log("Redirecting to language selector");
-  //   return NextResponse.redirect(new URL("/language", req.url));
-  // }
+  const allowedOrigins = [
+    "https://airparking.tech",
+    "http://localhost:3000",
+    "http://localhost:3001",
+  ];
 
-  // Allow the request to proceed
-  console.log("Proceeding with request");
+  // Handle API routes
+  if (url.pathname.startsWith("/api/")) {
+    // Handle preflight requests
+    if (req.method === "OPTIONS") {
+      return new NextResponse(null, {
+        headers: {
+          "Access-Control-Allow-Origin": origin || "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+    }
+
+    // Handle actual API requests
+    const response = NextResponse.next();
+
+    // Add CORS headers
+    response.headers.set("Access-Control-Allow-Origin", origin || "*");
+    response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    response.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization",
+    );
+
+    return response;
+  }
+
+  // Handle non-API routes
+  if (!language) {
+    console.log("Setting default language to English");
+    const response = NextResponse.next();
+    response.cookies.set("NEXT_LOCALE", "en");
+    return response;
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    // Match API routes
+    "/api/:path*",
+    // Match all other routes except static files
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };
