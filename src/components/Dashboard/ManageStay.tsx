@@ -68,7 +68,18 @@ const ImproveYourStay = () => {
       title: "Pay your taxes",
       icon: DollarSign,
       description: "Pay the city tax for your stay",
-      price: (nights: number, guests: number) => 1.50 + (3 * guests * nights),
+      price: (nights: number, guests: number) => {
+        const basePrice = 1.5;
+        const perPersonPerNight = 3;
+        const totalExpense = perPersonPerNight * guests * nights;
+
+        // If total expense is over 15 euros, charge 10% instead of base price
+        if (totalExpense > 15) {
+          return totalExpense * 0.1; // 10% of the total expense
+        } else {
+          return basePrice + totalExpense;
+        }
+      },
       unit: "per night per guest",
     },
   ];

@@ -591,7 +591,7 @@ export const ReservationManagementContent = ({
                                   {format(
                                     reservation?.dateTime
                                       .toUTCString()
-                                      .replace(/ GMT$/, ""),
+                                      .replace(/ GMT$/, "") as Date,
                                     "PPPP",
                                   )}
                                 </span>
@@ -600,7 +600,7 @@ export const ReservationManagementContent = ({
                                   {format(
                                     reservation?.dateTime
                                       .toUTCString()
-                                      .replace(/ GMT$/, ""),
+                                      .replace(/ GMT$/, "") as Date,
                                     "p",
                                   )}
                                 </span>
