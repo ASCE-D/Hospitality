@@ -75,7 +75,7 @@ const ImproveYourStay = () => {
 
         // If total expense is over 15 euros, charge 10% instead of base price
         if (totalExpense > 15) {
-          return totalExpense * 0.1; // 10% of the total expense
+          return totalExpense + totalExpense * 0.1; // 10% of the total expense
         } else {
           return basePrice + totalExpense;
         }
